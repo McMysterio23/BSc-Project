@@ -8,11 +8,8 @@ Created on Mon Jan 15 17:42:46 2024
 
 from astropy.io import fits
 import numpy as np
-import ipywidgets as widgets
-import plotly.graph_objects as go
-from IPython.display import display, HTML
-from astropy.visualization import astropy_mpl_style
 import matplotlib.pyplot as plt
+"""
 from PyAstronomy import pyasl
 from astropy.wcs import WCS
 import pyregion
@@ -24,40 +21,50 @@ from astropy.visualization.wcsaxes import WCSAxes
 from pyregion.mpl_helper import properties_func_default
 from random import randrange
 from astropy.nddata.utils import Cutout2D
+"""
 from astropy import units as u
 from astropy.coordinates import SkyCoord
+"""
 from matplotlib.patches import Circle, Rectangle
 from astropy.cosmology import FlatLambdaCDM
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import SkyOffsetFrame, ICRS
 from regions import CircleSkyRegion, CircleAnnulusSkyRegion
+"""
+
 #from scipy.ndimage.filters import gaussian_filter
-import scipy
-from matplotlib.patches import Ellipse, Circle
-from os.path import exists
+#import scipy
+#from matplotlib.patches import Ellipse, Circle
+#from os.path import exists
 import os.path
-from os import path
-import pandas as pd
-import glob
-from astropy.cosmology import Planck15 as cosmo
-from astropy.table import QTable
-from astropy.table import Column
-from regions import Regions
-import numpy as np
-from astroML.correlation import two_point
-from astroML.utils import pickle_results  # Update this line
-from astroML.datasets import fetch_sdss_specgals
-from astroML.correlation import bootstrap_two_point_angular
-from matplotlib.patches import PathPatch
-from matplotlib.path import Path
+#from os import path
+#import pandas as pd
+#import glob
+#from astropy.cosmology import Planck15 as cosmo
+#from astropy.table import QTable
+#from astropy.table import Column
+#from regions import Regions
+#import numpy as np
+#from astroML.correlation import two_point
+#from astroML.utils import pickle_results  # Update this line
+#from astroML.datasets import fetch_sdss_specgals
+#from astroML.correlation import bootstrap_two_point_angular
+#from matplotlib.patches import PathPatch
+#from matplotlib.path import Path
 
 #%% Selection BCG
 
-raBCG,decBCG = np.loadtxt("/Users/andreamaccarinelli/Desktop/SDSSDATA_BCG.txt",usecols=[1,2],unpack=True,dtype=float)
+#raBCG,decBCG = np.loadtxt("/Users/andreamaccarinelli/Desktop/SDSS/DATA_BCG.txt",usecols=[1,2],unpack=True,dtype=float)
 
-file="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/gal_info_dr7_v5_2.fits"
-fitfile=fits.open(file)
-data=fitfile[1].data
+sampleC4_file = "/Users/andreamaccarinelli/Desktop/SDSS/sampleC4.fits"
+fit2file = fits.open(sampleC4_file)
+data = fit2file[1].data
+raBCG = data['RAdeg']
+decBCG = data['DEdeg']
+
+file="/Users/andreamaccarinelli/Desktop/SDSS/gal_info_dr7_v5_2.fits"
+obj=fits.open(file)
+data=obj[1].data
 ra,dec=data['RA'],data['DEC']
 
 
@@ -76,7 +83,7 @@ for k in range(len(raBCG)):
             indiciBCG.append(i)
     
        
-fileout="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/outputs/IndiciBCG.txt"
+fileout="/Users/andreamaccarinelli/Desktop/BSc-Project/IndiciBCG.txt"
 fmt = "%i"  # Specify the format string
 data = np.column_stack((np.array(indiciBCG).astype(int),np.array(indiciBCG).astype(int)))
 if os.path.exists(fileout) == False:
