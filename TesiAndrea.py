@@ -92,8 +92,10 @@ if os.path.exists(fileout) == False:
 
 #%% Remove Index duplicates
 
-file="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/duplicates.txt"
+file="/Users/andreamaccarinelli/Desktop/SDSS/duplicates.txt"
 
+
+"""
 def TxtRaws(file):
     dati = []
     # Apri il file e leggi le righe
@@ -111,10 +113,32 @@ def TxtRaws(file):
     return dati
 dupl=TxtRaws(file)
 
+"""
 
-file="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/outputs/IndiciBCG.txt"
+
+
+
+
+file="/Users/andreamaccarinelli/Desktop/BSc-Project/IndiciBCG.txt"
 ind = np.loadtxt(file,usecols=[0],unpack=True,dtype=int)
 
+
+def TxtRaws(file):
+    dati = []
+    # Apri il file e leggi le righe
+    with open(file, 'r') as file:
+        for riga in file:
+            # Ignora le righe vuote o commenti
+            if not riga.strip():
+                continue
+            # Dividi la riga in colonne e converte i valori in interi
+            valori = [int(valore) for valore in riga.split()]
+            dati.append(valori)
+
+    # Converti la lista in un array numpy
+    dati = np.array(dati)
+    return dati
+dupl=TxtRaws(file)
 
 IndBCG=[]
 indnoBCG=[]
@@ -137,14 +161,14 @@ for i in range(len(dupl)):
 
 
 
-fileout="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/outputs/Indici_BCG_nodupl.txt"
+fileout="/Users/andreamaccarinelli/Desktop/BSc-Project/Indici_BCG_nodupl.txt"
 fmt = "%i"  # Specify the format string
 ddd = np.column_stack((IndBCG,IndBCG))
 if os.path.exists(fileout) == False:
     np.savetxt(fileout, ddd, fmt=fmt)
 
 
-fileout="/Users/andreatravascio/Desktop/Tesisti/TesiAndrea/SDSS/outputs/Indici_noBCG_nodupl.txt"
+fileout="/Users/andreamaccarinelli/Desktop/BSc-Project/Indici_noBCG_nodupl.txt"
 fmt = "%i"  # Specify the format string
 ddd = np.column_stack((indnoBCG,indnoBCG))
 if os.path.exists(fileout) == False:
