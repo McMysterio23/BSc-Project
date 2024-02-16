@@ -1,0 +1,65 @@
+Questo programma sembra gestire la rimozione dei duplicati e la produzione di file con indici delle BCG e non BCG non duplicati. Ecco una spiegazione dettagliata:
+
+1. **Parametro SamePos**:
+   ```python
+   SamePos = "yes"
+   ```
+   La variabile `SamePos` è impostata su "yes". Tuttavia, questa variabile non viene utilizzata nel codice che segue.
+
+2. **Funzione GalCloseBCG**:
+   ```python
+   def GalCloseBCG(RA, DEC):
+       # ...
+   ```
+   Questa funzione restituisce le coordinate RA e DEC delle galassie che si trovano in determinate regioni del cielo, specificate dalle condizioni sui valori di RA e DEC.
+
+3. **Lettura dei duplicati dal file**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/SDSS/duplicates.txt"
+   dupl = TxtRaws(file)
+   ```
+   I duplicati vengono letti da un file di testo utilizzando la funzione `TxtRaws`.
+
+4. **Lettura degli indici, del numero di galassie e della sigma del cluster dal file IndiciBCG.txt**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/myOutputs/IndiciBCG.txt"
+   ind, NumGalax = np.loadtxt(file, usecols=[0, 2], unpack=True, dtype=int)
+   SigCluster = np.loadtxt(file, usecols=[1], unpack=True, dtype=float)
+   ```
+   Vengono letti gli indici delle BCG, il numero di galassie e la sigma del cluster dal file "IndiciBCG.txt".
+
+5. **Rimozione dei duplicati e creazione di nuovi file**:
+   ```python
+   IndBCG = []
+   Ngal = []
+   SBCG = []
+   indnoBCG = []
+   indiciDupl = []
+
+   for i in range(len(dupl)):
+       # ...
+   ```
+
+   - Viene iterato sui duplicati letti dal file, e vengono effettuate diverse operazioni per gestire gli indici delle BCG e non BCG duplicati.
+
+   - Vengono creati gli elenchi `IndBCG`, `Ngal`, e `SBCG` per gli indici delle BCG, il numero di galassie e la sigma del cluster rispettivamente.
+
+   - Viene creato l'elenco `indnoBCG` per gli indici delle non BCG.
+
+   - Viene utilizzato l'elenco `indiciDupl` per gestire i duplicati.
+
+6. **Salvataggio dei risultati in due nuovi file di testo**:
+   ```python
+   fileout = "/Users/andreamaccarinelli/Desktop/myOutputs/Indici_BCG_nodupl.txt"
+   fmt = ["%i", "%i", "%f"]
+   ddd = np.column_stack((IndBCG, Ngal, SBCG))
+   if os.path.exists(fileout) == False:
+       np.savetxt(fileout, ddd, fmt=fmt)
+
+   fileout = "/Users/andreamaccarinelli/Desktop/myOutputs/Indici_noBCG_nodupl.txt"
+   fmt = "%i"
+   ddd = np.column_stack((indnoBCG, indnoBCG))
+   if os.path.exists(fileout) == False:
+       np.savetxt(fileout, ddd, fmt=fmt)
+   ```
+   I risultati vengono salvati in due nuovi file di testo: uno per gli indici delle BCG non duplicati e uno per gli indici delle non BCG non duplicati. Viene verificata l'esistenza dei file prima di salvarli per evitare sovrascritture accidentali.

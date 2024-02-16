@@ -1,0 +1,208 @@
+Certamente! Il tuo codice è abbastanza ampio, quindi spiegherò le diverse parti in modo dettagliato:
+
+1. **Definizione delle variabili da calldata:**
+   ```python
+   Sampl = "no"
+   RA, DEC, Z, eZ, SIG, eSIG, ... = calldata(Sampl, SamePos)
+   ```
+   In questa sezione stai definendo estraendo le variabili da una funzione chiamata `calldata` con alcuni parametri (`Sampl` e `SamePos`). Presumibilmente, questa funzione restituisce una serie di dati astronomici (coordinate, redshift, errori, ecc.) per le galassie.
+
+2. **Calcolo dei rapporti OIII/H-beta e NII/H-alpha:**
+   ```python
+   OIIIHb = 0.61 / (NIIHa - 0.05) + 1.3
+   OIIIHb = 0.61 / (NIIHa - 0.47) + 1.19
+   ```
+   Questa parte del codice sembra essere relativa al calcolo dei rapporti OIII/H-beta e NII/H-alpha, utilizzando due differenti relazioni (Kauffmann+03 line e Kewley+01 line).
+
+3. **Rimozione dei valori falsi:**
+   ```python
+   indices1 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & ...)
+   indices2 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & (H_BETA > 0) & ...)
+   indices3 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & (H_BETA > 0) & (OI_6300 > 0) & ...)
+   ```
+   Qui stai selezionando gli indici dei dati che soddisfano determinate condizioni. Questa sembra essere una fase di pulizia dei dati, dove vengono rimossi i valori che non sono validi per il calcolo dei rapporti.
+
+4. **Calcolo dei logaritmi e degli errori associati:**
+   ```python
+   logOIIIHb1 = np.log10(OIII_5007[indexes1]/H_BETA[indexes1])
+   elogOIIIHb1 = ErrLogRatio(OIII_5007[indexes1], H_BETA[indexes1], err_num=eOIII_5007[indexes1], err_den=eH_BETA[indexes1])
+   ```
+   In questa parte stai calcolando i logaritmi dei rapporti OIII/H-beta e NII/H-alpha e i relativi errori associati utilizzando la funzione `ErrLogRatio`.
+
+5. **Definizione delle funzioni BPT:**
+   ```python
+   def BPTd():
+       ...
+   def PBPT(n=1):
+       ...
+   ```
+   Queste funzioni sembrano essere coinvolte nella definizione e nel tracciamento delle curve BPT.
+
+6. **Grafici BPT:**
+   ```python
+   PlotScat(logNIIHa1, logOIIIHb1, ex=elogNIIHa1, ey=elogOIIIHb1, xlim=None, ylim=None, colore="red", simbolo="o", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+   PBPT(n=1)
+   ```
+   In questa parte stai creando uno scatter plot e sovrapponendo le curve BPT per una delle relazioni.
+
+7. **Salvataggio dei risultati:**
+   ```python
+   fileout = ...
+   data = np.column_stack((...))
+   if os.path.exists(fileout) == False:
+       np.savetxt(fileout, data, fmt=fmt)
+   ```
+   Qui stai salvando i risultati del tuo lavoro su file.
+
+Ricorda che alcune parti del codice fanno riferimento a funzioni o variabili (`calldata`, `ErrLogRatio`, `SamePos`) che non sono presenti nel codice che hai fornito. Se hai domande specifiche su parti particolari o hai bisogno di ulteriori chiarimenti, sarò felice di aiutarti!
+
+
+:wq
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+CARATTERIZZAZIONE DEGLI OGGETTI NELLE TRE CATEGORIE A SEGUITO DELL'ANALISI DEI BPT-Diagrams :
+
+Il codice che hai fornito sembra essere una parte successiva rispetto a quello che abbiamo esaminato precedentemente. Proseguirò con l'analisi del nuovo codice che hai condiviso.
+
+8. **Definizione della funzione `SaveType`:**
+   ```python
+   def SaveType(i, fileout, arrays):
+       ...
+   ```
+   Questa funzione sembra prendere un insieme di indici `i`, un nome di file `fileout` e un elenco di array `arrays`. Successivamente, estrae i dati corrispondenti agli indici forniti e salva i risultati in un file di testo specificato dal parametro `fileout`.
+
+9. **Definizione della variabile `indicitot`:**
+   ```python
+   indicitot = np.arange(len(OIII_5007))
+   ```
+   Questa variabile sembra essere un array di indici, utilizzato successivamente nel codice.
+
+10. **Definizione del percorso del file di output `f`:**
+    ```python
+    if Sampl == 'no':
+        if SamePos == "yes":
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal_SamePos.txt"
+        else:
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII.txt"
+    ```
+    Questo blocco determina il percorso del file di output `f` in base ai valori delle variabili `Sampl` e `SamePos`.
+
+11. **Lettura dei dati dal file `f` per il caso BPT-NII:**
+    ```python
+    i1, x1, ex1, y1, ey1 = np.loadtxt(f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+    ```
+    Questo blocco legge i dati da un file di testo, estrae colonne specifiche (indicate da `usecols`) e memorizza i dati in variabili.
+
+12. **Operazioni simili per BPT-SII e BPT-OI:**
+    Blocchi di codice simili ai punti 10 e 11 sono ripetuti per BPT-SII e BPT-OI, leggendo dati dai file corrispondenti.
+
+13. **Definizione di liste e loop per BPT NII:**
+    ```python
+    iAGN = []
+    icomp = []
+    ihii1 = []
+    xAGN = []
+    exAGN = []
+    yAGN = []
+    eyAGN = []
+    xcomp = []
+    ...
+    for k in range(len(i1)):
+        ...
+    ```
+    Questo blocco sembra suddividere i dati BPT-NII in diverse liste in base a certe condizioni, creando sottoinsiemi per AGN, componenti composite e HII1.
+
+14. **Creazione e sovrapposizione di scatter plot per BPT-NII:**
+    ```python
+    PlotScat(xAGN, yAGN, ex=exAGN, ey=eyAGN, xlim=None, ylim=None, colore="red", simbolo="o", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+    ...
+    PBPT(n=1)
+    ```
+    Questo blocco genera uno scatter plot e sovrappone le curve BPT per il caso NII.
+
+15. **Operazioni simili per BPT-SII e BPT-OI:**
+    I blocchi di codice simili ai punti 13 e 14 sono ripetuti per BPT-SII e BPT-OI.
+
+16. **Salvataggio dei dati specifici del sottocampione:**
+    ```python
+    arrays = [RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, ...]
+    if Sampl == 'no':
+        if SamePos == "yes":
+            SaveType(iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt", arrays)
+            ...
+    else:
+        SaveType(iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN.txt", arrays)
+        ...
+    ```
+    Questo blocco utilizza la funzione `SaveType` per salvare specifiche proprietà del sottocampione in file di testo.
+
+Il codice sembra trattare l'analisi e la visualizzazione di dati astronomici attraverso diversi diagrammi BPT, organizzando i dati in sottocampioni e salvando informazioni specifiche su ciascun sottocampione. Se hai domande specifiche su parti particolari o hai bisogno di ulteriori chiarimenti, sentiti libero di chiedere
+
+!
+
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Realizzazione dei file con le informazioni esclusivamente associate ai subsample generati dal blocco precedente :
+
+Questo nuovo blocco di codice sembra essere una continuazione di quello precedente e si occupa della lettura dei dati da file specifici e dell'estrazione di colonne specifiche per tre diverse categorie: AGN, Componenti Composite (Comp), e HII1. I dati estratti vengono memorizzati in varie variabili.
+
+Ecco una descrizione più dettagliata del codice:
+
+1. **Definizione della variabile `Sampl`:**
+    ```python
+    Sampl = "y"
+    ```
+    Imposta la variabile `Sampl` a "y".
+
+2. **Lettura dei dati per la categoria AGN:**
+    ```python
+    if Sampl == 'no':
+        if SamePos == "yes":
+            f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt"
+        else:
+            f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal.txt"
+    else:
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN.txt"
+    RA1, DEC1, Z1, eZ1, SIG1, eSIG1, EBV1, Zsun1, SIGCLUSTER, NUMGAL = np.loadtxt(
+        f1, usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], unpack=True, dtype=float)
+    ...
+    ```
+    Questo blocco legge i dati da un file specifico per la categoria AGN e salva le colonne rilevanti in variabili separate.
+
+3. **Operazioni simili per Componenti Composite (Comp) e HII1:**
+    ```python
+    if Sampl == 'no':
+        if SamePos == "yes":
+            f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp_gal_SamePos.txt"
+        else:
+            f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp_gal.txt"
+    else:
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp.txt"
+    RA2, DEC2, Z2, eZ2, SIG2, eSIG2, EBV2, Zsun2 = np.loadtxt(
+        f2, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
+    ...
+    ```
+
+    ```python
+    if Sampl == 'no':
+        if SamePos == "yes":
+            f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1_gal_SamePos.txt"
+        else:
+            f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1_gal.txt"
+    else:
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1.txt"
+    RA3, DEC3, Z3, eZ3, SIG3, eSIG3, EBV3, Zsun3 = np.loadtxt(
+        f3, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
+    ...
+    ```
+    Questi blocchi eseguono operazioni simili a quelle descritte per la categoria AGN, ma per le categorie Componenti Composite (Comp) e HII1.
+
+4. **Memorizzazione dei dati in variabili separate:**
+    Ogni categoria (AGN, Comp, HII1) ha colonne specifiche che vengono lette e memorizzate in diverse variabili, ad esempio, `RA1`, `DEC1`, `Z1`, ecc. per la categoria AGN, e così via per le altre categorie.
+
+

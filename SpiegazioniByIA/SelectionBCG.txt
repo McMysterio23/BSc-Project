@@ -1,0 +1,69 @@
+Questo programma sembra essere dedicato alla selezione degli indici delle BCG (Brightest Cluster Galaxies) in un campione totale DR7. Ecco una spiegazione dettagliata:
+
+1. **Importazione delle librerie**: Il codice inizia importando le librerie necessarie:
+
+```python
+from astropy.io import fits
+import numpy as np
+import os
+```
+
+2. **Lettura dei dati della BCG dal primo file FITS**:
+
+```python
+file = "/Users/andreamaccarinelli/Desktop/SDSS/sampleC4.fits"
+fitfile = fits.open(file)
+data = fitfile[1].data
+raBCG, decBCG, sigClus, Ngal = data['RAdeg'], data['DEdeg'], data['sigma'], data['Ngal']
+```
+
+Qui vengono aperti e letti i dati da un file FITS contenente le informazioni sulla BCG, come le coordinate RA e DEC, la sigma del cluster e il numero di galassie nel cluster.
+
+3. **Lettura dei dati delle galassie dal secondo file FITS**:
+
+```python
+file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_info_dr7_v5_2.fits"
+fitfile = fits.open(file)
+data = fitfile[1].data
+ra, dec = data['RA'], data['DEC']
+```
+
+In questo blocco di codice, vengono aperti e letti i dati da un secondo file FITS contenente le informazioni sulle galassie, come le coordinate RA e DEC.
+
+4. **Selezione delle BCG**:
+
+```python
+indiciBCG = []
+sigmaCl = []
+Ngalax = []
+
+for k in range(len(raBCG)):
+    i = np.where((abs(ra-raBCG[k]) < 2/3600) & (abs(dec-decBCG[k]) < 2/3600))[0]
+    if len(i) == 1:
+        i = i[0]
+        indiciBCG.append(i)
+        sigmaCl.append(sigClus[k])
+        Ngalax.append(Ngal[k])
+    else:
+        if len(i) > 1:
+            tt = np.sqrt((ra[i]-raBCG[k])**2 + (dec[i]-decBCG[k])**2)
+            i = i[np.where(tt == np.min(tt))[0][0]]
+            indiciBCG.append(i)
+            sigmaCl.append(sigClus[k])
+            Ngalax.append(Ngal[k])
+```
+
+Questo blocco di codice esegue la selezione delle BCG confrontando le coordinate delle BCG con quelle delle galassie. Se trova una singola corrispondenza, aggiunge l'indice, la sigma del cluster e il numero di galassie alle rispettive liste. In caso di più corrispondenze, seleziona quella con la distanza minore.
+
+5. **Salvataggio dei risultati in un file di testo**:
+
+```python
+fileout = "/Users/andreamaccarinelli/Desktop/BSc-Project/IndiciBCG.txt"
+fmt = ["%i", "%f", "%i"]
+data = np.column_stack((np.array(indiciBCG).astype(int), np.array(sigmaCl).astype(float), np.array(Ngalax).astype(int)))
+
+if not os.path.exists(fileout):
+    np.savetxt(fileout, data, fmt=fmt)
+```
+
+Infine, i risultati vengono salvati in un file di testo chiamato "IndiciBCG.txt". Viene verificata l'esistenza del file prima di salvarlo per evitare sovrascritture accidentali. La stringa di formato (`fmt`) specifica il formato di output nel file di testo. Inoltre, vengono stampati a schermo l'array dei dati e la stringa di formato per una verifica visiva.

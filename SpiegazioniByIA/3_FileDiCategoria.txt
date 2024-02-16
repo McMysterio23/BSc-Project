@@ -1,0 +1,114 @@
+Questo programma sembra creare file di informazioni ("INFO") per le BCG e le non BCG. Ecco una spiegazione dettagliata:
+
+1. **Parametro SamePos**:
+   ```python
+   SamePos = "no"
+   ```
+   La variabile `SamePos` è impostata su "no". Tuttavia, questa variabile non viene utilizzata nel codice che segue.
+
+2. **Lettura dei dati delle galassie dal file FITS "gal_info_dr7_v5_2.fits"**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_info_dr7_v5_2.fits"
+   fitfile = fits.open(file)
+   data = fitfile[1].data
+   ra, dec, z, zerr, zwarn, vdisp, vdisperr, ebv = data['RA'], data['DEC'], data['Z'], data['Z_ERR'], data['Z_WARNING'], data['V_DISP'], data['V_DISP_ERR'], data['E_BV_SFD']
+   ```
+   Qui vengono aperti e letti i dati dal file FITS contenente informazioni sulle galassie, come le coordinate RA e DEC, il redshift (z), gli errori associati e altre informazioni.
+
+3. **Lettura del dato "BEST_MODEL_Z" dal file FITS "gal_indx_dr7_v5_2.fits"**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_indx_dr7_v5_2.fits"
+   fitfile = fits.open(file)
+   data = fitfile[1].data
+   Zsun = data['BEST_MODEL_Z']
+   ```
+
+   Vengono letti i dati relativi al redshift solare (Zsun) dal file FITS "gal_indx_dr7_v5_2.fits".
+
+4. **Lettura degli indici delle BCG dal file "Indici_BCG_nodupl.txt" e creazione del file "InfoBCG.txt"**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/myOutputs/Indici_BCG_nodupl.txt"
+   ind, Ngal = np.loadtxt(file, usecols=[0, 1], unpack=True, dtype=int)
+   SigCl = np.loadtxt(file, usecols=[2], unpack=True, dtype=float)
+
+   raBCG, decBCG, zBCG, zerrBCG, zwarnBCG, vdispBCG, vdisperrBCG, ebvBCG, ZsunBCG, SigmaCluster, NumeroGal = np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros(
+       (len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind)))
+   k2 = 0
+   for k in ind:
+       # ...
+   ```
+
+   Qui vengono letti gli indici delle BCG dal file "Indici_BCG_nodupl.txt". Successivamente, vengono estratti i dati associati alle BCG dal file "gal_info_dr7_v5_2.fits". Infine, viene creato il file "InfoBCG.txt" contenente le informazioni sulle BCG.
+
+5. **Lettura degli indici delle non BCG dal file "Indici_noBCG_nodupl.txt" e creazione del file "InfoNoBCG.txt"**:
+   ```python
+   file = "/Users/andreamaccarinelli/Desktop/myOutputs/Indici_noBCG_nodupl.txt"
+   indno = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
+
+   raBCG, decBCG, zBCG, zerrBCG, zwarnBCG, vdispBCG, vdisperrBCG, ebvBCG, ZsunBCG = np.zeros(len(indno)), np.zeros(len(indno)), np.zeros(len(
+       indno)), np.zeros(len(indno)), np.zeros(len(indno)), np.zeros(len(indno)), np.zeros(len(indno)), np.zeros(len(indno)), np.zeros(len(indno))
+
+   k2 = 0
+   for k in indno:
+       # ...
+   ```
+
+   Similmente, vengono letti gli indici delle non BCG dal file "Indici_noBCG_nodupl.txt". Successivamente, vengono estratti i dati associati alle non BCG dal file "gal_info_dr7_v5_2.fits". Infine, viene creato il file "InfoNoBCG.txt" contenente le informazioni sulle non BCG.
+
+6. **Verifica della variabile SamePos e aggiustamento delle coordinate**:
+   ```python
+   if SamePos == "yes":
+       # ...
+   ```
+
+   Se `SamePos` è impostato su "yes", vengono chiamate la funzione `GalCloseBCG` e alcune operazioni per aggiustare le coordinate delle BCG e delle non BCG.
+
+7. **Salvataggio dei risultati nei file di output**:
+   ```python
+   if SamePos == "yes":
+       fileout = "/Users/andreamaccarinelli/Desktop/myOutputs/InfoNoBCG_SamePos.txt"
+   else:
+       fileout = "/Users/andreamaccarinelli/Desktop/myOutputs/InfoNoBCG.txt"
+   fmt = "%f"  # Specify the format string
+   data = np.column_stack((np.array(raBCG).astype(float), np.array(decBCG).astype(float),
+                           np.array(zBCG).astype(float), np.array(
+                               zerrBCG).astype(float),
+                           np.array(zwarnBCG).astype(float), np.array(
+                               vdispBCG).astype(float),
+                           np.array(vdisperrBCG).astype(float), np.array(ebvBCG).astype(float), np.array(ZsunBCG).astype(float)))
+   if os.path.exists(fileout) == False:
+       np.savetxt(fileout, data, fmt=fmt)
+   ```
+
+   Infine, i risultati vengono salvati nei file di output "InfoBCG.txt" e "InfoNoBCG.txt" (o "InfoNoBCG_SamePos.txt" a seconda della variabile `SamePos`). Viene verificata l'esistenza dei file prima di salvarli per evitare sovrascritture accidentali.
+
+
+
+
+COMPORTAMENTO A SECONDA DI COME VIENE IMPOSTATO IL PARAMETRO SamePos )
+
+Il parametro `SamePos` influenza la selezione delle galassie in base alla loro posizione nel cielo. Vediamo come il programma gestisce il parametro `SamePos`:
+
+```python
+if SamePos == "yes":
+    # ...
+```
+
+Se `SamePos` è impostato su "yes", il programma esegue ulteriori operazioni per regolare le coordinate delle BCG e delle non BCG. In particolare, viene chiamata la funzione `GalCloseBCG`:
+
+```python
+raBCG, decBCG, i_sampleSamePos = GalCloseBCG(raBCG, decBCG)
+zBCG = zBCG[i_sampleSamePos]
+zerrBCG = zerrBCG[i_sampleSamePos]
+zwarnBCG = zwarnBCG[i_sampleSamePos]
+vdispBCG = vdispBCG[i_sampleSamePos]
+vdisperrBCG = vdisperrBCG[i_sampleSamePos]
+ebvBCG = ebvBCG[i_sampleSamePos]
+ZsunBCG = ZsunBCG[i_sampleSamePos]
+```
+
+La funzione `GalCloseBCG` sembra restituire gli indici delle galassie che si trovano in determinate regioni del cielo, come descritte dalle condizioni sui valori di RA e DEC. Successivamente, le coordinate e le altre informazioni delle BCG vengono aggiornate utilizzando questi indici.
+
+In breve, se `SamePos` è impostato su "yes", il programma sembra applicare una selezione specifica basata sulla posizione delle galassie nel cielo, mantenendo solo quelle che soddisfano le condizioni definite dalla funzione `GalCloseBCG`. Questo può essere utile per concentrarsi su un'area specifica del cielo o per applicare criteri di selezione basati sulla posizione. Se `SamePos` è impostato su "no", questa selezione aggiuntiva non viene applicata.
+
+

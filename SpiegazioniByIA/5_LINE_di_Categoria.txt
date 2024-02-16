@@ -1,0 +1,18 @@
+Questo blocco di codice sembra essere dedicato all'elaborazione di dati relativi alle emissioni delle linee spettrali provenienti dalle galassie. Ecco una spiegazione delle principali operazioni svolte:
+
+1. **Lettura dei dati spettrali:**
+   - Legge i dati relativi alle emissioni delle linee spettrali da un file denominato "gal_line_dr7_v5_2.fits".
+   - I dati includono le velocità di dispersione e gli offset di velocità per le linee di Balmer e Forbidden, nonché i flussi e gli errori associati per diverse linee spettrali.
+
+2. **Selezione dati BCG:**
+   - Utilizza gli indici delle BCG letti dal file "Indici_BCG_nodupl.txt" per estrarre i dati associati alle BCG dai dati spettrali.
+   - Crea due file di output: "SigmaLines_BCG.txt" contenente le informazioni sulle velocità di dispersione e offset di velocità per le BCG, e "FluxeLines_BCG.txt" contenente i flussi delle linee spettrali per le BCG.
+
+3. **Selezione dati noBCG:**
+   - Utilizza gli indici delle noBCG letti dal file "Indici_noBCG_nodupl.txt" per estrarre i dati associati alle noBCG dai dati spettrali.
+   - Crea due file di output: "SigmaLines_noBCG.txt" e "FluxeLines_noBCG.txt" contenenti rispettivamente le informazioni sulle velocità di dispersione e offset di velocità, e i flussi delle linee spettrali per le noBCG.
+
+4. **Possibile modifica per `SamePos`:**
+   - Se `SamePos` è impostato su "yes", i dati relativi alle noBCG potrebbero essere soggetti a una selezione basata sulla posizione.
+
+Si noti che i file di output contengono informazioni specifiche per le linee spettrali elencate in `lines` (come OII_3726, OII_3729, ..., ARIII7135). La selezione delle linee da includere potrebbe essere personalizzata in base alle esigenze del tuo studio.

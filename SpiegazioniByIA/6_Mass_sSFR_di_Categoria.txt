@@ -1,0 +1,17 @@
+Questo blocco di codice sembra gestire dati relativi alle stime della formazione stellare (SFR) e della massa stellare totale (TOT) delle galassie. Ecco una spiegazione delle principali operazioni svolte:
+
+1. **Lettura dei dati SFR e Massa:**
+   - Legge i dati relativi alla formazione stellare e alla massa stellare totale da file FITS specifici.
+
+2. **Selezione dati BCG:**
+   - Utilizza gli indici delle BCG letti dal file "Indici_BCG_nodupl.txt" per estrarre i dati associati alle BCG dai dati SFR e Massa.
+   - Crea un file di output chiamato "MassSFR_BCG.txt" contenente le informazioni sulla massa e sulla SFR per le BCG.
+
+3. **Selezione dati noBCG:**
+   - Utilizza gli indici delle noBCG letti dal file "Indici_noBCG_nodupl.txt" per estrarre i dati associati alle noBCG dai dati SFR e Massa.
+   - Crea un file di output chiamato "MassSFR_noBCG.txt" contenente le informazioni sulla massa e sulla SFR per le noBCG.
+
+4. **Possibile modifica per `SamePos`:**
+   - Se `SamePos` è impostato su "yes", i dati relativi alle noBCG potrebbero essere soggetti a una selezione basata sulla posizione.
+
+Si noti che i file di output contengono informazioni sulla massa e sulla SFR per le galassie. La formattazione e il contenuto specifico dei file possono essere personalizzati in base alle esigenze del tuo studio.

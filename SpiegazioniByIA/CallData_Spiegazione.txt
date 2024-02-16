@@ -1,0 +1,50 @@
+Questa funzione sembra essere progettata per caricare i dati relativi alle galassie da vari file di output. Ecco una spiegazione delle principali operazioni svolte:
+
+1. **Definizione della funzione:**
+   - La funzione `calldata` accetta due argomenti opzionali (`Sampl` e `SamePos`) e restituisce una serie di array contenenti dati galattici.
+
+2. **Lettura dei dati BCG e noBCG:**
+   - In base al valore di `Sampl` (che può essere 'y' o 'no'), legge i dati da file di output specifici per le BCG o noBCG.
+   - I dati includono informazioni come coordinate (RA e DEC), redshift (Z), errori sul redshift (eZ), dispersione della velocità (SIG), errori sulla dispersione della velocità (eSIG), ecc.
+   - Se `SamePos` è impostato su "yes", i file per le noBCG potrebbero essere differenti (contenenti una selezione basata sulla posizione).
+
+3. **Lettura delle linee spettrali e delle proprietà derivate:**
+   - Legge i dati relativi alle linee spettrali, come la larghezza equivalente delle linee Balmer e Forbidden, velocità offset, flussi di linee spettrali, ecc.
+   - Legge anche le proprietà derivate come la massa stellare (Mass), SFR (Star Formation Rate), e sSFR (specific Star Formation Rate).
+
+4. **Restituzione dei dati:**
+   - Restituisce tutti i dati letti sotto forma di vari array.
+
+Questa funzione sembra essere progettata per gestire dati specifici relativi alle galassie, inclusi parametri spettrali e proprietà derivate. La personalizzazione e l'utilizzo specifico dipenderanno dai dettagli dei file di input e dai requisiti del tuo studio
+
+
+.
+
+
+
+Riferito al comportamento in relazione al valore con cui viene impostati Sampl :
+
+Certamente! Il comportamento della funzione `calldata` è influenzato dal valore passato al parametro `Sampl`. Ecco una spiegazione più dettagliata:
+
+1. **Quando `Sampl` è impostato su 'no':**
+   - La funzione legge i dati relativi alle galassie "noBCG" (senza BCG, ovvero senza Brightest Cluster Galaxy).
+   - Se `SamePos` è impostato su "yes", la funzione legge dati specifici basati sulla posizione.
+
+2. **Quando `Sampl` è impostato su 'y':**
+   - La funzione legge i dati relativi alle galassie "BCG" (con BCG).
+   - I dati letti includono informazioni come coordinate, redshift, dispersione della velocità, flussi delle linee spettrali, ecc.
+   - Se `SamePos` è impostato su "yes", la funzione potrebbe leggere dati specifici basati sulla posizione.
+
+3. **Variabili restituite:**
+   - La funzione restituisce un insieme di variabili che contengono dati specifici relativi alle galassie, tra cui coordinate, redshift, dispersione della velocità, flussi di linee spettrali, masse stellari, SFR, sSFR, ecc.
+
+4. **Scopi possibili:**
+   - Questa distinzione tra "BCG" e "noBCG" potrebbe essere utile se stai cercando di confrontare o analizzare differenze specifiche tra le galassie con e senza BCG.
+   - L'utilità di questa separazione dipende dalle domande di ricerca specifiche e dagli obiettivi del tuo studio.
+
+5. **SamePos:**
+   - Se `SamePos` è impostato su "yes", potrebbe indicare una selezione specifica basata sulla posizione delle galassie "noBCG". Ad esempio, potrebbe trattarsi di un sottoinsieme di galassie con determinate coordinate spaziali.
+
+In sintesi, il parametro `Sampl` controlla quale insieme di dati viene letto e restituito dalla funzione, con opzioni specifiche per gestire le galassie con o senza BCG, e il parametro `SamePos` potrebbe influenzare la selezione delle galassie senza BCG in base alla posizione.
+
+

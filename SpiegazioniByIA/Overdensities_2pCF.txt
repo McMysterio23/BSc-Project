@@ -1,0 +1,87 @@
+Questo blocco di codice sembra eseguire alcune operazioni di analisi della funzione di correlazione incrociata a due punti (Two-Point Cross-Correlation Function, 2PCF) tra le posizioni delle galassie e dei BCG (Brightest Cluster Galaxy) in diverse categorie.
+
+Ecco una descrizione più dettagliata:
+
+1. **Lettura dei dati:**
+    ```python
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp_gal_SamePos.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1_gal_SamePos.txt"
+
+    RA01, DEC01, Z01, eZ01 = np.loadtxt(
+        f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+    RA02, DEC02, Z02, eZ02 = np.loadtxt(
+        f2, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+    RA03, DEC03, Z03, eZ03 = np.loadtxt(
+        f3, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+    ```
+    I dati vengono letti dai file specifici per le categorie AGN, Composite, e HII1.
+
+2. **Concatenazione delle coordinate:**
+    ```python
+    RABCG = np.concatenate((RA1, RA2, RA3))
+    DECBCG = np.concatenate((DEC1, DEC2, DEC3))
+
+    RAnoBCG = np.concatenate((RA01, RA02, RA03))
+    DECnoBCG = np.concatenate((DEC01, DEC02, DEC03))
+
+    RAALL = np.concatenate((RABCG, RAnoBCG))
+    DECALL = np.concatenate((DECBCG, DECnoBCG))
+    ```
+    Le coordinate RA e DEC dei BCG vengono concatenate separatamente da quelle delle galassie (con BCG) e senza BCG. Questo passo è importante per la successiva analisi della funzione di correlazione incrociata.
+
+3. **Calcolo delle distanze:**
+    ```python
+    dBCGall_AGN = DistDeg(RA1, DEC1, RAALL, DECALL)
+    dBCGall_Comp = DistDeg(RA2, DEC2, RAALL, DECALL)
+    dBCGall_HII = DistDeg(RA3, DEC3, RAALL, DECALL)
+
+    dGALall_AGN = DistDeg(RA01, DEC01, RAALL, DECALL)
+    dGALall_Comp = DistDeg(RA02, DEC02, RAALL, DECALL)
+    dGALall_HII = DistDeg(RA03, DEC03, RAALL, DECALL)
+    ```
+    Viene calcolata la distanza in gradi tra le posizioni delle galassie e dei BCG.
+
+4. **Funzione di Correlazione Incrociata a Due Punti (2PCF):**
+    ```python
+    def TCCF(distances_BCG_galaxy, Dmax, label, colore):
+        # Definisci i bin radiali
+        bins = np.linspace(
+            np.min(distances_BCG_galaxy[np.where(distances_BCG_galaxy > 0)]), Dmax, 30)
+
+        # Calcola il numero medio di coppie di BCG e galassie in ciascun bin
+        DD, _ = np.histogram(distances_BCG_galaxy, bins=bins)
+
+        # Calcola il numero medio di coppie casuali in ciascun bin (esempio: generato casualmente)
+        RR = np.random.uniform(0, 10, 10000)  # 10000 coppie casuali
+        RR, _ = np.histogram(RR, bins=bins)
+
+        # Calcola la two-point cross-correlation function
+        xi = (DD / RR - 1) / len(distances_BCG_galaxy[:, 0])
+
+        # Visualizza la 2PCF
+        plt.plot(bins[:-1], xi, marker='o', label=label, color=colore)
+        plt.xlabel('Distanza (r)')
+        plt.ylabel('Two-Point Cross-Correlation Function (xi)')
+        plt.title('Two-Point Cross-Correlation Function BCG-Galassia')
+        plt.legend()
+        plt.show()
+    ```
+    Questa funzione prende come input le distanze tra le galassie e i BCG e calcola la 2PCF, quindi visualizza il
+
+ risultato.
+
+5. **Esecuzione della Funzione di Correlazione:**
+    ```python
+    Dmax=1
+    TCCF(dBCGall_AGN,Dmax,"AGN BCG","red")
+    TCCF(dBCGall_Comp,Dmax,"Composite BCG","blue")
+    TCCF(dBCGall_HII,Dmax,"HII BCG","green")
+
+    Dmax=1
+    TCCF(dGALall_AGN,Dmax,"AGN noBCG","purple")
+    TCCF(dGALall_Comp,Dmax,"Composite noBCG","yellow")
+    TCCF(dGALall_HII,Dmax,"HII noBCG","black")
+    ```
+    La funzione di correlazione incrociata viene eseguita separatamente per le categorie AGN, Composite e HII sia con BCG che senza BCG.
+

@@ -1,0 +1,82 @@
+La funzione `GalCloseBCG` sembra essere progettata per selezionare le galassie in base alle condizioni specificate sulle coordinate RA e DEC. Ecco una breve spiegazione del suo funzionamento:
+
+```python
+def GalCloseBCG(RA, DEC):
+    i = np.where(((RA > 0) & (RA < 50) & (DEC > -10) & (DEC < 15)) | 
+                 ((RA > 310) & (RA < 360) & (DEC > -10) & (DEC < 15)) | 
+                 ((RA > 120) & (RA < 250) & (DEC > -5) & (DEC < 12)) |
+                 ((RA > 111) & (RA < 267) & (DEC > 48) & (DEC < 65)) | 
+                 ((RA > 111) & (RA < 150) & (DEC > 29) & (DEC < 48)) | 
+                 ((RA > 231) & (RA < 267) & (DEC > 29) & (DEC < 48)))[0]
+    return RA[i], DEC[i], i
+```
+
+Questa funzione seleziona le galassie che soddisfano una delle seguenti condizioni:
+
+1. **Prima condizione**:
+   - RA compresa tra 0 e 50
+   - DEC compresa tra -10 e 15
+
+2. **Seconda condizione**:
+   - RA compresa tra 310 e 360
+   - DEC compresa tra -10 e 15
+
+3. **Terza condizione**:
+   - RA compresa tra 120 e 250
+   - DEC compresa tra -5 e 12
+
+4. **Quarta condizione**:
+   - RA compresa tra 111 e 267
+   - DEC compresa tra 48 e 65
+
+5. **Quinta condizione**:
+   - RA compresa tra 111 e 150
+   - DEC compresa tra 29 e 48
+
+6. **Sesta condizione**:
+   - RA compresa tra 231 e 267
+   - DEC compresa tra 29 e 48
+
+Infine, la funzione restituisce le coordinate RA e DEC delle galassie che soddisfano una delle condizioni e gli indici corrispondenti. In pratica, quando chiami la funzione come:
+
+```python
+RA01, DEC01, i01 = GalCloseBCG(RA01, DEC01)
+RA02, DEC02, i02 = GalCloseBCG(RA02, DEC02)
+RA03, DEC03, i03 = GalCloseBCG(RA03, DEC03)
+```
+
+Stai applicando la selezione definita da `GalCloseBCG` alle coppie di array `RA01` e `DEC01`, `RA02` e `DEC02`, `RA03` e `DEC03`. Le galassie che soddisfano le condizioni specificate vengono selezionate e le nuove coordinate RA e DEC vengono assegnate ai risultati `RA01`, `DEC01`, `RA02`, `DEC02`, `RA03`, `DEC03`, rispettivamente. Gli indici corrispondenti vengono restituiti nei risultati `i01`, `i02`, `i03`.
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
+ChatGPT dice in merito all'utilizzo dei dati con la dicitura SamePos per il calcolo delle fraction di OPTICAL e Radio-Loud AGN 
+
+La decisione di utilizzare o meno i dati con la denominazione `SamePos` dipende dalla tua specifica analisi e dagli obiettivi del tuo progetto. La variabile `SamePos` sembra essere utilizzata nel codice per applicare condizioni specifiche sulla posizione delle galassie nel cielo.
+
+Ecco alcune considerazioni che potrebbero aiutarti a decidere se utilizzare i dati con `SamePos`:
+
+1. **Frazioni in regioni specifiche**:
+   - Se la tua analisi si concentra su regioni specifiche del cielo, potresti voler utilizzare i dati con la selezione basata sulla posizione (`SamePos`) per garantire che le frazioni siano rappresentative di quelle regioni particolari.
+
+2. **Analisi generale**:
+   - Se la tua analisi mira a ottenere una visione generale delle frazioni di OPTICAL e Radio-Loud AGN nel tuo sample BCG e noBCG senza focalizzarsi su regioni specifiche, potresti optare per l'utilizzo dei dati senza la selezione basata sulla posizione.
+
+3. **Possibili effetti di selezione**:
+   - Dovresti considerare se l'applicazione di `SamePos` introduce effetti di selezione che potrebbero influenzare le tue frazioni. Ad esempio, se la selezione basata sulla posizione introduce un bias nei confronti di determinati tipi di oggetti, potrebbe essere importante considerare questo fattore nelle tue analisi.
+
+4. **Consistenza con altri studi**:
+   - Se la tua analisi è parte di un progetto più ampio o è correlata ad altri studi, potrebbe essere utile verificare se altri studi simili hanno applicato condizioni simili sulla posizione e se la comparabilità dei risultati richiede l'uso della stessa selezione.
+
+In definitiva, la scelta di utilizzare o meno i dati con `SamePos` dipende dalle tue esigenze specifiche e dagli obiettivi dell'analisi. Considera attentamente gli aspetti descritti sopra per prendere una decisione informata sulle condizioni di selezione da applicare alla tua analisi.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+NOTA AGGIUNTA DA Me : 
+Questa funzione va a lavorare apparentemente in regioni di cielo definite e dovrebbe essere collocata dal punto di vista organizzativo nell'ambito del calcolo della fraction di AGN.
+Seguiranno aggiornamenti !
+
+
+

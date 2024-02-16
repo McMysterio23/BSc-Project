@@ -1,0 +1,14 @@
+Dall'analisi del codice, sembra che il parametro `Sampl` venga utilizzato per selezionare un particolare insieme di dati tra tre possibili opzioni: 'y', 'no', o qualsiasi altro valore. Vediamo come il parametro influenza il caricamento dei dati:
+
+- Se `Sampl` è impostato su 'y', il codice carica i dati dai file denominati "Prop_SHOCK_gal.txt" e "Prop_HII2_gal.txt".
+- Se `Sampl` è impostato su 'no', il codice carica i dati dai file denominati "Prop_SHOCK.txt" e "Prop_HII2.txt".
+- In tutti gli altri casi, sembra che i dati vengano caricati dai file denominati "Prop_RAD_gal.txt" e "Prop_RAD.txt".
+
+Quindi, `Sampl` sembra essere un parametro che determina quale insieme di dati utilizzare, influenzando il percorso dei file da cui caricare le informazioni.
+
+
+Confermi dunque che il parametro SamePos va a selezionare gli elementi galattici del sample SDSS/dr7 vicini alle BCG e ne va a ricavare un subsample ?
+
+Sì, esatto. Dal contesto del codice, sembra che il parametro `SamePos` venga utilizzato per selezionare un subsample di oggetti ottenuti dalla funzione `GalCloseBCG`. Questa funzione sembra coinvolgere la selezione di galassie vicine a una BCG (Brightest Cluster Galaxy). Pertanto, variando il valore del parametro `SamePos`, è possibile ottenere diversi subset di dati basati sulla posizione relativa rispetto alle BCG nel cluster di galassie.
+
+Riassumendo tutte le informazioni che ho ottenuto comprendo che Andrea mi ha indirizzato all'ottenimento delle fraction AGN attraverso i conti eseguiti sui Sample scremati per opportuna impostazione del parametro SamePos.

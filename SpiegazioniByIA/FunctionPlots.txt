@@ -1,0 +1,101 @@
+Questo codice sembra definire alcune funzioni utili per la visualizzazione e la manipolazione dei dati. Di seguito un breve riassunto delle principali funzioni:
+
+### `Histograms`
+
+```python
+def Histograms(dati_x, dati_y, colori, labels, assi_labels, bins=None, Normalized="y"):
+    # Crea un grafico a dispersione principale con istogrammi sopra e a destra
+    # dati_x: Lista di dati sull'asse x
+    # dati_y: Lista di dati sull'asse y
+    # colori: Lista di colori per ciascun set di dati
+    # labels: Etichette per i set di dati
+    # assi_labels: Etichette degli assi [asse_x, asse_y]
+    # bins: Bins per gli istogrammi [bins_x, bins_y]
+    # Normalized: Se 'y', normalizza gli istogrammi
+
+# Esempio di utilizzo:
+Histograms([data_x1, data_x2], [data_y1, data_y2], ['blue', 'red'], ['Set1', 'Set2'], ['X Axis', 'Y Axis'])
+```
+
+### `PlotScat`
+
+```python
+def PlotScat(x, y, ex=None, ey=None, xlim=None, ylim=None, colore="black", simbolo="o", labels=["X", "Y"], Positives=["yes", "yes"], overplot=False):
+    # Crea uno scatter plot con la possibilità di specificare limiti sugli assi e altre opzioni
+    # x, y: Dati per gli assi x e y
+    # ex, ey: Errori associati agli assi x e y (opzionali)
+    # xlim, ylim: Limiti sugli assi x e y [min, max]
+    # colore: Colore del marker
+    # simbolo: Simbolo del marker
+    # labels: Etichette degli assi [asse_x, asse_y]
+    # Positives: Specifica se rimuovere i valori negativi dagli errori sugli assi x e y
+    # overplot: Se True, sovrappone su un plot esistente
+
+# Esempio di utilizzo:
+PlotScat(data_x, data_y, ex=error_x, ey=error_y, xlim=[0, 10], ylim=[0, 20], colore='blue', labels=['X Axis', 'Y Axis'])
+```
+
+### `ErrLogRatio`
+
+```python
+def ErrLogRatio(num, den, err_num=None, err_den=None, Niter=1000):
+    # Calcola l'errore sulla proporzione logaritmica tra due grandezze
+    # num, den: Numeratore e denominatore
+    # err_num, err_den: Errori associati al numeratore e denominatore (opzionali)
+    # Niter: Numero di iterazioni per calcolare l'errore
+
+# Esempio di utilizzo:
+ErrLogRatio(data_num, data_den, err_num=error_num, err_den=error_den, Niter=1000)
+```
+
+Queste funzioni sembrano essere utili per generare visualizzazioni e analizzare dati, inclusi grafici a dispersione e istogrammi.
+
+
+?? Mi Spieghi meglio la funzione ErrLogRatio ???
+
+
+Certo, la funzione `ErrLogRatio` calcola l'errore sulla proporzione logaritmica tra due grandezze. Questo può essere utile, ad esempio, quando si desidera calcolare l'errore su un rapporto tra due quantità misurate in modo logaritmico.
+
+Ecco una spiegazione più dettagliata dei parametri e del funzionamento della funzione:
+
+### Parametri:
+
+- `num`: Array contenente i numeratori delle proporzioni.
+- `den`: Array contenente i denominatori delle proporzioni.
+- `err_num` (opzionale): Array contenente gli errori associati ai numeratori delle proporzioni.
+- `err_den` (opzionale): Array contenente gli errori associati ai denominatori delle proporzioni.
+- `Niter` (opzionale): Numero di iterazioni per calcolare l'errore. Maggiore è il numero, più accurata sarà la stima dell'errore.
+
+### Funzionamento:
+
+1. Per ciascun elemento nelle liste `num` e `den`, la funzione genera `Niter` valori casuali, ognuno ottenuto da una distribuzione normale con media e deviazione standard pari al valore e all'errore associato.
+2. Calcola il logaritmo di ciascun rapporto (`log(num[i] / den[i])`) per tutte le iterazioni.
+3. Calcola la deviazione standard dei logaritmi calcolati.
+4. Questa deviazione standard rappresenta l'errore sulla proporzione logaritmica tra i numeratori e i denominatori.
+
+In sostanza, la funzione simula il processo di misura per ciascun elemento delle liste `num` e `den`, quindi calcola la variabilità nel logaritmo dei rapporti durante queste simulazioni, fornendo così un'indicazione dell'incertezza sulla proporzione logaritmica
+
+
+?? Mi Spieghi meglio la funzione ErrLogRatio ???
+
+
+Certo, la funzione `ErrLogRatio` calcola l'errore sulla proporzione logaritmica tra due grandezze. Questo può essere utile, ad esempio, quando si desidera calcolare l'errore su un rapporto tra due quantità misurate in modo logaritmico.
+
+Ecco una spiegazione più dettagliata dei parametri e del funzionamento della funzione:
+
+### Parametri:
+
+- `num`: Array contenente i numeratori delle proporzioni.
+- `den`: Array contenente i denominatori delle proporzioni.
+- `err_num` (opzionale): Array contenente gli errori associati ai numeratori delle proporzioni.
+- `err_den` (opzionale): Array contenente gli errori associati ai denominatori delle proporzioni.
+- `Niter` (opzionale): Numero di iterazioni per calcolare l'errore. Maggiore è il numero, più accurata sarà la stima dell'errore.
+
+### Funzionamento:
+
+1. Per ciascun elemento nelle liste `num` e `den`, la funzione genera `Niter` valori casuali, ognuno ottenuto da una distribuzione normale con media e deviazione standard pari al valore e all'errore associato.
+2. Calcola il logaritmo di ciascun rapporto (`log(num[i] / den[i])`) per tutte le iterazioni.
+3. Calcola la deviazione standard dei logaritmi calcolati.
+4. Questa deviazione standard rappresenta l'errore sulla proporzione logaritmica tra i numeratori e i denominatori.
+
+In sostanza, la funzione simula il processo di misura per ciascun elemento delle liste `num` e `den`, quindi calcola la variabilità nel logaritmo dei rapporti durante queste simulazioni, fornendo così un'indicazione dell'incertezza sulla proporzione logaritmica..

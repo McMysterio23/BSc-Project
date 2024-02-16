@@ -1,0 +1,54 @@
+Descrizione fornita da ChatGPT riguardo al contenuto della cella presente a partire dalla riga 1839 del file TesiAndrea2.py.
+
+Il codice che hai fornito sembra leggere dati da file di testo e assegnarli a variabili per ulteriori analisi. Di seguito, ho evidenziato le operazioni principali che il codice svolge:
+
+```python
+# Impostazione del campione (Sampl può essere "y" o "no")
+Sampl = "y"
+
+# Caricamento dei dati dal file Prop_RAD_gal.txt o Prop_RAD.txt in base a Sampl
+if Sampl == 'no':
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_RAD_gal.txt"
+else:
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_RAD.txt"
+RA1, DEC1, Z1, eZ1, SIG1, eSIG1, EBV1, Zsun1 = np.loadtxt(
+    f1, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
+SIGMA_BAL1, eSIGMA_BAL1, SIGMA_FORB1, eSIGMA_FORB1 = np.loadtxt(
+    f1, usecols=[8, 9, 10, 11], unpack=True, dtype=float)
+VOFF_BAL1, eVOFF_BAL1, VOFF_FORB1, eVOFF_FORB1 = np.loadtxt(
+    f1, usecols=[12, 13, 14, 15], unpack=True, dtype=float)
+Mass1, eMass11, eMass12, SFR1, eSFR11, eSFR12, sSFR1, esSFR11, esSFR12 = np.loadtxt(
+    f1, usecols=[16, 17, 18, 19, 20, 21, 22, 23, 24], unpack=True, dtype=float)
+
+# Caricamento dei dati dal file Prop_SHOCK_gal.txt o Prop_SHOCK.txt in base a Sampl
+if Sampl == 'no':
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_SHOCK_gal.txt"
+else:
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_SHOCK.txt"
+RA2, DEC2, Z2, eZ2, SIG2, eSIG2, EBV2, Zsun2 = np.loadtxt(
+    f2, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
+SIGMA_BAL2, eSIGMA_BAL2, SIGMA_FORB2, eSIGMA_FORB2 = np.loadtxt(
+    f2, usecols=[8, 9, 10, 11], unpack=True, dtype=float)
+VOFF_BAL2, eVOFF_BAL2, VOFF_FORB2, eVOFF_FORB2 = np.loadtxt(
+    f2, usecols=[12, 13, 14, 15], unpack=True, dtype=float)
+Mass2, eMass21, eMass22, SFR2, eSFR21, eSFR22, sSFR2, esSFR21, esSFR22 = np.loadtxt(
+    f2, usecols=[16, 17, 18, 19, 20, 21, 22, 23, 24], unpack=True, dtype=float)
+
+# Caricamento dei dati dal file Prop_HII2_gal.txt o Prop_HII2.txt in base a Sampl
+if Sampl == 'no':
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII2_gal.txt"
+else:
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII2.txt"
+RA3, DEC3, Z3, eZ3, SIG3, eSIG3, EBV3, Zsun3 = np.loadtxt(
+    f3, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
+SIGMA_BAL3, eSIGMA_BAL3, SIGMA_FORB3, eSIGMA_FORB3 = np.loadtxt(
+    f3, usecols=[8, 9, 10, 11], unpack=True, dtype=float)
+VOFF_BAL3, eVOFF_BAL3, VOFF_FORB3, eVOFF_FORB3 = np.loadtxt(
+    f3, usecols=[12, 13, 14, 15], unpack=True, dtype=float)
+Mass3, eMass31, eMass32, SFR3, eSFR31, eSFR32, sSFR3, esSFR31, esSFR32 = np.loadtxt(
+    f3, usecols=[16, 17, 18, 19, 20, 21, 22, 23, 24], unpack=True, dtype=float)
+```
+
+Questo codice carica i dati da tre diversi file a seconda del valore di `Sampl` e assegna le colonne corrispondenti a variabili specifiche.
+
+

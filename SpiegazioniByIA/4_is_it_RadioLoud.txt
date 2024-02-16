@@ -1,0 +1,23 @@
+Questo blocco di codice sembra essere dedicato alla creazione di nuovi file di informazioni (`infoRadioBCG.txt` e `infoRadioNoBCG.txt`) basati sui dati relativi alle emissioni radio. Ecco una spiegazione di ciò che il codice sta facendo:
+
+1. **Lettura dei dati radio:**
+   - Legge i dati relativi alle emissioni radio da un file denominato "RADIOtab.txt". Questi dati includono le coordinate (RA e DEC), il redshift (zRad), la densità di flusso integrata a 1.4 GHz (S1p4), e la dimensione dell'emissione radio (sizeR).
+   - La colonna `radioact` contiene informazioni sulla natura della sorgente radio ("RLQ" per quasar radio-loud e "SFG" per formazione di stelle).
+
+2. **Selezione BCG e creazione del file `infoRadioBCG.txt`:**
+   - Utilizza le coordinate RA e DEC delle BCG (letti da `InfoBCG.txt`) e calcola le distanze angolari tra le BCG e le sorgenti radio.
+   - Se la distanza angolare è inferiore a 5 arcsec, i dati relativi alle emissioni radio (S1p4, zRad, sizeR) vengono salvati in un nuovo file `infoRadioBCG.txt`.
+   - La colonna `Radio` nel file risultante contiene 1 se la sorgente radio è un quasar radio-loud ("RLQ") e 0 altrimenti.
+
+3. **Selezione noBCG e creazione del file `infoRadioNoBCG.txt`:**
+   - Utilizza le coordinate RA e DEC delle galassie noBCG (letti da `InfoNoBCG_SamePos.txt` o `InfoNoBCG.txt`) e calcola le distanze angolari tra queste e le sorgenti radio.
+   - Se la distanza angolare è inferiore a 5 arcsec, i dati relativi alle emissioni radio vengono salvati in un nuovo file `infoRadioNoBCG.txt`.
+   - La colonna `Radio` nel file risultante contiene 1 se la sorgente radio è un quasar radio-loud ("RLQ") e 0 altrimenti.
+
+4. **Possibile modifica per `SamePos`:**
+   - Se `SamePos` è impostato su "yes", la lettura delle coordinate delle BCG o noBCG potrebbe coinvolgere una funzione di selezione basata sulla posizione.
+
+È possibile che l'uso di `SamePos` stia influenzando la selezione delle galassie nelle vicinanze delle BCG o delle noBCG quando vengono analizzati i dati relativi alle emissioni radio. La scelta di applicare o meno questa selezione dipenderà dai requisiti specifici del tuo studio.
+
+
+

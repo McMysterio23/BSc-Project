@@ -1,0 +1,265 @@
+PRIMA SEZIONE ( OBBLIGATORIA ) : CALCOLO DELLE FRACTION DI AGN
+
+Questo blocco di codice sembra calcolare la frazione di oggetti AGN (Nuclei Galattici Attivi) in diverse categorie di galassie, suddivise in base al redshift ($z$). In particolare, il calcolo viene eseguito sia per le galassie che ospitano un BCG (Brightest Cluster Galaxy) che per quelle che non lo ospitano.
+
+Ecco una descrizione più dettagliata del codice:
+
+1. **Lettura dei dati:**
+    - I dati relativi ai BCG vengono letti dai file `Prop_AGN_gal_SamePos.txt`, `Prop_Comp_gal_SamePos.txt`, e `Prop_HII1_gal_SamePos.txt`.
+    - I dati relativi alle galassie senza BCG vengono letti dai file `Prop_AGN.txt`, `Prop_Comp.txt`, e `Prop_HII1.txt`.
+
+    ```python
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt"
+    Zn1, eZn1 = np.loadtxt(f1, usecols=[2, 3], unpack=True, dtype=float)
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN.txt"
+    Z1, eZ1 = np.loadtxt(f1, usecols=[2, 3], unpack=True, dtype=float)
+
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp_gal_SamePos.txt"
+    Zn2, eZn2 = np.loadtxt(f2, usecols=[2, 3], unpack=True, dtype=float)
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp.txt"
+    Z2, eZ2 = np.loadtxt(f2, usecols=[2, 3], unpack=True, dtype=float)
+
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1_gal_SamePos.txt"
+    Zn3, eZn3 = np.loadtxt(f3, usecols=[2, 3], unpack=True, dtype=float)
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1.txt"
+    Z3, eZ3 = np.loadtxt(f3, usecols=[2, 3], unpack=True, dtype=float)
+    ```
+
+2. **Concatenazione dei dati:**
+    - I dati relativi al redshift ($Z$) vengono concatenati in un array `Ztot`.
+
+    ```python
+    Ztot = np.concatenate((Z1, Z2, Z3))
+    ```
+
+3. **Definizione degli intervalli di redshift e calcolo della frazione:**
+    - Viene definito un array `zrange` che specifica gli intervalli di redshift desiderati.
+    - Il ciclo for calcola la frazione di galassie AGN in ciascun intervallo di redshift, sia per le galassie con BCG (`FrBCG`) che per quelle senza BCG (`FrnoBCG`).
+
+    ```python
+    zrange = np.arange(np.min(Ztot[Ztot > 0.0001]), np.max(Ztot[Ztot < 2]), 0.05)
+    zrange = np.logspace(np.log10(np.min(Ztot[Ztot > 0.0001])), np.log10(
+        np.max(Ztot[Ztot < 2])), num=12)
+
+    FrBCG = np.zeros((len(zrange)-1))
+    FrnoBCG = np.zeros((len(zrange)-1))
+    for t in range(len(zrange)-1):
+        # Calcola il numero di galassie AGN con BCG in ciascun intervallo di redshift
+        NAGN = len(np.where((Z1 > zrange[t]) & (Z1 < zrange[t+1]))[0])
+        
+        # Calcola il numero totale di galassie senza BCG in ciascun intervallo di redshift
+        NnoAGN1 = len(np.where((Z2 > zrange[t]) & (Z2 < zrange[t+1]))[0])
+        NnoAGN2 = len(np.where((Z3 > zrange[t]) & (Z3 < zrange[t+1]))[0])
+        NnoAGN = NnoAGN1 + NnoAGN2 + NAGN
+        
+        # Calcola la frazione e assegna il valore all'array FrBCG
+        if NnoAGN == 0:
+            FrBCG[t] = np.nan
+        else:
+            FrBCG[t] = NAGN / NnoAGN
+
+        # Ripete il processo per le galassie senza BCG
+        NAGN = len(np.where((Zn1 > zrange[t]) & (Zn1 < zrange[t+1]))[0])
+        NnoAGN1 = len(np.where((Zn2 > zrange[t]) & (Zn2 < zrange[t+1]))[0])
+        NnoAGN2 = len(np.where((Zn3 > zrange[t]) & (Zn3 < zrange[t+1]))[0])
+        NnoAGN = NnoAGN1 + NnoAGN2 + NAGN
+
+        if NnoAGN == 0:
+            FrnoBCG[t] = np.nan
+        else:
+            FrnoBCG[t] = NAGN / NnoAGN
+    ```
+
+4. **Visualizzazione dei risultati:**
+    - Viene visualizzato uno scatter plot della frazione di AGN rispetto al redshift, sia per le galassie con BCG che per quelle senza BCG.
+
+    ```python
+    plt.scatter(zrange[1:], FrBCG, color='red', label="BCG", marker="o")
+    plt.scatter(zrange[1:], FrnoBCG, color='blue', label="no BCG", marker="o")
+    plt.xlabel("$z$", fontsize=16)
+    plt.ylabel("$f_{AGN}$", fontsize=16)
+    plt.tick_params(axis='both', labelsize=16)
+    plt.subplots_adjust(top=0.850, bottom=0.2, left=0.2,
+                        right=0.850, hspace=0.2, wspace=0.2)
+    plt.legend()
+    ```
+
+L'output grafico mostra come la frazione di galassie AGN varia al variare del redshift, distinguendo tra galassie con BCG e senza BCG. Se hai ulteriori domande o hai bisogno di ulteriori spiegazioni, sono qui per aiutarti!i
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+SECONDA SEZIONE : Dynamic galaxy versus mass per BPT subsamples
+
+Questo blocco di codice sembra essere finalizzato alla creazione di istogrammi e confronti tra diverse proprietà astrofisiche di galassie appartenenti a diverse categorie, come ad esempio galassie con AGN, Composite e HII. Di seguito, una spiegazione del codice:
+
+1. **Lettura dei dati:**
+   - Vengono letti i dati relativi a diverse proprietà delle galassie da vari file, sia per le galassie con BCG che per quelle senza BCG. Ad esempio, vengono lette le colonne corrispondenti a $\log(\text{sSFR})$, $\sigma_{\text{Balmer}}$, $\log(M)$, $SFR$, ecc.
+
+    ```python
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt"
+    nSIG1, neSIG1, nSIGMA_BAL1, neSIGMA_BAL1, nSIGMA_FORB1, neSIGMA_FORB1, nM1, nSFR1, nsSFR1 = np.loadtxt(
+        f1, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
+
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN.txt"
+    SIG1, eSIG1, SIGMA_BAL1, eSIGMA_BAL1, SIGMA_FORB1, eSIGMA_FORB1, M1, SFR1, sSFR1 = np.loadtxt(
+        f1, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
+    ```
+
+2. **Definizione di funzioni:**
+   - Viene definita la funzione `HistTot` che sembra creare istogrammi considerando anche limiti specificati per gli assi x e y. Questa funzione sembra poi richiamare un'altra funzione chiamata `Histograms` per la creazione effettiva degli istogrammi.
+
+    ```python
+    def HistTot(dati_x, dati_y, colori, labels, assilabels, bins=[30, 30], limsx=None, limsy=None):
+        # ...
+        Histograms(datix, datiy, colori, labels, assilabels, bins=[40, 20])
+        return 0
+    ```
+
+3. **Chiamata alla funzione `HistTot`:**
+   - Vengono definite diverse variabili e vengono effettuate chiamate alla funzione `HistTot` per creare istogrammi che confrontano diverse proprietà. Ad esempio, viene confrontato $\sigma_{\text{Balmer}}$ con $\log(\text{sSFR})$ per le galassie con BCG e senza BCG.
+
+    ```python
+    limsy = [[0.001, 499], [0.001, 499], [0.001, 499]]
+    dati_x = [sSFR1, sSFR2, sSFR3]
+    dati_y = [SIGMA_BAL1, SIGMA_BAL2, SIGMA_BAL3]
+    colori = ["red", "blue", "green"]
+    labels = ["AGN", "Composite", "HII"]
+    assilabels = ["$log(sSFR)~[yr^{-1}]$", "$\\sigma_{Balmer}~[km/s]$"]
+    HistTot(dati_x, dati_y, colori, labels, assilabels,
+            bins=[30, 30], limsx=None, limsy=limsy)
+    ```
+
+   - Altre chiamate simili vengono effettuate confrontando diverse combinazioni di proprietà, come $\log(\text{M})$ con $\sigma_{\text{Balmer}}$ e $\log(\text{M})$ con $v_{\text{off,~Balmer}}$.
+
+Questo codice sembra essere progettato per esplorare le relazioni tra diverse proprietà astrofisiche delle galassie, con particolare attenzione alle galassie con BCG e senza BCG. Gli istogrammi generati mostrano come queste proprietà possono variare tra le diverse categorie di galassie. Se hai domande specifiche su una parte del codice o se desideri ulteriori spiegazioni, fammelo sapere!
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ELABORAZIONI SUCCESSIVE............
+
+Questo blocco di codice sembra essere incentrato sulla creazione di istogrammi per esplorare le relazioni tra diverse proprietà astrofisiche delle galassie, con particolare attenzione alle galassie con AGN, Composite e HII. Ecco una breve spiegazione di ciascuna sezione del codice:
+
+1. **Metallicità in funzione della sigma per AGN, Composite e HII:**
+   - Vengono create delle selezioni basate sulla metallicità (Zsun) per le galassie con AGN, Composite e HII.
+   - Successivamente, vengono creati degli istogrammi con metallicità sull'asse x e $\sigma$ (deviazione standard) sull'asse y per le tre categorie di galassie.
+
+2. **sSFR in funzione della sigma delle Balmer line per AGN, Composite e HII:**
+   - Vengono create selezioni basate su $\sigma_{\text{Balmer}}$ e vengono generati istogrammi con $\log(\text{sSFR})$ sull'asse x e $\sigma_{\text{Balmer}}$ sull'asse y per le tre categorie di galassie.
+
+3. **MAIN SEQUENCE per AGN, Composite e HII:**
+   - Viene creato un istogramma che rappresenta la "Main Sequence" delle galassie, con $\log(M)$ sull'asse x e $\log(\text{SFR})$ sull'asse y per le tre categorie di galassie.
+
+4. **Metallicità in funzione della Voffset per AGN, Composite e HII:**
+   - Vengono create selezioni basate su $\text{VOFF}_{\text{Balmer}}$ e vengono creati istogrammi con metallicità sull'asse x e $\log(\text{VOFF}_{\text{Balmer}})$ sull'asse y per le tre categorie di galassie.
+
+5. **Metallicità in funzione della Voffset e sigma per AGN, Composite e HII:**
+   - Vengono create selezioni basate su $\sigma_{\text{Balmer}}$ e $\text{VOFF}_{\text{Balmer}}$.
+   - Successivamente, vengono generati istogrammi con metallicità sull'asse x e $2 \times \text{VOFF}_{\text{Balmer}} + \sigma_{\text{Balmer}}$ sull'asse y per le tre categorie di galassie.
+
+Complessivamente, il codice sembra mirare a esplorare come le proprietà delle galassie (come metallicità, sSFR, massa, Voffset delle linee di Balmer) possano variare in relazione alla presenza di AGN e alle differenti classificazioni delle galassie (Composite, HII). Se hai domande specifiche su qualche parte del codice o desideri ulteriori spiegazioni, fammelo sapere!
+
+
+
+
+
+\\\\\\\\\\\\\\\\\\\
+
+
+
+
+Questo blocco di codice sembra concentrarsi sulla creazione di diversi scatter plot (grafici a dispersione) e istogrammi per esplorare le relazioni tra varie proprietà astrofisiche delle galassie, con un'attenzione specifica alle galassie classificate come AGN, Composite e HII. Ecco una breve spiegazione delle diverse parti del codice:
+
+1. **Scatter plot tra Massa e $\sigma_{Forbidden}$:**
+   - Vengono creati scatter plot per la massa delle galassie rispetto a $\sigma_{Forbidden}$ (deviazione standard delle linee proibite) per AGN, Composite e HII, con colori diversi.
+
+2. **Scatter plot tra Massa e $\sigma_{Balmer}$:**
+   - Altri scatter plot per la massa delle galassie rispetto a $\sigma_{Balmer}$ (deviazione standard delle linee di Balmer) per le tre classificazioni di galassie.
+
+3. **Scatter plot tra Massa e $\log(\text{VOFF}_{Balmer})$:**
+   - Scatter plot per la massa delle galassie rispetto a $\log(\text{VOFF}_{Balmer})$ (logaritmo del valore offset delle linee di Balmer) per AGN, Composite e HII.
+
+4. **Scatter plot tra $\log(\text{sSFR})$ e $\log(\text{VOFF}_{Balmer})$:**
+   - Scatter plot per $\log(\text{sSFR})$ rispetto a $\log(\text{VOFF}_{Balmer})$ per le tre classificazioni di galassie.
+
+5. **Scatter plot tra $\log(\text{SFR})$ e $\log(\text{VOFF}_{Balmer})$:**
+   - Scatter plot per $\log(\text{SFR})$ rispetto a $\log(\text{VOFF}_{Balmer})$ per le tre classificazioni di galassie.
+
+6. **Scatter plot tra $\log(\text{sSFR})$ e $E(B-V)$:**
+   - Scatter plot per $\log(\text{sSFR})$ rispetto a $E(B-V)$ per AGN, Composite e HII.
+
+7. **Istogramma tra $\log(\text{sSFR})$ e $\text{VOFF}_{Balmer}$:**
+   - Viene creato un istogramma per esplorare la distribuzione tra $\log(\text{sSFR})$ e $\text{VOFF}_{Balmer}$ per le tre classificazioni di galassie.
+
+8. **Istogramma tra $\log(\text{sSFR})$ e $\sigma_{Balmer}$:**
+   - Altro istogramma per esplorare la distribuzione tra $\log(\text{sSFR})$ e $\sigma_{Balmer}$ per le tre classificazioni di galassie.
+
+9. **Istogramma tra Massa e $\sigma_{Balmer}$:**
+   - Altri istogrammi per esplorare la distribuzione tra massa e $\sigma_{Balmer}$ per AGN, Composite e HII.
+
+10. **Istogramma tra $\log(\text{VOFF}_{Forbidden})$ e $\log(\text{sSFR})$:**
+    - Viene creato un istogramma per esplorare la distribuzione tra $\log(\text{VOFF}_{Forbidden})$ e $\log(\text{sSFR})$ per le tre classificazioni di galassie.
+
+
+Questi grafici sembrano fornire una panoramica dettagliata delle relazioni tra le diverse proprietà delle galassie in base alle classificazioni AGN, Composite e HII. Se hai domande specifiche o se c'è qualcosa su cui desideri ulteriori dettagli, fammelo sapere!
+
+\\\\\\\\\\\\\\\\
+
+Ecco il codice Python che plotta i dati relativi alla metallicità ($Z/Z_{\odot}$) rispetto alla deviazione standard ($\sigma$):
+
+```python
+# Metallicity - Sigma
+PlotScat(Zsun, SIG, ey=eSIG, xlim=None, ylim=None, colore="black",
+         simbolo="o", labels=["$Z/Z_{\\odot}$", "$\\sigma~[km/s]$"])
+
+# Metallicity - Sigma(FORBIDDEN)
+PlotScat(SIGMA_BAL, SIGMA_FORB, ex=eSIGMA_BAL, ey=eSIGMA_FORB, xlim=[0.001, 499], ylim=[
+         0.001, 499], colore="black", simbolo="o", labels=["$\\sigma_{BALMER}~[km/s]$", "$\\sigma_{FORBIDDEN}~[km/s]$"])
+
+# Linea di riferimento
+plt.plot([0, 500], [0, 500], color='red')
+```
+
+Questo codice utilizza la funzione `PlotScat` per creare due scatter plot:
+
+1. Il primo mostra la relazione tra metallicità e deviazione standard.
+2. Il secondo mostra la relazione tra la deviazione standard delle linee di Balmer ($\sigma_{BALMER}$) e la deviazione standard delle linee proibite ($\sigma_{FORBIDDEN}$), con una linea rossa di riferimento.
+
+Fammi sapere se hai bisogno di ulteriori chiarimenti o se c'è qualcos'altro con cui posso assisterti!
+
+\\\\\\\\\\\\\\\\\\
+
+sSFR in funzione della sigma delle Balmer line per AGN Comp e HII
+
+Spiegazione da ChatGPT :
+
+Il codice che hai fornito sembra creare due istogrammi utilizzando la funzione `Histograms` con i dati specificati. Ecco il codice con qualche commento:
+
+```python
+# Seleziona gli indici dove le condizioni su SIGMA_BAL sono soddisfatte
+i1, i2, i3 = np.where((SIGMA_BAL1 > 0.001) & (SIGMA_BAL1 < 499))[0], np.where(
+    (SIGMA_BAL2 > 0.001) & (SIGMA_BAL2 < 499))[0], np.where((SIGMA_BAL3 > 0.001) & (SIGMA_BAL3 < 499))[0]
+
+# Seleziona i dati corrispondenti agli indici sopra
+dati_x = [sSFR1[i1], sSFR2[i2], sSFR3[i3]]
+dati_y = [SIGMA_BAL1[i1], SIGMA_BAL2[i2], SIGMA_BAL3[i3]]
+
+# Impostazioni per l'istogramma
+colori = ["red", "blue", "green"]
+labels = ["AGN", "Jet", "HII"]
+assilabels = ["$log(sSFR)~[M_{\\odot}~yr^{-1}]$", "$\\sigma_{Balmer}~[km/s]$"]
+
+# Crea l'istogramma
+Histograms(dati_x, dati_y, colori, labels, assilabels, bins=[40, 20])
+
+# Ripeti lo stesso processo con dati diversi
+i1, i2, i3 = np.where((SIGMA_BAL1 > 0.001) & (SIGMA_BAL1 < 499))[0], np.where(
+    (SIGMA_BAL2 > 0.001) & (SIGMA_BAL2 < 499))[0], np.where((SIGMA_BAL3 > 0.001) & (SIGMA_BAL3 < 499))[0]
+dati_x = [Mass1[i1], Mass2[i2], Mass3[i3]]
+dati_y = [SIGMA_BAL1[i1], SIGMA_BAL2[i2], SIGMA_BAL3[i3]]
+colori = ["red", "blue", "green"]
+labels = ["AGN", "Composite", "HII"]
+assilabels = ["$log(M)~[M_{\\odot}]$", "$\\sigma_{Balmer}~[km/s]$"]
+Histograms(dati_x, dati_y, colori, labels, assilabels, bins=[40, 20])
+```
+
+Questo codice sembra creare due istogrammi con differenti dati di input. Assicurati di avere la definizione corretta della funzione `Histograms` nel tuo codice.
