@@ -352,9 +352,9 @@ for k in range(len(raR)):
         S14.append(S1p4[k])
         zR.append(zRad[k])
         SR.append(sizeR[k])
-        if radioact[k] == "RLQ":
+        if radioact[k] == "RLQ":        #Flaggati con il numero uno se sono RadioLoud
             Radio.append(1)
-        if radioact[k] == "SFG":
+        if radioact[k] == "SFG":        #Flaggati con lo zero se sono Star Forming Galaxy
             Radio.append(0)
     else:
         S14.append(0)
@@ -370,6 +370,8 @@ data = np.column_stack((np.array(S14).astype(float), np.array(zR).astype(float),
 if os.path.exists(fileout) == False:
     np.savetxt(fileout, data, fmt=fmt)
 
+
+SamePos = "yes"
 
 if SamePos == "yes":
     f = "/Users/andreamaccarinelli/Desktop/myOutputs/InfoNoBCG_SamePos.txt"
@@ -387,7 +389,7 @@ raggi = []
 
 nuova_RA = np.delete(ra, 143189)
 nuova_Dec = np.delete(dec, 143189)
-c1 = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs')
+c1 = SkyCoord(nuova_RA*u.deg, nuova_Dec*u.deg, frame='icrs')
 for k in range(len(raR)):
     c2 = SkyCoord(raR[k]*u.deg, decR[k]*u.deg, frame='icrs')
     dist = c2.separation(c1).to(u.arcsec).value
@@ -423,9 +425,12 @@ file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_line_dr7_v5_2.fits"
 fitfile = fits.open(file)
 data = fitfile[1].data
 
+#Riempimento degli array con i dati relativi alle righe della serie di Balmer !!
 sigB, esigB, sigF, esigF = data['SIGMA_BALMER'], data['SIGMA_BALMER_ERR'], data['SIGMA_FORBIDDEN'], data['SIGMA_FORBIDDEN_ERR']
 vB, evB, vF, evF = data['V_OFF_BALMER'], data['V_OFF_BALMER_ERR'], data['V_OFF_FORBIDDEN'], data['V_OFF_FORBIDDEN_ERR']
 
+
+#Riempimento degli array con i dati relativi alle altre linee spettrali 
 #       OII_3726                 OII_3729                NEIII_3869              H_DELTA                  H_GAMMA               OIII_4363              OIII_4959                OIII_5007                HEI_5876                  OI_6300                 H_ALPHA                NII_6584                   SII_6717              SII_6731                ARIII7135
 lines = ["OII_3726", "OII_3729", "NEIII_3869", "H_DELTA", "H_GAMMA", "OIII_4363", "OIII_4959", "OIII_5007", "HEI_5876",
          "OI_6300", "H_BETA", "H_ALPHA", "NII_6584", "SII_6717", "SII_6731", "ARIII7135"]
@@ -957,7 +962,11 @@ elogOIIIHb1 = ErrLogRatio(OIII_5007[indexes1], H_BETA[indexes1],
 logNIIHa1 = np.log10(NII_6584[indexes1]/H_ALPHA[indexes1])
 elogNIIHa1 = ErrLogRatio(NII_6584[indexes1], H_ALPHA[indexes1],
                          err_num=eNII_6584[indexes1], err_den=eH_ALPHA[indexes1])
-i1 = indicitot[indexes1]
+
+
+i1 = indicitot[indexes1]   #Indici dell'array con tutte le galassie su cui è pox fare BPTtype1 
+
+
 
 logOIIIHb2 = np.log10(OIII_5007[indexes2]/H_BETA[indexes2])
 elogOIIIHb2 = ErrLogRatio(OIII_5007[indexes2], H_BETA[indexes2],
@@ -967,7 +976,9 @@ eSII = eSII_6717[indexes2]+eSII_6731[indexes2]
 logSIIHa2 = np.log10((SII)/H_ALPHA[indexes2])
 elogSIIHa2 = ErrLogRatio(
     SII, H_ALPHA[indexes2], err_num=eSII, err_den=eH_ALPHA[indexes2])
-i2 = indicitot[indexes2]
+
+
+i2 = indicitot[indexes2]    #Indici dell'array con tutte le galassie su cui è pox fare BPTtype2 
 
 logOIIIHb3 = np.log10(OIII_5007[indexes3]/H_BETA[indexes3])
 elogOIIIHb3 = ErrLogRatio(OIII_5007[indexes3], H_BETA[indexes3],
@@ -975,7 +986,9 @@ elogOIIIHb3 = ErrLogRatio(OIII_5007[indexes3], H_BETA[indexes3],
 logOIHa3 = np.log10(OI_6300[indexes3]/H_ALPHA[indexes3])
 elogOIHa3 = ErrLogRatio(OI_6300[indexes3], H_ALPHA[indexes3],
                         err_num=eOI_6300[indexes3], err_den=eH_ALPHA[indexes3])
-i3 = indicitot[indexes3]
+
+
+i3 = indicitot[indexes3]   #Indici dell'array con tutte le galassie su cui è pox fare BPTtype3 
 
 
 def BPTd():
@@ -1121,7 +1134,7 @@ i3, x3, ex3, y3, ey3 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
 
-# BPT NII
+# BPT NII (Quelli che chiamo in altre parti di codice come Type1)
 iAGN = []
 icomp = []
 ihii1 = []
@@ -1180,6 +1193,8 @@ PlotScat(xhii1, yhii1, ex=exhii1, ey=eyhii1, xlim=None, ylim=None, colore="green
 PBPT(n=1)
 
 
+#BPT SII (Quelli che in altre parti di codice chiamo Type2)
+
 irad = []
 ishock = []
 ihii2 = []
@@ -1224,6 +1239,8 @@ PlotScat(xhii2, yhii2, ex=exhii2, ey=eyhii2, xlim=None, ylim=None, colore="green
          "$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=2)
 
+
+#BPT OI (Quelli che in altre parti di codice chiamo Type3)
 
 irad3 = []
 ishock3 = []
@@ -1417,6 +1434,17 @@ DECnoBCG = np.concatenate((DEC01, DEC02, DEC03))
 RAALL = np.concatenate((RABCG, RAnoBCG))
 DECALL = np.concatenate((DECBCG, DECnoBCG))
 
+"""
+Per capire come si è arrivati a ricavare il subsample SamePos ritagliando lo spazio
+in cui comparivano le BCG !!
+
+PlotScat(RA01, DEC01, colore="yellow", simbolo="o")
+PlotScat(RA1, DEC1, colore = "red", simbolo="o", overplot="True")
+PlotScat(RA2, DEC2, colore="blue", simbolo="o", overplot= "True")
+PlotScat(RA3, DEC3, colore="green", simbolo="o", overplot="True")
+PlotScat(raR, decR, colore="purple", simbolo="o", overplot="True")
+
+"""
 
 def DistDeg(RA1, DEC1, RAALL, DECALL):
     distGal_AGN = np.zeros((len(RA1), len(RAALL)))
@@ -1479,10 +1507,72 @@ def GalCloseBCG(RA, DEC):
                  | ((RA > 111) & (RA < 267) & (DEC > 48) & (DEC < 65)) | ((RA > 111) & (RA < 150) & (DEC > 29) & (DEC < 48)) | ((RA > 231) & (RA < 267) & (DEC > 29) & (DEC < 48)))[0]
     return RA[i], DEC[i], i
 
+def GalCloseBCGFIXED(RA, DEC):
+    """
+    Fa le stesse cose che faceva la versione precedente questa volta ritagliando
+    anche in funzione dello scatterplot degli oggetti analizzati nel paper che ha prodotto
+    radioTAB.txt
+    """
+    
+    i = np.where(((RA > 0) & (RA < 50) & (DEC > -10) & (DEC < 7.5)) | ((RA > 310) & (RA < 360) & (DEC > -10) & (DEC < 7.5)) | ((RA > 120) & (RA < 250) & (DEC > -5) & (DEC < 6))
+                 | ((RA > 111) & (RA < 267) & (DEC > 48) & (DEC < 65)) | ((RA > 111) & (RA < 150) & (DEC > 29) & (DEC < 48)) | ((RA > 231) & (RA < 267) & (DEC > 29) & (DEC < 48)))[0]
+    return RA[i], DEC[i], i
+    
 
+#Con la funzione non fixata
 RA01, DEC01, i01 = GalCloseBCG(RA01, DEC01)
 RA02, DEC02, i02 = GalCloseBCG(RA02, DEC02)
 RA03, DEC03, i03 = GalCloseBCG(RA03, DEC03)
+
+#con la funzione si ritaglio FIXATA !!
+RA01, DEC01, i01 = GalCloseBCGFIXED(RA01, DEC01)
+RA02, DEC02, i02 = GalCloseBCGFIXED(RA02, DEC02)
+RA03, DEC03, i03 = GalCloseBCGFIXED(RA03, DEC03)
+
+
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN_gal_SamePos.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp_gal_SamePos.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1_gal_SamePos.txt"
+
+RA01, DEC01, Z01, eZ01 = np.loadtxt(
+    f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+RA02, DEC02, Z02, eZ02 = np.loadtxt(
+    f2, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+RA03, DEC03, Z03, eZ03 = np.loadtxt(
+    f3, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+
+
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_AGN.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_Comp.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs/Prop_HII1.txt"
+
+RA1, DEC1, Z1, eZ1 = np.loadtxt(
+    f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+RA2, DEC2, Z2, eZ2 = np.loadtxt(
+    f2, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+RA3, DEC3, Z3, eZ3 = np.loadtxt(
+    f3, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
+
+
+RABCG = np.concatenate((RA1, RA2, RA3))
+DECBCG = np.concatenate((DEC1, DEC2, DEC3))
+
+RAnoBCG = np.concatenate((RA01, RA02, RA03))
+DECnoBCG = np.concatenate((DEC01, DEC02, DEC03))
+
+RAALL = np.concatenate((RABCG, RAnoBCG))
+DECALL = np.concatenate((DECBCG, DECnoBCG))
+
+"""
+PlotScat Esplorativo
+
+PlotScat(RA01, DEC01, colore="yellow", simbolo="o")
+PlotScat(RA1, DEC1, colore = "red", simbolo="o", overplot="True")
+PlotScat(RA2, DEC2, colore="blue", simbolo="o", overplot= "True")
+PlotScat(RA3, DEC3, colore="green", simbolo="o", overplot="True")
+PlotScat(raR, decR, colore="purple", simbolo="o", overplot="True")
+
+"""
 
 
 # %% Fraction AGN (Generali ) (R)
@@ -1541,9 +1631,201 @@ plt.subplots_adjust(top=0.850, bottom=0.2, left=0.2,
                     right=0.850, hspace=0.2, wspace=0.2)
 plt.legend()
 
-# %% Fraction AGN Specific (Tentativo)
 
-# Fraction Optical AGN in z in the same positions
+# %% Funzioni necessarie per le celle sottostanti !
+
+
+def weighted_std(data, weights):
+    mean = np.average(data, weights=weights)
+    variance = np.average((data - mean)**2, weights=weights)
+    return np.sqrt(variance)
+
+# %% Fraction AGN Type1 esclusivo !!
+
+# Fraction ( NumOpticalAGN ) / ( NumOpticalAGN + Comp + HII1 ) 
+
+"""
+Esempio di BootStrap algoritm 1D
+fract=[]
+fract=np.zeros((1000))
+for k in range(1000):
+    
+    fract[k] = len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    fract.append(len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    
+fractTOT=np.mean(fract)
+fractERR=np.std(fract)
+"""
+
+
+#Lettura dei dati 
+Sampl = 'no'
+SamePos = "yes"
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII.txt"
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+
+#variazione gaussiana valori_random = np.random.normal( media, devs ) 
+
+
+DEVST_ASCISSE = weighted_std(x1, 1/ex1**2)
+DEVST_ORDINATE = weighted_std(y1, 1/ey1**2)
+
+#CHECK VISIVO SUI VALORI OTTENUTI
+print ("LA devst pesata delle x è :", DEVST_ASCISSE, "mentre quella sulle y è :", DEVST_ORDINATE, "\n")
+
+
+# Implementazione del Bootstrap Algorithm
+fraction = np.zeros(1000)
+for k in range(1000):
+    xVAR = np.random.normal(x1, DEVST_ASCISSE)
+    yVAR = np.random.normal(y1, DEVST_ORDINATE)
+    fraction[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(i1)
+
+fractTOT = np.mean(fraction)
+fractERR = np.std(fraction)
+
+
+if(Sampl == "yes"):
+    dicitura = "e BCG"
+else:
+    if(SamePos == "yes"):
+        dicitura = "o spazio intorno alle BCG"
+    else:
+        dicitura = "insieme delle galassie generico "
+
+testo = "La fraction di OpticalAGN nell" + dicitura
+print(testo,"è", fractTOT, "cui è associato un errore di ", fractERR)
+
+
+# %% Fraction AGN Type2 esclusivo !!
+
+
+# Fraction ( RADIATIVE ) / ( RADIATIVE + Shock + HII2 ) 
+
+#Lettura dei dati 
+Sampl = 'no'
+SamePos = "yes"
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII_gal_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII.txt"
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+DEVST_ASCISSE = weighted_std(x2, 1/ex2**2)
+DEVST_ORDINATE = weighted_std(y2, 1/ey2**2)
+
+#CHECK VISIVO SUI VALORI OTTENUTI
+print ("LA devst pesata delle x è :", DEVST_ASCISSE, "mentre quella sulle y è :", DEVST_ORDINATE, "\n")
+
+# Implementazione del Bootstrap Algorithm
+fraction = np.zeros(1000)
+for k in range(1000):
+    xVAR = np.random.normal(x2, DEVST_ASCISSE)
+    yVAR = np.random.normal(y2, DEVST_ORDINATE)
+    fraction[k] = len(np.where((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | ( xVAR > 0.29) )[0]) / len(i2)
+
+fractTOT = np.mean(fraction)
+fractERR = np.std(fraction)
+
+
+if(Sampl == "yes"):
+    dicitura = "e BCG"
+else:
+    if(SamePos == "yes"):
+        dicitura = "o spazio intorno alle BCG"
+    else:
+        dicitura = "insieme delle galassie generico "
+
+testo = "La fraction di AGN nell" + dicitura
+print(testo,"è", fractTOT, "cui è associato un errore di ", fractERR)
+
+
+# %%  Fraction AGN ==> (Type1 U Type2) \ (intersec (Type1, Type2)) !!
+
+#Lettura dei dati 
+Sampl = 'yes'
+SamePos = "yes"
+
+#leggo i file del Type1
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-NII.txt"
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+#leggo i file del type2
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII_gal_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs/BPT-SII.txt"
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+#Calcolo le deviazioni standard in entrambe le casistiche
+DEVST_ASC1 = weighted_std(x1, 1/ex1**2)
+DEVST_ORD1 = weighted_std(y1, 1/ey1**2)
+
+DEVST_ASC2 = weighted_std(x2, 1/ex2**2)
+DEVST_ORD2 = weighted_std(y2, 1/ey2**2)
+
+#Faccio una somma in quadratura per ottenere le devst che uso poi dopo
+DEV_ASC = np.sqrt((DEVST_ASC1**2) + (DEVST_ASC2**2))
+DEV_ORD = np.sqrt((DEVST_ORD1**2) + (DEVST_ORD2**2))
+
+# Calcola A ∪ B
+union_AB = np.union1d(i1, i2)
+
+# Calcola A ∩ B
+intersection_AB = np.intersect1d(i1, i2)
+
+# Calcola A ∪ B - A ∩ B
+result = np.setdiff1d(union_AB, intersection_AB)
+
+print("Abbiamo a disposizione con il corrente campione di calcolo",len(result), "elementi\n")
+
+"""
+idea da testare poi sul campo :
+salvare le popolazioni che risultano True da entrambi i np.where() e trattarli questi come
+due insiemi A e B di cui fare l'intersezione ed estrarne due sotto array di indici
+da passare nei relativi bootstrap dove al posto di len(i1) compare len(result)
+pertanto alla fine della giostra la fraction dovrebbe essere la somma di questi due contributi
+che ottengo... da sperimentare sul campo !!
+""" 
+
+# Implementazione del Bootstrap Algorithm
+fraction = np.zeros(1000)
+for k in range(1000):
+    xVAR = np.random.normal(x2, DEV_ASC)
+    yVAR = np.random.normal(y2, DEV_ORD)
+    fraction[k] = len(np.where((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | ( xVAR > 0.29) )[0]) / len(i2)
+
+fractTOT = np.mean(fraction)
+fractERR = np.std(fraction)
 
 
 # %% Dynamic galaxy versus mass per BPT subsamples

@@ -1,0 +1,24 @@
+I file della famiglia infoRadio contengono i seguenti dati presi dal file con le informazioni sulle specie RLQ e SFG :
+
+
+Colonna 0 ==> 1.4GHz integrated flux density of the source
+Colonna 1 ==> Redshift dal file con le info sulle specie 
+Colonna 2 ==> Radio size of the central FIRST component
+Colonna 3 ==> Flag 1 ed è RLQ mentre Flag 0 ed è SFG
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+I FILE DELLA CATEGORIA BPT DI QUALSIASI TIPO CONTENGONO I SEGUENTI DATI :
+Colonna 0 ==> Indici del file con tutte le galassie del sample selezionato ( a seconda del valore cui sono stati impostati i valori di SamePos e Sampl )
+Colonna 1 ==> Array di valori sull'asse delle ascisse del relativo BPT
+Colonna 2 ==> Array contenente gli errori associati alle ascisse 
+Colonna 3 ==> Array contenente le ordinate del relativo BPT
+Colonna 4 ==> Array contenente gli errori sulle coordinate !!
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+TUTTI I FILE DELLE CATEGORIE PROP CONTENGONO DATI ORGANIZZATI NEL SEGUENTE MODO :
+arrays = [RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2]
+
+Il fatto però è che vengono immagazzinate le informazioni relative solo agli indici delle varie specie identificate nei vari BPT diagrams.
+Per ricordare il senso del nome assegnato ai singoli file .txt si fa riferimento ai nomi che allego nella foto presente in questa cartella.
+Resta Sottinteso il significato dei nomi di sample assegnato in precedenza, nello specifico i file con dicitura SamePos sono quelli che presentano soltanto le galassie nelle regioni di spazio in cui
+troviamo le BCG
