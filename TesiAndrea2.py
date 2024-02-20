@@ -1158,6 +1158,18 @@ for k in range(len(i1)):
         exhii1.append(ex1[k])
         eyhii1.append(ey1[k])
 
+"""
+fract=[]
+fract=np.zeros((1000))
+for k in range(1000):
+    
+    fract[k] = len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    fract.append(len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    
+fractTOT=np.mean(fract)
+fractERR=np.std(fract)
+"""
+
 
 PlotScat(xAGN, yAGN, ex=exAGN, ey=eyAGN, xlim=None, ylim=None, colore="red", simbolo="o",
          labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
@@ -1473,7 +1485,7 @@ RA02, DEC02, i02 = GalCloseBCG(RA02, DEC02)
 RA03, DEC03, i03 = GalCloseBCG(RA03, DEC03)
 
 
-# %% Fraction AGN
+# %% Fraction AGN (Generali ) (R)
 
 # Fraction AGN in z in the same positions
 
@@ -1528,6 +1540,10 @@ plt.tick_params(axis='both', labelsize=16)
 plt.subplots_adjust(top=0.850, bottom=0.2, left=0.2,
                     right=0.850, hspace=0.2, wspace=0.2)
 plt.legend()
+
+# %% Fraction AGN Specific (Tentativo)
+
+# Fraction Optical AGN in z in the same positions
 
 
 # %% Dynamic galaxy versus mass per BPT subsamples
