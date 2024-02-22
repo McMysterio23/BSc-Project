@@ -121,14 +121,14 @@ def GalCloseBCGFIXED(RA, DEC):
     """
     Fa le stesse cose che faceva la versione precedente questa volta ritagliando
     anche in funzione dello scatterplot degli oggetti analizzati nel paper che ha prodotto
-    radioTAB.txt
+    radioTAB.txt Versione perfezionata un ultima volta da sottoporre ad Andrea...
     """
     
-    i = np.where(((RA > -2) & (RA < 53) & (DEC > -10) & (DEC < 7.5)) | ((RA > 310) & (RA < 360) & (DEC > -10) & (DEC < 7.5)) | ((RA > 120) & (RA < 250) & (DEC > -5) & (DEC < 6))
-                 | ((RA > 111) & (RA < 267) & (DEC > 48) & (DEC < 65)) | ((RA > 111) & (RA < 150) & (DEC > 20) & (DEC < 48)) | ((RA > 222) & (RA < 260) & (DEC > 40) & (DEC < 48))|
+    i = np.where(((RA > -2) & (RA < 53) & (DEC > -10) & (DEC < 4)) | ((RA > 310) & (RA < 360) & (DEC > -10) & (DEC < 4)) | ((RA > 120) & (RA < 250) & (DEC > -5) & (DEC < 6))
+                 | ((RA > 111) & (RA < 267) & (DEC > 48) & (DEC < 65)) | ((RA > 111) & (RA < 150) & (DEC > 27) & (DEC < 48)) | ((RA > 222) & (RA < 260) & (DEC > 40) & (DEC < 48))|
                  (RA > 252) & (RA < 267) & (DEC > 25.5) & (DEC < 40))[0]
     return RA[i], DEC[i], i
-
+    
 
 file = "/Users/andreamaccarinelli/Desktop/SDSS/duplicates.txt"
 
@@ -172,7 +172,7 @@ dupl = []
 dupl = TxtRaws(file)
 
 
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/IndiciBCG.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/IndiciBCG.txt"
 ind, NumGalax = np.loadtxt(file, usecols=[0, 2], unpack=True, dtype=int)
 SigCluster = np.loadtxt(file, usecols=[1], unpack=True, dtype=float)
 
@@ -207,14 +207,14 @@ for i in range(len(dupl)):
 
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_BCG_nodupl.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_BCG_nodupl.txt"
 fmt = ["%i", "%i", "%f"]  # Specify the format string
 ddd = np.column_stack((IndBCG, Ngal, SBCG))
 if os.path.exists(fileout) == False:
     np.savetxt(fileout, ddd, fmt=fmt)
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_noBCG_nodupl.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_noBCG_nodupl.txt"
 fmt = "%i"  # Specify the format string
 ddd = np.column_stack((indnoBCG, indnoBCG))
 if os.path.exists(fileout) == False:
@@ -230,9 +230,10 @@ Creare file INFO per le BCG e non BCG
 "alcun upload dei dati stampati su github !"
 "La path corrente dei risultati è la seguente :"
 
-"/Users/andreamaccarinelli/Desktop/myOutputs2"
+"/Users/andreamaccarinelli/Desktop/myOutputs3"
 
-SamePos = "yes"
+#SamePos = "yes"
+SamePos = "no"
 
 file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_info_dr7_v5_2.fits"
 fitfile = fits.open(file)
@@ -246,10 +247,10 @@ data = fitfile[1].data
 Zsun = data['BEST_MODEL_Z']
 
 
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_BCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_BCG_nodupl.txt"
 ind, Ngal = np.loadtxt(file, usecols=[0, 1], unpack=True, dtype=int)
 SigCl = np.loadtxt(file, usecols=[2], unpack=True, dtype=float)
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_noBCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_noBCG_nodupl.txt"
 indno = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
 
 raBCG, decBCG, zBCG, zerrBCG, zwarnBCG, vdispBCG, vdisperrBCG, ebvBCG, ZsunBCG, SigmaCluster, NumeroGal = np.zeros((len(ind))), np.zeros((len(ind))), np.zeros((len(ind))), np.zeros(
@@ -271,7 +272,7 @@ for k in ind:
     k2 += 1
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoBCG.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(raBCG).astype(float), np.array(decBCG).astype(float),
                         np.array(zBCG).astype(float), np.array(
@@ -311,9 +312,9 @@ if SamePos == "yes":
 
 
 if SamePos == "yes":
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG_SamePos.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(raBCG).astype(float), np.array(decBCG).astype(float),
                         np.array(zBCG).astype(float), np.array(
@@ -337,12 +338,12 @@ radioact = np.loadtxt("/Users/andreamaccarinelli/Desktop/SDSS/RADIOtab.txt",
                       usecols=[11], unpack=True, dtype=str)
 
 
-f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoBCG.txt"
+f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
 ra, dec = np.loadtxt(f, usecols=[0, 1], unpack=True, dtype=float)
 
 #print("Valori di latitudine:", dec.shape)
 
-SamePos = "n"
+SamePos = "no"
 
 S14 = []
 zR = []
@@ -369,7 +370,7 @@ for k in range(len(raR)):
         Radio.append(0)
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/infoRadioBCG.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/infoRadioBCG.txt"
 fmt = ["%f", "%f", "%f", "%i"]  # Specify the format string
 data = np.column_stack((np.array(S14).astype(float), np.array(zR).astype(float),
                         np.array(SR).astype(float), np.array(Radio).astype(int)))
@@ -377,12 +378,13 @@ if os.path.exists(fileout) == False:
     np.savetxt(fileout, data, fmt=fmt)
 
 
-SamePos = "yes"
+#SamePos = "yes"
+SamePos = "no"
 
 if SamePos == "yes":
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG_SamePos.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG.txt"
 ra, dec = np.loadtxt(f, usecols=[0, 1], unpack=True, dtype=float)
 
 
@@ -414,9 +416,9 @@ for k in range(len(raR)):
         Radio.append(0)
 
 if SamePos == "yes":
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoRadionoBCG_SamePos.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoRadionoBCG_SamePos.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoRadioNoBCG.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoRadioNoBCG.txt"
 fmt = ["%f", "%f", "%f", "%i"]  # Specify the format string
 data = np.column_stack((np.array(S14).astype(float), np.array(zR).astype(float),
                         np.array(SR).astype(float), np.array(Radio).astype(int)))
@@ -428,7 +430,7 @@ if os.path.exists(fileout) == False:
 
 
 
-SamePos = "yes"
+SamePos = "no"
 file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_line_dr7_v5_2.fits"
 fitfile = fits.open(file)
 data = fitfile[1].data
@@ -449,9 +451,9 @@ for i in range(len(lines)):
     eFluxLines[i, :] = data[lines[i]+'_FLUX_ERR']
 
 
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_BCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_BCG_nodupl.txt"
 ind = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_noBCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_noBCG_nodupl.txt"
 indno = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
 
 sigB2 = np.zeros((len(ind)))
@@ -481,7 +483,7 @@ for k in ind:
     k2 += 1
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_BCG.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_BCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(sigB2).astype(float), np.array(esigB2).astype(float), np.array(sigF2).astype(float), np.array(esigF2).astype(float),
                         np.array(vB2).astype(float), np.array(evB2).astype(float), np.array(vF2).astype(float), np.array(evF2).astype(float)))
@@ -489,7 +491,7 @@ if os.path.exists(fileout) == False:
     np.savetxt(fileout, data, fmt=fmt)
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_BCG.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_BCG.txt"
 fmt = "%.5e"  # Specify the format string
 
 data = np.column_stack((np.array(FluxLines2[0, :]).astype(float), np.array(eFluxLines2[0, :]).astype(float),
@@ -568,9 +570,9 @@ if SamePos == "yes":
 
 
 if SamePos == "yes":
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_noBCG_SamePos.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_noBCG_SamePos.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_noBCG.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_noBCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(sigB2).astype(float), np.array(esigB2).astype(float), np.array(sigF2).astype(float), np.array(esigF2).astype(float),
                         np.array(vB2).astype(float), np.array(evB2).astype(float), np.array(vF2).astype(float), np.array(evF2).astype(float)))
@@ -579,9 +581,9 @@ if os.path.exists(fileout) == False:
 
 
 if SamePos == "yes":
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_noBCG_SamePos.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_noBCG_SamePos.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_noBCG.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_noBCG.txt"
 fmt = "%.5e"  # Specify the format string
 
 data = np.column_stack((np.array(FluxLines2[0, :]).astype(float), np.array(eFluxLines2[0, :]).astype(float),
@@ -620,7 +622,8 @@ if os.path.exists(fileout) == False:
 
 # %% Create file txt for only BCG and no BCG (sSFR & Mass) (R)
 
-SamePos = "yes"
+#SamePos = "yes"
+SamePos = "no"
 file = "/Users/andreamaccarinelli/Desktop/SDSS/gal_totsfr_dr7_v5_2.fits"
 fitfile = fits.open(file)
 data = fitfile[1].data
@@ -640,9 +643,9 @@ mavg, mmed, mp16, mp84 = data['AVG'], data['MEDIAN'], data['P16'], data['P84']
 
 Ntot = len(avg)
 
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_BCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_BCG_nodupl.txt"
 ind = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
-file = "/Users/andreamaccarinelli/Desktop/myOutputs2/Indici_noBCG_nodupl.txt"
+file = "/Users/andreamaccarinelli/Desktop/myOutputs3/Indici_noBCG_nodupl.txt"
 indno = np.loadtxt(file, usecols=[0], unpack=True, dtype=int)
 
 avg2, med2, p162, p842 = np.zeros((len(ind))), np.zeros(
@@ -669,7 +672,7 @@ for k in ind:
     k2 += 1
 
 
-fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_BCG.txt"
+fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_BCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(mavg2).astype(float), np.array(mmed2).astype(float),
                         np.array(mp162).astype(float), np.array(
@@ -726,9 +729,9 @@ if SamePos == "yes":
 
 
 if SamePos == "yes":
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_noBCG_SamePos.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_noBCG_SamePos.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_noBCG.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_noBCG.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(mavg2).astype(float), np.array(mmed2).astype(float),
                         np.array(mp162).astype(float), np.array(
@@ -746,33 +749,34 @@ if os.path.exists(fileout) == False:
 
 # %% CALL DATA (R)
 
-Sampl = "y"  # "no" "y"
-SamePos = "y"
+Sampl = "no"  # "no" "y"
+#SamePos = "yes"
+SamePos = "no"
 
 def calldata(Sampl='y', SamePos='no'):
     # INFO BCG
     if Sampl == 'no':
         if SamePos == "yes":
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG_SamePos.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
         else:
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoNoBCG.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG.txt"
         RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun = np.loadtxt(
             f, usecols=[0, 1, 2, 3, 5, 6, 7, 8], unpack=True, dtype=float)
         SIGCLUSTER = np.zeros((len(RA)))
         NUMGAL = np.zeros((len(RA)))
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoBCG.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
         RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL = np.loadtxt(
             f, usecols=[0, 1, 2, 3, 5, 6, 7, 8, 9, 10], unpack=True, dtype=float)
 
     # Sigma Balmer and Forbidden Lines
     if Sampl == 'no':
         if SamePos == "yes":
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_noBCG_SamePos.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_noBCG_SamePos.txt"
         else:
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_noBCG.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_noBCG.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/SigmaLines_BCG.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/SigmaLines_BCG.txt"
     SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB = np.loadtxt(
         f, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
     VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB = np.loadtxt(
@@ -781,11 +785,11 @@ def calldata(Sampl='y', SamePos='no'):
     # FLUXES LINES
     if Sampl == 'no':
         if SamePos == "yes":
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_noBCG_SamePos.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_noBCG_SamePos.txt"
         else:
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_noBCG.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_noBCG.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/FluxeLines_BCG.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/FluxeLines_BCG.txt"
     OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869 = np.loadtxt(
         f, usecols=[0, 1, 2, 3, 4, 5], unpack=True, dtype=float)
     H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959 = np.loadtxt(
@@ -800,11 +804,11 @@ def calldata(Sampl='y', SamePos='no'):
     # Derived Prop. Mass SFR sSFR
     if Sampl == 'no':
         if SamePos == "yes":
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_noBCG_SamePos.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_noBCG_SamePos.txt"
         else:
-            f = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_noBCG.txt"
+            f = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_noBCG.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/MassSFR_BCG.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_BCG.txt"
     Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = np.loadtxt(
         f, usecols=[0, 2, 3, 4, 6, 7, 8, 10, 11], unpack=True, dtype=float)
     return RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2
@@ -942,7 +946,8 @@ Sampl = "no"
 RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = calldata(Sampl, SamePos)
 
 
-SamePos = "yes"
+#SamePos = "yes"
+SamePos = "no"
 
 """
 OIIIHb = 0.61 / (NIIHa - 0.05) + 1.3     #(Kauffmann+03 line)
@@ -1051,11 +1056,11 @@ PBPT(n=3)
 
 if Sampl == 'no':
     if SamePos == "yes":
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal_SamePos.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
     else:
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(i1).astype(float), np.array(logNIIHa1).astype(float), np.array(elogNIIHa1).astype(float),
                         np.array(logOIIIHb1).astype(float), np.array(elogOIIIHb1).astype(float)))
@@ -1064,11 +1069,11 @@ if os.path.exists(fileout) == False:
 
 if Sampl == 'no':
     if SamePos == "yes":
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal_SamePos.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
     else:
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(i2).astype(float), np.array(logSIIHa2).astype(float), np.array(elogSIIHa2).astype(float),
                         np.array(logOIIIHb2).astype(float), np.array(elogOIIIHb2).astype(float)))
@@ -1077,11 +1082,11 @@ if os.path.exists(fileout) == False:
 
 if Sampl == 'no':
     if SamePos == "yes":
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI_gal_SamePos.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal_SamePos.txt"
     else:
-        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI_gal.txt"
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal.txt"
 else:
-    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI.txt"
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI.txt"
 fmt = "%f"  # Specify the format string
 data = np.column_stack((np.array(i3).astype(float), np.array(logOIHa3).astype(float), np.array(elogOIHa3).astype(float),
                         np.array(logOIIIHb3).astype(float), np.array(elogOIIIHb3).astype(float)))
@@ -1096,6 +1101,9 @@ if os.path.exists(fileout) == False:
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
 Sampl = "no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
+
+#SamePos = "yes"
+SamePos = "no"
 
 def SaveType(i, fileout, arrays):
     val = np.zeros((len(i), len(arrays)))
@@ -1113,31 +1121,31 @@ def SaveType(i, fileout, arrays):
 indicitot = np.arange(len(OIII_5007))
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
 i1, x1, ex1, y1, ey1 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
 i2, x2, ex2, y2, ey2 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-OI.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI.txt"
 i3, x3, ex3, y3, ey3 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
@@ -1303,68 +1311,68 @@ arrays = [RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, e
 if Sampl == 'no':
     if SamePos == "yes":
         SaveType(
-            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt", arrays)
+            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt", arrays)
         SaveType(
-            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt", arrays)
+            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt", arrays)
         SaveType(
-            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt", arrays)
+            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt", arrays)
         SaveType(
-            irad, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD_gal_SamePos.txt", arrays)
+            irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal_SamePos.txt", arrays)
         SaveType(
-            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK_gal_SamePos.txt", arrays)
+            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal_SamePos.txt", arrays)
         SaveType(
-            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII2_gal_SamePos.txt", arrays)
+            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal_SamePos.txt", arrays)
         SaveType(
-            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD3_gal_SamePos.txt", arrays)
-        SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK3_gal_SamePos.txt", arrays)
+            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3_gal_SamePos.txt", arrays)
+        SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3_gal_SamePos.txt", arrays)
         SaveType(
-            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII3_gal_SamePos.txt", arrays)
+            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3_gal_SamePos.txt", arrays)
     else:
         SaveType(
-            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal.txt", arrays)
+            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal.txt", arrays)
         SaveType(
-            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal.txt", arrays)
+            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal.txt", arrays)
         SaveType(
-            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal.txt", arrays)
+            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal.txt", arrays)
         SaveType(
-            irad, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD_gal.txt", arrays)
+            irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal.txt", arrays)
         SaveType(
-            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK_gal.txt", arrays)
+            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal.txt", arrays)
         SaveType(
-            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII2_gal.txt", arrays)
+            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal.txt", arrays)
         SaveType(
-            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD3_gal.txt", arrays)
+            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3_gal.txt", arrays)
         SaveType(
-            ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK3_gal.txt", arrays)
+            ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3_gal.txt", arrays)
         SaveType(
-            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII3_gal.txt", arrays)
+            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3_gal.txt", arrays)
 else:
     SaveType(
-        iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt", arrays)
-    SaveType(icomp, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt", arrays)
-    SaveType(ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt", arrays)
+        iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt", arrays)
+    SaveType(icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt", arrays)
+    SaveType(ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt", arrays)
     SaveType(
-        irad, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD.txt", arrays)
-    SaveType(ishock, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK.txt", arrays)
-    SaveType(ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII2.txt", arrays)
-    SaveType(irad3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD3.txt", arrays)
-    SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK3.txt", arrays)
-    SaveType(ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII3.txt", arrays)
+        irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD.txt", arrays)
+    SaveType(ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK.txt", arrays)
+    SaveType(ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2.txt", arrays)
+    SaveType(irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3.txt", arrays)
+    SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3.txt", arrays)
+    SaveType(ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3.txt", arrays)
 
 
 # %% PLOTS BPT subsamples (R)
 
-Sampl = "y"
+Sampl = "no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
-
+SamePos = "yes"
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
     else:
-        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal.txt"
 else:
-    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
 RA1, DEC1, Z1, eZ1, SIG1, eSIG1, EBV1, Zsun1, SIGCLUSTER, NUMGAL = np.loadtxt(
     f1, usecols=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9], unpack=True, dtype=float)
 SIGMA_BAL1, eSIGMA_BAL1, SIGMA_FORB1, eSIGMA_FORB1 = np.loadtxt(
@@ -1376,11 +1384,11 @@ Mass1, eMass11, eMass12, SFR1, eSFR11, eSFR12, sSFR1, esSFR11, esSFR12 = np.load
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
     else:
-        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal.txt"
 else:
-    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
 RA2, DEC2, Z2, eZ2, SIG2, eSIG2, EBV2, Zsun2 = np.loadtxt(
     f2, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
 SIGMA_BAL2, eSIGMA_BAL2, SIGMA_FORB2, eSIGMA_FORB2 = np.loadtxt(
@@ -1392,11 +1400,11 @@ Mass2, eMass21, eMass22, SFR2, eSFR21, eSFR22, sSFR2, esSFR21, esSFR22 = np.load
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
     else:
-        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal.txt"
 else:
-    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 RA3, DEC3, Z3, eZ3, SIG3, eSIG3, EBV3, Zsun3 = np.loadtxt(
     f3, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
 SIGMA_BAL3, eSIGMA_BAL3, SIGMA_FORB3, eSIGMA_FORB3 = np.loadtxt(
@@ -1409,9 +1417,9 @@ Mass3, eMass31, eMass32, SFR3, eSFR31, eSFR32, sSFR3, esSFR31, esSFR32 = np.load
 # %% Overdensities BCG
 
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt"
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt"
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
 
 RA01, DEC01, Z01, eZ01 = np.loadtxt(
     f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
@@ -1421,9 +1429,9 @@ RA03, DEC03, Z03, eZ03 = np.loadtxt(
     f3, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
 
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt"
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt"
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 
 RA1, DEC1, Z1, eZ1 = np.loadtxt(
     f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
@@ -1531,9 +1539,9 @@ def GalCloseBCGFIXED(RA, DEC):
 raR, decR = np.loadtxt(
     "/Users/andreamaccarinelli/Desktop/SDSS/RADIOtab.txt", usecols=[3, 4], unpack=True, dtype=float)
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt"
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt"
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
 
 RA01, DEC01, Z01, eZ01 = np.loadtxt(
     f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
@@ -1543,9 +1551,9 @@ RA03, DEC03, Z03, eZ03 = np.loadtxt(
     f3, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
 
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt"
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt"
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 
 RA1, DEC1, Z1, eZ1 = np.loadtxt(
     f1, usecols=[0, 1, 2, 3], unpack=True, dtype=float)
@@ -1579,11 +1587,11 @@ DECALL = np.concatenate((DECBCG, DECnoBCG))
 
 #PlotScat Esplorativo
 
-PlotScat(RAnoBCG, DECnoBCG, colore="yellow", simbolo="o")
+PlotScat(RAnoBCG, DECnoBCG, colore="yellow", simbolo="o", labels = ["RA", "DEC"])
 PlotScat(RABCG, DECBCG, colore = "red", simbolo="o", overplot="True", labels = ["RA", "DEC"])
 #PlotScat(RA2, DEC2, colore="blue", simbolo="o", overplot= "True")
 #PlotScat(RA3, DEC3, colore="green", simbolo="o", overplot="True")
-PlotScat(raR, decR, colore="purple", simbolo="o", overplot="True", labels = ["RA", "DEC"])
+#PlotScat(raR, decR, colore="purple", simbolo="o", overplot="True", labels = ["RA", "DEC"])
 
 
 """
@@ -1606,21 +1614,21 @@ PlotScat(raR, decR, colore="purple", simbolo="o", overplot="True", labels = ["RA
 
 # Fraction AGN in z in the same positions
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
 Zn1, eZn1 = np.loadtxt(f1, usecols=[2, 3], unpack=True, dtype=float)
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
 Z1, eZ1 = np.loadtxt(f1, usecols=[2, 3], unpack=True, dtype=float)
 
 
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
 Zn2, eZn2 = np.loadtxt(f2, usecols=[2, 3], unpack=True, dtype=float)
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
 Z2, eZ2 = np.loadtxt(f2, usecols=[2, 3], unpack=True, dtype=float)
 
 
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
 Zn3, eZn3 = np.loadtxt(f3, usecols=[2, 3], unpack=True, dtype=float)
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 Z3, eZ3 = np.loadtxt(f3, usecols=[2, 3], unpack=True, dtype=float)
 
 Ztot = np.concatenate((Z1, Z2, Z3))
@@ -1686,18 +1694,19 @@ fractERR=np.std(fract)
 
 
 #Lettura dei dati 
-Sampl = 'no'
+Sampl = 'yes'
 SamePos = "yes"
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
 
-i1, x1, ex1, y1, ey1 = np.loadtxt(f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
 
 #variazione gaussiana valori_random = np.random.normal( media, devs ) 
@@ -1714,8 +1723,8 @@ if (Modalita == True ):
     
     
     # Implementazione del Bootstrap Algorithm
-    fraction = np.zeros(5000)
-    for k in range(5000):
+    fraction = np.zeros(1000)
+    for k in range(1000):
         xVAR = np.random.normal(x1, DEVST_ASCISSE)
         yVAR = np.random.normal(y1, DEVST_ORDINATE)
         fraction[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(i1)
@@ -1762,11 +1771,11 @@ SamePos = "yes"
 
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
 
 i2, x2, ex2, y2, ey2 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
@@ -1829,11 +1838,12 @@ SamePos = "yes"
 #leggo i file del Type1
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
+        
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
 
 i1, x1, ex1, y1, ey1 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
@@ -1841,11 +1851,11 @@ i1, x1, ex1, y1, ey1 = np.loadtxt(
 #leggo i file del type2
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
 
 i2, x2, ex2, y2, ey2 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
@@ -1881,7 +1891,7 @@ fraction1 = np.zeros(1000)
 for k in range(1000):
     xVAR = np.random.normal(x1_selected, DEVST_ASC1)
     yVAR = np.random.normal(y1_selected, DEVST_ORD1)
-    fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(elementi_comuni_i1)
+    fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(len(elementi_comuni_i1))
 
 fractTOT_1 = np.mean(fraction1)
 fractERR_1 = np.std(fraction1)
@@ -1915,17 +1925,26 @@ print("Dunque complessivamente risultano una somma di", Frazione_Complex, errFra
 # %% Fraction OpticalAGN ==> intersec (Type1, Type2) !! (Versione che dovrebbe essere corretta ! )
 
 #Lettura dei dati 
-Sampl = 'no'
+Sampl = 'yes'
 SamePos = "yes"
 
 #leggo i file del Type1
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-NII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 
 i1, x1, ex1, y1, ey1 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
@@ -1933,11 +1952,20 @@ i1, x1, ex1, y1, ey1 = np.loadtxt(
 #leggo i file del type2
 if Sampl == 'no':
     if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal_SamePos.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal_SamePos.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal_SamePos.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal_SamePos.txt"
     else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII_gal.txt"
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal.txt"
 else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs2/BPT-SII.txt"
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2.txt"
 
 i2, x2, ex2, y2, ey2 = np.loadtxt(
     f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
@@ -1966,26 +1994,43 @@ ey1_selected = ey1[np.where(np.isin(np.arange(len(y1)), elementi_comuni_i1))]
 ey2_selected = ey2[np.where(np.isin(np.arange(len(x2)), elementi_comuni_i2))]
 
 #Contributo dal type1
-fraction1 = np.zeros(1000)
-for k in range(1000):
+fraction1 = np.zeros(5000)
+fraction2 = np.zeros(5000)
+fraction3 = np.zeros(5000)
+for k in range(5000):
     xVAR = np.random.normal(x1_selected, ex1_selected)
     yVAR = np.random.normal(y1_selected, ey1_selected)
-    fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(elementi_comuni_i1)
+    fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(intersection_AB) #f_1a
+
+for k in range(5000):
+    xVAR = np.random.normal(x1_selected, ex1_selected)
+    yVAR = np.random.normal(y1_selected, ey1_selected)
+    fraction2[k] = len(np.where(  yVAR < (0.61 / (xVAR - 0.47)) + 1.19) & (yVAR >= (0.61/(xVAR - 0.05)) + 1.3  )[0])/len(intersection_AB) #f_1b
+
+for k in range(5000):
+    xVAR = np.random.normal(x1_selected, ex1_selected)
+    yVAR = np.random.normal(y1_selected, ey1_selected)
+    fraction3[k] = len(np.where( ( yVAR < (0.61/(xVAR - 0.05)) + 1.3) & (xVAR < 0.04 ) )[0])/len(intersection_AB) #f_1c
 
 fractTOT_1 = np.mean(fraction1)
+fractTOT_2 = np.mean(fraction2)
+fractTOT_3 = np.mean(fraction3)
 fractERR_1 = np.std(fraction1)
-
+fractERR_2 = np.std(fraction2)
+fractERR_3 = np.std(fraction3)
+sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
+esum1 = (fractERR_1 + fractERR_2 + fractERR_3)
 
 #Contributo dal type2
-fraction2 = np.zeros(1000)
-for k in range(1000):
+fraction4 = np.zeros(5000)
+for k in range(5000):
     xVAR = np.random.normal(x2_selected, ex2_selected)
     yVAR = np.random.normal(y2_selected, ey2_selected)
-    fraction2[k] = len(np.where((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))[0]) / len(elementi_comuni_i2)
+    fraction4[k] = len(np.where((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))[0]) / len(x2_selected)
 
 # Correggi il nome della variabile usata per calcolare la media e la deviazione standard
-fractTOT_2 = np.mean(fraction2)
-fractERR_2 = np.std(fraction2)
+fractTOT_4 = np.mean(fraction4)
+fractERR_4 = np.std(fraction4)
 
 #Sospetta frazione complessiva 
 
@@ -1995,14 +2040,170 @@ errFrazione_Complex = fractERR_1 + fractERR_2
 #mediapesata = ((fractTOT_1 * len(elementi_comuni_i1)) + (fractTOT_2 * len(elementi_comuni_i2)))  / (len(elementi_comuni_i1) + len(elementi_comuni_i2))
 
 print("Ho ottenuto i seguenti risultati : \n")
-print(fractTOT_1, fractERR_1, "IDENTIFICAZIONE CON NII\n")
-print(fractTOT_2, fractERR_2, "IDENTIFICAZIONE CON SII\n")
-#print("Dunque complessivamente risultano una somma di", Frazione_Complex, errFrazione_Complex)
+print("Identificazione con BPT-NII \n", fractTOT_1, fractERR_1, "\n")
+print("f1a =", fractTOT_1, "+-", fractERR_1, "\n")
+print("f1b =", fractTOT_2, "+-", fractERR_2, "\n")
+print("f1c =", fractTOT_3, "+-", fractERR_3, "\n")
+print("Normalizzazione :", sum1, esum1 )
+
+
+print("Identificazione con BPT-SII", fractTOT_4, fractERR_4, "\n")
+
+
+# %% Versione Migliorata !!!
+
+# Lettura dei dati
+Sampl = 'no'
+SamePos = "no"
+
+# Leggo i file del Type1
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
+    
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Leggo i file del type2
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal_SamePos.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal_SamePos.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
+        f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal.txt"
+        f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal.txt"
+        f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2.txt"
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Calcola A ∩ B
+intersection_AB = np.intersect1d(i1, i2)
+
+# Stampa il numero di elementi nell'intersezione
+print("L'intersezione è composta da un numero di", len(intersection_AB), "Elementi")
+
+# Usa np.where per ottenere gli indici comuni
+elementi_comuni_i1 = np.where(np.isin(i1, intersection_AB))[0]
+elementi_comuni_i2 = np.where(np.isin(i2, intersection_AB))[0]
+
+# Ricavo i relativi elementi x, y facenti capo a questo indice di elementi in comune
+x1_selected = x1[elementi_comuni_i1]
+y1_selected = y1[elementi_comuni_i1]
+x2_selected = x2[elementi_comuni_i2]
+y2_selected = y2[elementi_comuni_i2]
+ex1_selected = ex1[elementi_comuni_i1]
+ex2_selected = ex2[elementi_comuni_i2]
+ey1_selected = ey1[elementi_comuni_i1]
+ey2_selected = ey2[elementi_comuni_i2]
+
+# Contributo dal type1
+fraction1 = np.zeros(5000)
+fraction2 = np.zeros(5000)
+fraction3 = np.zeros(5000)
+for k in range(5000):
+    xVAR = np.random.normal(x1_selected, ex1_selected)
+    yVAR = np.random.normal(y1_selected, ey1_selected)
+    condition_a = (yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04)
+    condition_b = (yVAR < (0.61 / (xVAR - 0.47)) + 1.19) & (yVAR >= (0.61 / (xVAR - 0.05)) + 1.3)
+    condition_c = (yVAR < (0.61 / (xVAR - 0.05)) + 1.3) & (xVAR < 0.04)
+    fraction1[k] = len(np.where(condition_a)[0]) / len(intersection_AB)
+    fraction2[k] = len(np.where(condition_b)[0]) / len(intersection_AB)
+    fraction3[k] = len(np.where(condition_c)[0]) / len(intersection_AB)
+
+fractTOT_1 = np.mean(fraction1)  #f_1a
+fractTOT_2 = np.mean(fraction2)  #f_1b
+fractTOT_3 = np.mean(fraction3)  #f_1c
+fractERR_1 = np.std(fraction1)
+fractERR_2 = np.std(fraction2)
+fractERR_3 = np.std(fraction3)
+sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
+esum1 = fractERR_1 + fractERR_2 + fractERR_3
+
+# Contributo dal type2
+fraction4 = np.zeros(5000)
+fraction5 = np.zeros(5000)
+fraction6 = np.zeros(5000)
+for k in range(5000):
+    
+    #Creazione delle distribuzioni
+    xVAR = np.random.normal(x2_selected, ex2_selected)
+    yVAR = np.random.normal(y2_selected, ey2_selected)
+    
+    #Condizioni di collocamento dei punti
+    condition_d = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_d = condition_d & (yVAR >= 1.89 * xVAR + 0.76)
+    condition_e = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_e = condition_e & (yVAR < 1.89 * xVAR + 0.76)
+    condition_f = ~((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))
+
+    #Popolamento degli array di fraction
+    fraction4[k] = len(np.where(condition_d)[0]) / len(x2_selected)
+    fraction5[k] = len(np.where(condition_e)[0]) / len(x2_selected)
+    fraction6[k] = len(np.where(condition_f)[0]) / len(x2_selected)
+
+fractTOT_4 = np.mean(fraction4) #f_2a
+fractERR_4 = np.std(fraction4)
+
+fractTOT_5 = np.mean(fraction5) #f_2b
+fractERR_5 = np.std(fraction5)
+
+fractTOT_6 = np.mean(fraction6) #f_2c
+fractERR_6 = np.std(fraction6)
+
+sum2 = fractTOT_4 + fractTOT_5 + fractTOT_6
+esum2 = fractERR_4 + fractERR_5 + fractERR_6
+
+# Stampa i risultati
+print("Ho ottenuto i seguenti risultati:\n")
+print("Identificazione con BPT-NII\n")
+print("AGN =", fractTOT_1, "+-", fractERR_1, "\n")
+print("COMPOSITE =", fractTOT_2, "+-", fractERR_2, "\n")
+print("SF Galaxies =", fractTOT_3, "+-", fractERR_3, "\n")
+print("Check Normalizzazione:", sum1,"+-" ,  esum1)
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_a, condition_b, condition_c])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered),"\n\n\n")
+
+
+
+print("Identificazione con BPT-SII\n")
+print("RADIATIVE =", fractTOT_4, "+-", fractERR_4, "\n")
+print("SHOCK =", fractTOT_5, "+-", fractERR_5, "\n")
+print("SF Galaxies =", fractTOT_6, "+-", fractERR_6, "\n\n")
+print("Check Normalizzazione:", sum2, "+-",esum2)
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_d, condition_e, condition_f])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered))
+
 
 # %% Percentuale di RadioLoud maggiore o minore nelle BCG ?
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/infoRadioBCG.txt"
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/InfoRadionoBCG_SamePos.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/infoRadioBCG.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoRadionoBCG_SamePos.txt"
 
 
 sort, radioact1 = np.loadtxt(f1,usecols=[1,3], unpack=True, dtype=float)
@@ -2026,26 +2227,26 @@ print(rapporto1 *100, rapporto2*100)
 
 # %% Dynamic galaxy versus mass per BPT subsamples
 
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN_gal_SamePos.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_SamePos.txt"
 nSIG1, neSIG1, nSIGMA_BAL1, neSIGMA_BAL1, nSIGMA_FORB1, neSIGMA_FORB1, nM1, nSFR1, nsSFR1 = np.loadtxt(
     f1, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
-f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_AGN.txt"
+f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN.txt"
 SIG1, eSIG1, SIGMA_BAL1, eSIGMA_BAL1, SIGMA_FORB1, eSIGMA_FORB1, M1, SFR1, sSFR1 = np.loadtxt(
     f1, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
 
 
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp_gal_SamePos.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_SamePos.txt"
 nSIG2, neSIG2, nSIGMA_BAL2, neSIGMA_BAL2, nSIGMA_FORB2, neSIGMA_FORB2, nM2, nSFR2, nsSFR2 = np.loadtxt(
     f2, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
-f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_Comp.txt"
+f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp.txt"
 SIG2, eSIG2, SIGMA_BAL2, eSIGMA_BAL2, SIGMA_FORB2, eSIGMA_FORB2, M2, SFR2, sSFR2 = np.loadtxt(
     f2, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
 
 
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1_gal_SamePos.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_SamePos.txt"
 nSIG3, neSIG3, nSIGMA_BAL3, neSIGMA_BAL3, nSIGMA_FORB3, neSIGMA_FORB3, nM3, nSFR3, nsSFR3 = np.loadtxt(
     f3, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
-f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII1.txt"
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1.txt"
 SIG3, eSIG3, SIGMA_BAL3, eSIGMA_BAL3, SIGMA_FORB3, eSIGMA_FORB3, M3, SFR3, sSFR3 = np.loadtxt(
     f3, usecols=[4, 5, 8, 9, 10, 11, 16, 19, 22], unpack=True, dtype=float)
 
@@ -2341,9 +2542,9 @@ Sampl = "y"
 
 
 if Sampl == 'no':
-    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD_gal.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal.txt"
 else:
-    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_RAD.txt"
+    f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD.txt"
 RA1, DEC1, Z1, eZ1, SIG1, eSIG1, EBV1, Zsun1 = np.loadtxt(
     f1, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
 SIGMA_BAL1, eSIGMA_BAL1, SIGMA_FORB1, eSIGMA_FORB1 = np.loadtxt(
@@ -2354,9 +2555,9 @@ Mass1, eMass11, eMass12, SFR1, eSFR11, eSFR12, sSFR1, esSFR11, esSFR12 = np.load
     f1, usecols=[16, 17, 18, 19, 20, 21, 22, 23, 24], unpack=True, dtype=float)
 
 if Sampl == 'no':
-    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK_gal.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal.txt"
 else:
-    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_SHOCK.txt"
+    f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK.txt"
 RA2, DEC2, Z2, eZ2, SIG2, eSIG2, EBV2, Zsun2 = np.loadtxt(
     f2, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
 SIGMA_BAL2, eSIGMA_BAL2, SIGMA_FORB2, eSIGMA_FORB2 = np.loadtxt(
@@ -2367,9 +2568,9 @@ Mass2, eMass21, eMass22, SFR2, eSFR21, eSFR22, sSFR2, esSFR21, esSFR22 = np.load
     f2, usecols=[16, 17, 18, 19, 20, 21, 22, 23, 24], unpack=True, dtype=float)
 
 if Sampl == 'no':
-    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII2_gal.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal.txt"
 else:
-    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs2/Prop_HII2.txt"
+    f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2.txt"
 RA3, DEC3, Z3, eZ3, SIG3, eSIG3, EBV3, Zsun3 = np.loadtxt(
     f3, usecols=[0, 1, 2, 3, 4, 5, 6, 7], unpack=True, dtype=float)
 SIGMA_BAL3, eSIGMA_BAL3, SIGMA_FORB3, eSIGMA_FORB3 = np.loadtxt(
