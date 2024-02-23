@@ -350,7 +350,6 @@ zR = []
 SR = []
 Radio = []
 raggi = []
-# SELEZIONE BCG
 c1 = SkyCoord(ra*u.deg, dec*u.deg, frame='icrs')
 for k in range(len(raR)):
     c2 = SkyCoord(raR[k]*u.deg, decR[k]*u.deg, frame='icrs')
@@ -378,8 +377,8 @@ if os.path.exists(fileout) == False:
     np.savetxt(fileout, data, fmt=fmt)
 
 
-#SamePos = "yes"
-SamePos = "no"
+SamePos = "yes"
+#SamePos = "no"
 
 if SamePos == "yes":
     f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
@@ -393,7 +392,6 @@ zR = []
 SR = []
 Radio = []
 raggi = []
-# SELEZIONE BCG
 
 nuova_RA = np.delete(ra, 143189)
 nuova_Dec = np.delete(dec, 143189)
@@ -753,7 +751,7 @@ Sampl = "no"  # "no" "y"
 #SamePos = "yes"
 SamePos = "no"
 
-def calldata(Sampl='y', SamePos='no'):
+def calldata(Sampl='y', SamePos='no', indices = None):
     # INFO BCG
     if Sampl == 'no':
         if SamePos == "yes":
@@ -811,6 +809,72 @@ def calldata(Sampl='y', SamePos='no'):
         f = "/Users/andreamaccarinelli/Desktop/myOutputs3/MassSFR_BCG.txt"
     Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = np.loadtxt(
         f, usecols=[0, 2, 3, 4, 6, 7, 8, 10, 11], unpack=True, dtype=float)
+    
+    # Utilizza gli indici specificati o tutti gli indici se indices è None
+    if indices is not None:
+        RA = RA[indices]
+        DEC = DEC[indices]
+        Z = Z[indices]
+        eZ = eZ[indices]
+        SIG = SIG[indices]
+        eSIG = eSIG[indices]
+        EBV = EBV[indices]
+        Zsun = Zsun[indices]
+        SIGCLUSTER = SIGCLUSTER[indices]
+        NUMGAL = NUMGAL[indices]
+        SIGMA_BAL = SIGMA_BAL[indices]
+        eSIGMA_BAL = eSIGMA_BAL[indices]
+        SIGMA_FORB = SIGMA_FORB[indices]
+        eSIGMA_FORB = eSIGMA_FORB[indices]
+        VOFF_BAL = VOFF_BAL[indices]
+        eVOFF_BAL = eVOFF_BAL[indices]
+        VOFF_FORB = VOFF_FORB[indices]
+        eVOFF_FORB = eVOFF_FORB[indices]
+        OII_3726 = OII_3726[indices]
+        eOII_3726 = eOII_3726[indices]
+        OII_3729 = OII_3729[indices]
+        eOII_3729 = eOII_3729[indices]
+        NEIII_3869 = NEIII_3869[indices]
+        eNEIII_3869 = eNEIII_3869[indices]
+        H_DELTA = H_DELTA[indices]
+        eH_DELTA = eH_DELTA[indices]
+        H_GAMMA = H_GAMMA[indices]
+        eH_GAMMA = eH_GAMMA[indices]
+        OIII_4363 = OIII_4363[indices]
+        eOIII_4363 = eOIII_4363[indices]
+        OIII_4959 = OIII_4959[indices]
+        eOIII_4959 = eOIII_4959[indices]
+        OIII_5007 = OIII_5007[indices]
+        eOIII_5007 = eOIII_5007[indices]
+        HEI_5876 = HEI_5876[indices]
+        eHEI_5876 = eHEI_5876[indices]
+        OI_6300 = OI_6300[indices]
+        eOI_6300 = eOI_6300[indices]
+        H_BETA = H_BETA[indices]
+        eH_BETA = eH_BETA[indices]
+        H_ALPHA = H_ALPHA[indices]
+        eH_ALPHA = eH_ALPHA[indices]
+        NII_6584 = NII_6584[indices]
+        eNII_6584 = eNII_6584[indices]
+        SII_6717 = SII_6717[indices]
+        eSII_6717 = eSII_6717[indices]
+        SII_6731 = SII_6731[indices]
+        eSII_6731 = eSII_6731[indices]
+        ARIII7135 = ARIII7135[indices]
+        eARIII7135 = eARIII7135[indices]
+        Mass = Mass[indices]
+        eMass1 = eMass1[indices]
+        eMass2 = eMass2[indices]
+        SFR = SFR[indices]
+        eSFR1 = eSFR1[indices]
+        eSFR2 = eSFR2[indices]
+        sSFR = sSFR[indices]
+        esSFR1 = esSFR1[indices]
+        esSFR2 = esSFR2[indices]
+       
+    
+    
+    
     return RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2
 
 
@@ -1829,98 +1893,6 @@ testo = "La fraction di AGN nell" + dicitura
 print(testo,"è", fractTOT, "cui è associato un errore di ", fractERR)
 
 
-# %%  Fraction OpticalAGN ==> intersec (Type1, Type2) !! Versione SPANNOMETRICA
-
-#Lettura dei dati 
-Sampl = 'no'
-SamePos = "yes"
-
-#leggo i file del Type1
-if Sampl == 'no':
-    if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
-        
-    else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
-else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
-
-i1, x1, ex1, y1, ey1 = np.loadtxt(
-    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
-
-#leggo i file del type2
-if Sampl == 'no':
-    if SamePos == "yes":
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
-    else:
-        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
-else:
-    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
-
-i2, x2, ex2, y2, ey2 = np.loadtxt(
-    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
-
-#Calcolo le deviazioni standard in entrambe le casistiche
-DEVST_ASC1 = weighted_std(x1, 1/ex1**2)
-DEVST_ORD1 = weighted_std(y1, 1/ey1**2)
-
-DEVST_ASC2 = weighted_std(x2, 1/ex2**2)
-DEVST_ORD2 = weighted_std(y2, 1/ey2**2)
-
-
-# Calcola A ∩ B
-intersection_AB = np.intersect1d(i1, i2)
-
-
-#print("Abbiamo a disposizione con il corrente campione di calcolo",len(result), "elementi\n")
-print("L'intersezione è composta da un numero di ", len(intersection_AB), "Elementi")
-
-# Usa np.where per ottenere gli indici comuni
-elementi_comuni_i1 = i1[np.where(np.isin(i1, intersection_AB))]
-elementi_comuni_i2 = i2[np.where(np.isin(i2, intersection_AB))]
-
-#ricavo i relativi elementi x,y facenti capo a questo indice di elementi in comune
-x1_selected = x1[np.where(np.isin(np.arange(len(x1)), elementi_comuni_i1))]
-y1_selected = y1[np.where(np.isin(np.arange(len(y1)), elementi_comuni_i1))]
-x2_selected = x2[np.where(np.isin(np.arange(len(x2)), elementi_comuni_i2))]
-y2_selected = y2[np.where(np.isin(np.arange(len(y2)), elementi_comuni_i2))]
-
-
-#Contributo dal type1
-fraction1 = np.zeros(1000)
-for k in range(1000):
-    xVAR = np.random.normal(x1_selected, DEVST_ASC1)
-    yVAR = np.random.normal(y1_selected, DEVST_ORD1)
-    fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(len(elementi_comuni_i1))
-
-fractTOT_1 = np.mean(fraction1)
-fractERR_1 = np.std(fraction1)
-
-
-#Contributo dal type2
-fraction2 = np.zeros(1000)
-for k in range(1000):
-    xVAR = np.random.normal(x2_selected, DEVST_ASC2)
-    yVAR = np.random.normal(y2_selected, DEVST_ORD2)
-    fraction2[k] = len(np.where((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))[0]) / len(elementi_comuni_i2)
-
-# Correggi il nome della variabile usata per calcolare la media e la deviazione standard
-fractTOT_2 = np.mean(fraction2)
-fractERR_2 = np.std(fraction2)
-
-#Sospetta frazione complessiva 
-
-Frazione_Complex = fractTOT_1 + fractTOT_2
-errFrazione_Complex = fractERR_1 + fractERR_2
-
-#mediapesata = ((fractTOT_1 * len(elementi_comuni_i1)) + (fractTOT_2 * len(elementi_comuni_i2)))  / (len(elementi_comuni_i1) + len(elementi_comuni_i2))
-
-print("Ho ottenuto i seguenti risultati : \n")
-print(fractTOT_1, fractERR_1, "\n")
-print(fractTOT_2, fractERR_2, "\n")
-print("Dunque complessivamente risultano una somma di", Frazione_Complex, errFrazione_Complex)
-#print ("Media pesata pari a : ", mediapesata)
-
 
 # %% Fraction OpticalAGN ==> intersec (Type1, Type2) !! (Versione che dovrebbe essere corretta ! )
 
@@ -2052,7 +2024,7 @@ print("Normalizzazione :", sum1, esum1 )
 print("Identificazione con BPT-SII", fractTOT_4, fractERR_4, "\n")
 
 
-# %% Versione Migliorata !!!
+# %% Versione Funzionante !!!
 
 # Lettura dei dati
 Sampl = 'no'
@@ -2249,8 +2221,8 @@ f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoRadionoBCG_SamePos.txt"
 
 
 
-sort, radioact1 = np.loadtxt(f1,usecols=[1,3], unpack=True, dtype=int)
-sort2, radioact2 = np.loadtxt(f2,usecols=[1,3], unpack=True, dtype=int)
+sort, radioact1 = np.loadtxt(f1,usecols=[1,3], unpack=True, dtype=float)
+sort2, radioact2 = np.loadtxt(f2,usecols=[1,3], unpack=True, dtype=float)
 
 
 #Cerco le posizioni in cui c'è una BCG
@@ -2267,9 +2239,94 @@ RL_2 = np.count_nonzero(RLtemp_2 == 1)
 #Calcolo dei rapporti
 rapporto1, rapporto2 = RL_1/len(Bool_esito) , RL_2 / len(Bool_esito2)
 print(rapporto1 *100, rapporto2*100)
-
-
 #Osservo una percentuale di RLQ molto maggiore nel caso delle BCG 98% mentre nel SamePos è 78.8%
+
+#Inverto ora la direzione del crossmatch per ricavare gli indici RadioLoud nel SDSS ricavato !
+
+
+#Leggo le Informazioni relative al paper delle RadioEmitters
+raR, decR = np.loadtxt("/Users/andreamaccarinelli/Desktop/SDSS/RADIOtab.txt", usecols=[3, 4], unpack=True, dtype=float)
+
+#Leggo le coordinate dai file delle BCG e delle noBCG_SamePos
+f3 = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
+f4 = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
+raB, decB = np.loadtxt(f3, usecols=[0, 1], unpack=True, dtype=float)
+raS, decS = np.loadtxt(f4, usecols=[0, 1], unpack=True, dtype=float)
+
+#Ottengo gli indici delle posizioni in cui gli oggetti sono studiati e sono RadioLoud 
+index1 = np.where((radioact1 != 0) & (sort != 0) )[0]
+index2 = np.where((radioact2 != 0) & (sort2 != 0))[0]
+
+
+#Ottengo le selezioni di coordinate secondo il file del paper
+RA_1 = raR[index1]
+DEC_1 = decR[index1]
+RA_2 = raR[index2]
+DEC_2 = decR[index2]
+
+#Per le BCG RadioLoud
+c1 = SkyCoord(RA_1*u.deg, DEC_1*u.deg, frame='icrs')
+RadioLoud = []
+for k in range(len(raB)):
+    c2 = SkyCoord(raB[k]*u.deg, decB[k]*u.deg, frame='icrs')
+    dist = c2.separation(c1).to(u.arcsec).value
+    if np.min(dist) <= 5:
+        RadioLoud.append(1)
+    else:
+        RadioLoud.append(0)
+
+# Leggi tutte le colonne esistenti dal file InfoBCG.txt
+existing_data = np.loadtxt(f3, usecols=(0,1,2,3,4,5,6,7,8,9,10), dtype=float)
+# Aggiungi la nuova colonna RadioLoud a existing_data
+updated_data = np.column_stack((existing_data, RadioLoud))
+# Sovrascrivi il file InfoBCG.txt con i nuovi dati
+np.savetxt(f3, updated_data, fmt='%f', comments='')
+
+#Per le noBCG_SamePos RadioLoud
+c1 = SkyCoord(RA_2*u.deg, DEC_2*u.deg, frame='icrs')
+RadioLoud = []
+for k in range(len(raS)):
+    c2 = SkyCoord(raS[k]*u.deg, decS[k]*u.deg, frame='icrs')
+    dist = c2.separation(c1).to(u.arcsec).value
+    if np.min(dist) <= 5:
+        RadioLoud.append(1)
+    else:
+        RadioLoud.append(0)
+
+# Leggi tutte le colonne esistenti dal file InfoBCG.txt
+existing_data = np.loadtxt(f4, usecols=(0,1,2,3,4,5,6,7,8), dtype=float)
+# Aggiungi la nuova colonna RadioLoud a existing_data
+updated_data = np.column_stack((existing_data, RadioLoud))
+# Sovrascrivi il file InfoBCG.txt con i nuovi dati
+np.savetxt(f4, updated_data, fmt='%f', comments='')
+
+# %% Creazione dei Plot riferiti agli oggetti RadioLoud
+
+#Step Zero: Lettura dei dati "Non includo nella trattazione il caso SamePos = "no" 
+
+Sampl = "yes"
+#Sampl = "no"
+
+if (Sampl == "no"):
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
+    status = np.loadtxt(f, usecols=[11], unpack=True, dtype=float)
+    
+else :
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
+    status = np.loadtxt(f, usecols=[9], unpack=True, dtype=float)
+    
+
+#Ricerca degli indici in cui compaiono solo RadioLoud 
+index = np.where(status != 0)
+
+#Continua da qui, devi richiamare i dati e poi seguire paro paro quanto facciamo qualche cella sopra
+#per creare i BPT diagrams !!!
+
+
+#calldata(Sampl, "yes", index)
+
+
+
 
 # %% Dynamic galaxy versus mass per BPT subsamples
 
