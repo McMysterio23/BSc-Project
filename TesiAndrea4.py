@@ -1925,7 +1925,7 @@ print("Dunque complessivamente risultano una somma di", Frazione_Complex, errFra
 # %% Fraction OpticalAGN ==> intersec (Type1, Type2) !! (Versione che dovrebbe essere corretta ! )
 
 #Lettura dei dati 
-Sampl = 'yes'
+Sampl = 'no'
 SamePos = "yes"
 
 #leggo i file del Type1
@@ -1997,10 +1997,12 @@ ey2_selected = ey2[np.where(np.isin(np.arange(len(x2)), elementi_comuni_i2))]
 fraction1 = np.zeros(5000)
 fraction2 = np.zeros(5000)
 fraction3 = np.zeros(5000)
+NAGN = np.zeros(5000)
 for k in range(5000):
     xVAR = np.random.normal(x1_selected, ex1_selected)
     yVAR = np.random.normal(y1_selected, ey1_selected)
     fraction1[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0]) / len(intersection_AB) #f_1a
+    NAGN[k] = len(np.where((yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04))[0])
 
 for k in range(5000):
     xVAR = np.random.normal(x1_selected, ex1_selected)
@@ -2116,6 +2118,10 @@ ey2_selected = ey2[elementi_comuni_i2]
 fraction1 = np.zeros(5000)
 fraction2 = np.zeros(5000)
 fraction3 = np.zeros(5000)
+NumOgg1  = np.zeros(5000)
+NumOgg2 = np.zeros(5000)
+NumOgg3 = np.zeros(5000)
+
 for k in range(5000):
     xVAR = np.random.normal(x1_selected, ex1_selected)
     yVAR = np.random.normal(y1_selected, ey1_selected)
@@ -2125,6 +2131,11 @@ for k in range(5000):
     fraction1[k] = len(np.where(condition_a)[0]) / len(intersection_AB)
     fraction2[k] = len(np.where(condition_b)[0]) / len(intersection_AB)
     fraction3[k] = len(np.where(condition_c)[0]) / len(intersection_AB)
+    NumOgg1[k] = len(np.where(condition_a)[0]) 
+    NumOgg2[k] = len(np.where(condition_b)[0])
+    NumOgg3[k] = len(np.where(condition_c)[0]) 
+    
+    
 
 fractTOT_1 = np.mean(fraction1)  #f_1a
 fractTOT_2 = np.mean(fraction2)  #f_1b
@@ -2134,11 +2145,21 @@ fractERR_2 = np.std(fraction2)
 fractERR_3 = np.std(fraction3)
 sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
 esum1 = fractERR_1 + fractERR_2 + fractERR_3
+N1A = int(np.mean(NumOgg1))
+N1B = int(np.mean(NumOgg2))
+N1C = int(np.mean(NumOgg3))
+eN1A = int(np.std(NumOgg1))
+eN1B = int(np.std(NumOgg2))
+eN1C = int(np.std(NumOgg3))
+
 
 # Contributo dal type2
 fraction4 = np.zeros(5000)
 fraction5 = np.zeros(5000)
 fraction6 = np.zeros(5000)
+NumOgg4  = np.zeros(5000)
+NumOgg5 = np.zeros(5000)
+NumOgg6 = np.zeros(5000)
 for k in range(5000):
     
     #Creazione delle distribuzioni
@@ -2156,6 +2177,11 @@ for k in range(5000):
     fraction4[k] = len(np.where(condition_d)[0]) / len(x2_selected)
     fraction5[k] = len(np.where(condition_e)[0]) / len(x2_selected)
     fraction6[k] = len(np.where(condition_f)[0]) / len(x2_selected)
+    
+    #Popolamento degli array di conteggio
+    NumOgg4[k] = len(np.where(condition_d)[0]) 
+    NumOgg5[k] = len(np.where(condition_e)[0])
+    NumOgg6[k] = len(np.where(condition_f)[0]) 
 
 fractTOT_4 = np.mean(fraction4) #f_2a
 fractERR_4 = np.std(fraction4)
@@ -2169,13 +2195,26 @@ fractERR_6 = np.std(fraction6)
 sum2 = fractTOT_4 + fractTOT_5 + fractTOT_6
 esum2 = fractERR_4 + fractERR_5 + fractERR_6
 
+N2A = int(np.mean(NumOgg4))
+N2B = int(np.mean(NumOgg5))
+N2C = int(np.mean(NumOgg6))
+eN2A = int(np.std(NumOgg4))
+eN2B = int(np.std(NumOgg5))
+eN2C = int(np.std(NumOgg6))
+
+
 # Stampa i risultati
 print("Ho ottenuto i seguenti risultati:\n")
 print("Identificazione con BPT-NII\n")
+print("AGN =", N1A, "+-", eN1A, "\n")
 print("AGN =", fractTOT_1, "+-", fractERR_1, "\n")
+print("COMPOSITE =", N1B, "+-", eN1B, "\n")
 print("COMPOSITE =", fractTOT_2, "+-", fractERR_2, "\n")
+print("SF Galaxies =", N1C, "+-", eN1C, "\n")
 print("SF Galaxies =", fractTOT_3, "+-", fractERR_3, "\n")
 print("Check Normalizzazione:", sum1,"+-" ,  esum1)
+
+
 
 # Verifica l'unione delle condizioni
 all_points_covered = np.logical_or.reduce([condition_a, condition_b, condition_c])
@@ -2187,8 +2226,11 @@ print("Totale dei punti:", len(all_points_covered),"\n\n\n")
 
 
 print("Identificazione con BPT-SII\n")
+print("RADIATIVE =", N2A, "+-", eN2A, "\n")
 print("RADIATIVE =", fractTOT_4, "+-", fractERR_4, "\n")
+print("SHOCK =", N2B, "+-", eN2B, "\n")
 print("SHOCK =", fractTOT_5, "+-", fractERR_5, "\n")
+print("SF Galaxies =", N2C, "+-", eN2C, "\n")
 print("SF Galaxies =", fractTOT_6, "+-", fractERR_6, "\n\n")
 print("Check Normalizzazione:", sum2, "+-",esum2)
 
@@ -2206,20 +2248,24 @@ f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/infoRadioBCG.txt"
 f2 = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoRadionoBCG_SamePos.txt"
 
 
-sort, radioact1 = np.loadtxt(f1,usecols=[1,3], unpack=True, dtype=float)
-radioact2 = np.loadtxt(f2,usecols=[3], unpack=True, dtype=int)
+
+sort, radioact1 = np.loadtxt(f1,usecols=[1,3], unpack=True, dtype=int)
+sort2, radioact2 = np.loadtxt(f2,usecols=[1,3], unpack=True, dtype=int)
 
 
 #Cerco le posizioni in cui c'è una BCG
 Bool_esito = np.nonzero(sort)[0]
+Bool_esito2 = np.nonzero(sort2)[0]
+
 #print(len(Bool_esito))
 RLtemp_1 = radioact1[np.where(np.isin(np.arange(len(radioact1)), Bool_esito))]
+RLtemp_2 = radioact2[np.where(np.isin(np.arange(len(radioact2)), Bool_esito2))]
 
 RL_1 = np.count_nonzero(RLtemp_1 == 1)
-RL_2 = np.count_nonzero(radioact2 == 1)
+RL_2 = np.count_nonzero(RLtemp_2 == 1)
 
 #Calcolo dei rapporti
-rapporto1, rapporto2 = RL_1/len(Bool_esito) , RL_2 / len(radioact2)
+rapporto1, rapporto2 = RL_1/len(Bool_esito) , RL_2 / len(Bool_esito2)
 print(rapporto1 *100, rapporto2*100)
 
 
