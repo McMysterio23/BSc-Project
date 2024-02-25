@@ -2300,30 +2300,131 @@ updated_data = np.column_stack((existing_data, RadioLoud))
 # Sovrascrivi il file InfoBCG.txt con i nuovi dati
 np.savetxt(f4, updated_data, fmt='%f', comments='')
 
-# %% Creazione dei Plot riferiti agli oggetti RadioLoud
+# %% Creazione dei Plot riferiti agli oggetti RadioLoud (Collaudato e Funziona !!!)
 
 #Step Zero: Lettura dei dati "Non includo nella trattazione il caso SamePos = "no" 
 
-Sampl = "yes"
-#Sampl = "no"
+#Sampl = "yes"
+Sampl = "no"
+SamePos= "yes"
 
 if (Sampl == "no"):
     f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
-    status = np.loadtxt(f, usecols=[11], unpack=True, dtype=float)
+    status = np.loadtxt(f, usecols=[9], unpack=True, dtype=float)
     
 else :
     f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
-    status = np.loadtxt(f, usecols=[9], unpack=True, dtype=float)
+    status = np.loadtxt(f, usecols=[11], unpack=True, dtype=float)
     
 
 #Ricerca degli indici in cui compaiono solo RadioLoud 
-index = np.where(status != 0)
+index = np.where(status != 0)[0]
 
 #Continua da qui, devi richiamare i dati e poi seguire paro paro quanto facciamo qualche cella sopra
 #per creare i BPT diagrams !!!
 
 
 #calldata(Sampl, "yes", index)
+RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = calldata(Sampl, "yes", index)
+
+
+
+# REMOVE FALSE VALUES
+indicitot = np.arange(len(OIII_5007))
+indexes1 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & (H_BETA > 0) & (NII_6584 > 0) & (
+    OIII_5007 > eOIII_5007) & (H_ALPHA > eH_ALPHA) & (H_BETA > eH_BETA) & (NII_6584 > eNII_6584))[0]
+indexes2 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & (H_BETA > 0) & (SII_6717 > 0) & (SII_6731 > 0) & (
+    OIII_5007 > eOIII_5007) & (H_ALPHA > eH_ALPHA) & (H_BETA > eH_BETA) & (SII_6717 > eSII_6717) & (SII_6731 > eSII_6731))[0]
+indexes3 = np.where((OIII_5007 > 0) & (H_ALPHA > 0) & (H_BETA > 0) & (OI_6300 > 0) & (
+    OIII_5007 > eOIII_5007) & (H_ALPHA > eH_ALPHA) & (H_BETA > eH_BETA) & (OI_6300 > eOI_6300))[0]
+
+logOIIIHb1 = np.log10(OIII_5007[indexes1]/H_BETA[indexes1])
+elogOIIIHb1 = ErrLogRatio(OIII_5007[indexes1], H_BETA[indexes1],
+                          err_num=eOIII_5007[indexes1], err_den=eH_BETA[indexes1])
+logNIIHa1 = np.log10(NII_6584[indexes1]/H_ALPHA[indexes1])
+elogNIIHa1 = ErrLogRatio(NII_6584[indexes1], H_ALPHA[indexes1],
+                         err_num=eNII_6584[indexes1], err_den=eH_ALPHA[indexes1])
+
+
+i1 = indicitot[indexes1]   #Indici dell'array con tutte le galassie su cui è pox fare BPTtype1 
+
+
+
+logOIIIHb2 = np.log10(OIII_5007[indexes2]/H_BETA[indexes2])
+elogOIIIHb2 = ErrLogRatio(OIII_5007[indexes2], H_BETA[indexes2],
+                          err_num=eOIII_5007[indexes2], err_den=eH_BETA[indexes2])
+SII = SII_6717[indexes2]+SII_6731[indexes2]
+eSII = eSII_6717[indexes2]+eSII_6731[indexes2]
+logSIIHa2 = np.log10((SII)/H_ALPHA[indexes2])
+elogSIIHa2 = ErrLogRatio(
+    SII, H_ALPHA[indexes2], err_num=eSII, err_den=eH_ALPHA[indexes2])
+
+
+i2 = indicitot[indexes2]    #Indici dell'array con tutte le galassie su cui è pox fare BPTtype2 
+
+logOIIIHb3 = np.log10(OIII_5007[indexes3]/H_BETA[indexes3])
+elogOIIIHb3 = ErrLogRatio(OIII_5007[indexes3], H_BETA[indexes3],
+                          err_num=eOIII_5007[indexes3], err_den=eH_BETA[indexes3])
+logOIHa3 = np.log10(OI_6300[indexes3]/H_ALPHA[indexes3])
+elogOIHa3 = ErrLogRatio(OI_6300[indexes3], H_ALPHA[indexes3],
+                        err_num=eOI_6300[indexes3], err_den=eH_ALPHA[indexes3])
+
+
+i3 = indicitot[indexes3]   #Indici dell'array con tutte le galassie su cui è pox fare BPTtype3 
+
+
+
+PlotScat(logNIIHa1, logOIIIHb1, ex=elogNIIHa1, ey=elogOIIIHb1, xlim=None, ylim=None, colore="red",
+         simbolo="o", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PBPT(n=1)
+
+PlotScat(logSIIHa2, logOIIIHb2, ex=elogSIIHa2, ey=elogOIIIHb2, xlim=None, ylim=None, colore="blue",
+         simbolo="o", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PBPT(n=2)
+
+PlotScat(logOIHa3, logOIIIHb3, ex=elogOIHa3, ey=elogOIIIHb3, xlim=None, ylim=None, colore="green",
+         simbolo="o", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PBPT(n=3)
+
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_RadioLoud_SamePos.txt"
+    else:
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_RadioLoud_gal.txt"
+else:
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII-RadioLoud.txt"
+fmt = "%f"  # Specify the format string
+data = np.column_stack((np.array(i1).astype(float), np.array(logNIIHa1).astype(float), np.array(elogNIIHa1).astype(float),
+                        np.array(logOIIIHb1).astype(float), np.array(elogOIIIHb1).astype(float)))
+if os.path.exists(fileout) == False:
+    np.savetxt(fileout, data, fmt=fmt)
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_RadioLoud_SamePos.txt"
+    else:
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_RadioLoud_gal.txt"
+else:
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII-RadioLoud.txt"
+fmt = "%f"  # Specify the format string
+data = np.column_stack((np.array(i2).astype(float), np.array(logSIIHa2).astype(float), np.array(elogSIIHa2).astype(float),
+                        np.array(logOIIIHb2).astype(float), np.array(elogOIIIHb2).astype(float)))
+if os.path.exists(fileout) == False:
+    np.savetxt(fileout, data, fmt=fmt)
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal_RadioLoud_SamePos.txt"
+    else:
+        fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_RadioLoud_gal.txt"
+else:
+    fileout = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI-RadioLoud.txt"
+fmt = "%f"  # Specify the format string
+data = np.column_stack((np.array(i3).astype(float), np.array(logOIHa3).astype(float), np.array(elogOIHa3).astype(float),
+                        np.array(logOIIIHb3).astype(float), np.array(elogOIIIHb3).astype(float)))
+if os.path.exists(fileout) == False:
+    np.savetxt(fileout, data, fmt=fmt)
 
 
 
