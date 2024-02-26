@@ -1,0 +1,41 @@
+L'intersezione è composta da un numero di 17 Elementi
+Ho ottenuto i seguenti risultati:
+
+Identificazione con BPT-NII
+
+AGN = 11 +- 0 
+
+AGN = 0.6922235294117647 +- 0.05345771410406389 
+
+COMPOSITE = 4 +- 0 
+
+COMPOSITE = 0.2561294117647059 +- 0.05598882612199538 
+
+SF Galaxies = 1 +- 0 
+
+SF Galaxies = 0.060952941176470585 +- 0.01171896401765356 
+
+Check Normalizzazione: 1.0093058823529413 +- 0.12116550424371282
+Numero di punti coperti: 17
+Totale dei punti: 17 
+
+
+
+Identificazione con BPT-SII
+
+RADIATIVE = 1 +- 0 
+
+RADIATIVE = 0.08025882352941176 +- 0.03258274746742441 
+
+SHOCK = 8 +- 1 
+
+SHOCK = 0.5000470588235295 +- 0.06293841005465274 
+
+SF Galaxies = 7 +- 0 
+
+SF Galaxies = 0.41969411764705883 +- 0.05861814025352566 
+
+
+Check Normalizzazione: 1.0 +- 0.1541392977756028
+Numero di punti coperti: 17
+Totale dei punti: 17

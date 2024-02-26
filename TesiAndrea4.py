@@ -2426,6 +2426,456 @@ data = np.column_stack((np.array(i3).astype(float), np.array(logOIHa3).astype(fl
 if os.path.exists(fileout) == False:
     np.savetxt(fileout, data, fmt=fmt)
 
+# %% Plot BPT SUBSAMPLES RADIO LOUD Radiative, Shock and SF  (R)
+
+
+#Sampl="no"
+#RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
+Sampl = "yes"
+#RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
+
+#SamePos = "yes"
+SamePos = "yes"
+
+def SaveType(i, fileout, arrays):
+    val = np.zeros((len(i), len(arrays)))
+    kk = 0
+    for k in i:
+        for t in range(len(arrays)):
+            val[kk, t] = arrays[t][k]
+        kk += 1
+    if os.path.exists(fileout) == False:
+        np.savetxt(fileout, val, delimiter='\t', header='\t'.join(
+            map(str, range(len(arrays)))), comments='')
+    return fileout
+
+
+indicitot = np.arange(len(OIII_5007))
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_RadioLoud_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_RadioLoud_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII-RadioLoud.txt"
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_RadioLoud_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_RadioLoud_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII-RadioLoud.txt"
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_gal_RadioLoud_SamePos.txt"
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI_RadioLoud_gal.txt"
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-OI-RadioLoud.txt"
+i3, x3, ex3, y3, ey3 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+
+# BPT NII (Quelli che chiamo in altre parti di codice come Type1)
+iAGN = []
+icomp = []
+ihii1 = []
+xAGN = []
+exAGN = []
+yAGN = []
+eyAGN = []
+xcomp = []
+excomp = []
+ycomp = []
+eycomp = []
+xhii1 = []
+exhii1 = []
+yhii1 = []
+eyhii1 = []
+
+for k in range(len(i1)):
+    if (y1[k] >= (0.61 / (x1[k] - 0.47)) + 1.19) or x1[k] >= 0.04:  # RED
+        iAGN.append(int(i1[k]))
+        xAGN.append(x1[k])
+        yAGN.append(y1[k])
+        exAGN.append(ex1[k])
+        eyAGN.append(ey1[k])
+    if (y1[k] < (0.61 / (x1[k] - 0.47)) + 1.19) and (y1[k] >= (0.61/(x1[k] - 0.05)) + 1.3):  # BLUE
+        icomp.append(int(i1[k]))
+        xcomp.append(x1[k])
+        ycomp.append(y1[k])
+        excomp.append(ex1[k])
+        eycomp.append(ey1[k])
+    if y1[k] < (0.61/(x1[k] - 0.05)) + 1.3 and x1[k] < 0.04:  # GREEN
+        ihii1.append(int(i1[k]))
+        xhii1.append(x1[k])
+        yhii1.append(y1[k])
+        exhii1.append(ex1[k])
+        eyhii1.append(ey1[k])
+
+"""
+fract=[]
+fract=np.zeros((1000))
+for k in range(1000):
+    
+    fract[k] = len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    fract.append(len(np.where( (y > str(x)) | x> 0.04 )[0])/len(tot))
+    
+fractTOT=np.mean(fract)
+fractERR=np.std(fract)
+"""
+
+
+PlotScat(xAGN, yAGN, ex=exAGN, ey=eyAGN, xlim=None, ylim=None, colore="red", simbolo="o",
+         labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PlotScat(xcomp, ycomp, ex=excomp, ey=eycomp, xlim=None, ylim=None, colore="blue", simbolo="o", labels=[
+         "$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PlotScat(xhii1, yhii1, ex=exhii1, ey=eyhii1, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
+         "$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PBPT(n=1)
+
+
+#BPT SII (Quelli che in altre parti di codice chiamo Type2)
+
+irad = []
+ishock = []
+ihii2 = []
+xrad = []
+exrad = []
+yrad = []
+eyrad = []
+xshock = []
+exshock = []
+yshock = []
+eyshock = []
+xhii2 = []
+exhii2 = []
+yhii2 = []
+eyhii2 = []
+for k in range(len(i2)):
+    if y2[k] >= (0.72 / (x2[k] - 0.32)) + 1.30 or x2[k] > 0.29:
+        if y2[k] >= 1.89*x2[k] + 0.76:
+            irad.append(int(i2[k]))
+            xrad.append(x2[k])
+            yrad.append(y2[k])
+            exrad.append(ex2[k])
+            eyrad.append(ey2[k])
+        if y2[k] < 1.89*x2[k] + 0.76:
+            ishock.append(int(i2[k]))
+            xshock.append(x2[k])
+            yshock.append(y2[k])
+            exshock.append(ex2[k])
+            eyshock.append(ey2[k])
+    else:
+        ihii2.append(int(i2[k]))
+        xhii2.append(x2[k])
+        yhii2.append(y2[k])
+        exhii2.append(ex2[k])
+        eyhii2.append(ey2[k])
+
+PlotScat(xrad, yrad, ex=exrad, ey=eyrad, xlim=None, ylim=None, colore="red", simbolo="o",
+         labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PlotScat(xshock, yshock, ex=exshock, ey=eyshock, xlim=None, ylim=None, colore="blue", simbolo="o", labels=[
+         "$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PlotScat(xhii2, yhii2, ex=exhii2, ey=eyhii2, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
+         "$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PBPT(n=2)
+
+
+#BPT OI (Quelli che in altre parti di codice chiamo Type3)
+
+irad3 = []
+ishock3 = []
+ihii3 = []
+xrad3 = []
+exrad3 = []
+yrad3 = []
+eyrad3 = []
+xshock3 = []
+exshock3 = []
+yshock3 = []
+eyshock3 = []
+xhii3 = []
+exhii3 = []
+yhii3 = []
+eyhii3 = []
+for k in range(len(i3)):
+    if y3[k] >= (0.73 / (x3[k] + 0.59)) + 1.33 or x3[k] > -0.6:
+        if y3[k] >= 1.18*x3[k] + 1.3:
+            irad3.append(int(i3[k]))
+            xrad3.append(x3[k])
+            yrad3.append(y3[k])
+            exrad3.append(ex3[k])
+            eyrad3.append(ey3[k])
+        if y3[k] < 1.18*x3[k] + 1.3:
+            ishock3.append(int(i3[k]))
+            xshock3.append(x3[k])
+            yshock3.append(y3[k])
+            exshock3.append(ex3[k])
+            eyshock3.append(ey3[k])
+    else:
+        ihii3.append(int(i3[k]))
+        xhii3.append(x3[k])
+        yhii3.append(y3[k])
+        exhii3.append(ex3[k])
+        eyhii3.append(ey3[k])
+
+PlotScat(xrad3, yrad3, ex=exrad3, ey=eyrad3, xlim=None, ylim=None, colore="red", simbolo="o",
+         labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
+PlotScat(xshock3, yshock3, ex=exshock3, ey=eyshock3, xlim=None, ylim=None, colore="blue", simbolo="o",
+         labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PlotScat(xhii3, yhii3, ex=exhii3, ey=eyhii3, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
+         "$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
+PBPT(n=3)
+
+
+# Save subsample properties
+
+
+arrays = [RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB,
+          VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2]
+if Sampl == 'no':
+    if SamePos == "yes":
+        SaveType(
+            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3_gal_RadioLoud_SamePos.txt", arrays)
+        SaveType(
+            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3_gal_RadioLoud_SamePos.txt", arrays)
+    else:
+        SaveType(
+            iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN_gal_RadioLoud.txt", arrays)
+        SaveType(
+            icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp_gal_RadioLoud.txt", arrays)
+        SaveType(
+            ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1_gal_RadioLoud.txt", arrays)
+        SaveType(
+            irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD_gal_RadioLoud.txt", arrays)
+        SaveType(
+            ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK_gal_RadioLoud.txt", arrays)
+        SaveType(
+            ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2_gal_RadioLoud.txt", arrays)
+        SaveType(
+            irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3_gal_RadioLoud.txt", arrays)
+        SaveType(
+            ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3_gal_RadioLoud.txt", arrays)
+        SaveType(
+            ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3_gal_RadioLoud.txt", arrays)
+else:
+    SaveType(
+        iAGN, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_AGN-RadioLoud.txt", arrays)
+    SaveType(icomp, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_Comp-RadioLoud.txt", arrays)
+    SaveType(ihii1, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII1-RadioLoud.txt", arrays)
+    SaveType(
+        irad, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD-RadioLoud.txt", arrays)
+    SaveType(ishock, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK-RadioLoud.txt", arrays)
+    SaveType(ihii2, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII2-RadioLoud.txt", arrays)
+    SaveType(irad3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_RAD3-RadioLoud.txt", arrays)
+    SaveType(ishock3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_SHOCK3-RadioLoud.txt", arrays)
+    SaveType(ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3-RadioLoud.txt", arrays)
+
+
+# %% Determinazione delle Fraction RadioLoud
+
+# Lettura dei dati
+Sampl = 'yes'
+SamePos = "yes"     # Far Girare SOLAMENTE CON SAMEPOS = yes (Manca l'implementazione corretta del percorso !!)
+
+# Leggo i file del Type1
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_RadioLoud_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII-RadioLoud.txt"
+    
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Leggo i file del type2
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_RadioLoud_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII-RadioLoud.txt"
+    
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Calcola A ∩ B
+intersection_AB = np.intersect1d(i1, i2)
+
+# Stampa il numero di elementi nell'intersezione
+print("L'intersezione è composta da un numero di", len(intersection_AB), "Elementi")
+
+# Usa np.where per ottenere gli indici comuni
+elementi_comuni_i1 = np.where(np.isin(i1, intersection_AB))[0]
+elementi_comuni_i2 = np.where(np.isin(i2, intersection_AB))[0]
+
+# Ricavo i relativi elementi x, y facenti capo a questo indice di elementi in comune
+x1_selected = x1[elementi_comuni_i1]
+y1_selected = y1[elementi_comuni_i1]
+x2_selected = x2[elementi_comuni_i2]
+y2_selected = y2[elementi_comuni_i2]
+ex1_selected = ex1[elementi_comuni_i1]
+ex2_selected = ex2[elementi_comuni_i2]
+ey1_selected = ey1[elementi_comuni_i1]
+ey2_selected = ey2[elementi_comuni_i2]
+
+# Contributo dal type1
+fraction1 = np.zeros(5000)
+fraction2 = np.zeros(5000)
+fraction3 = np.zeros(5000)
+NumOgg1  = np.zeros(5000)
+NumOgg2 = np.zeros(5000)
+NumOgg3 = np.zeros(5000)
+
+for k in range(5000):
+    xVAR = np.random.normal(x1_selected, ex1_selected)
+    yVAR = np.random.normal(y1_selected, ey1_selected)
+    condition_a = (yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04)
+    condition_b = (yVAR < (0.61 / (xVAR - 0.47)) + 1.19) & (yVAR >= (0.61 / (xVAR - 0.05)) + 1.3)
+    condition_c = (yVAR < (0.61 / (xVAR - 0.05)) + 1.3) & (xVAR < 0.04)
+    fraction1[k] = len(np.where(condition_a)[0]) / len(intersection_AB)
+    fraction2[k] = len(np.where(condition_b)[0]) / len(intersection_AB)
+    fraction3[k] = len(np.where(condition_c)[0]) / len(intersection_AB)
+    NumOgg1[k] = len(np.where(condition_a)[0]) 
+    NumOgg2[k] = len(np.where(condition_b)[0])
+    NumOgg3[k] = len(np.where(condition_c)[0]) 
+    
+    
+
+fractTOT_1 = np.mean(fraction1)  #f_1a
+fractTOT_2 = np.mean(fraction2)  #f_1b
+fractTOT_3 = np.mean(fraction3)  #f_1c
+fractERR_1 = np.std(fraction1)
+fractERR_2 = np.std(fraction2)
+fractERR_3 = np.std(fraction3)
+sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
+esum1 = fractERR_1 + fractERR_2 + fractERR_3
+N1A = int(np.mean(NumOgg1))
+N1B = int(np.mean(NumOgg2))
+N1C = int(np.mean(NumOgg3))
+eN1A = int(np.std(NumOgg1))
+eN1B = int(np.std(NumOgg2))
+eN1C = int(np.std(NumOgg3))
+
+
+# Contributo dal type2
+fraction4 = np.zeros(5000)
+fraction5 = np.zeros(5000)
+fraction6 = np.zeros(5000)
+NumOgg4  = np.zeros(5000)
+NumOgg5 = np.zeros(5000)
+NumOgg6 = np.zeros(5000)
+for k in range(5000):
+    
+    #Creazione delle distribuzioni
+    xVAR = np.random.normal(x2_selected, ex2_selected)
+    yVAR = np.random.normal(y2_selected, ey2_selected)
+    
+    #Condizioni di collocamento dei punti
+    condition_d = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_d = condition_d & (yVAR >= 1.89 * xVAR + 0.76)
+    condition_e = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_e = condition_e & (yVAR < 1.89 * xVAR + 0.76)
+    condition_f = ~((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))
+
+    #Popolamento degli array di fraction
+    fraction4[k] = len(np.where(condition_d)[0]) / len(x2_selected)
+    fraction5[k] = len(np.where(condition_e)[0]) / len(x2_selected)
+    fraction6[k] = len(np.where(condition_f)[0]) / len(x2_selected)
+    
+    #Popolamento degli array di conteggio
+    NumOgg4[k] = len(np.where(condition_d)[0]) 
+    NumOgg5[k] = len(np.where(condition_e)[0])
+    NumOgg6[k] = len(np.where(condition_f)[0]) 
+
+fractTOT_4 = np.mean(fraction4) #f_2a
+fractERR_4 = np.std(fraction4)
+
+fractTOT_5 = np.mean(fraction5) #f_2b
+fractERR_5 = np.std(fraction5)
+
+fractTOT_6 = np.mean(fraction6) #f_2c
+fractERR_6 = np.std(fraction6)
+
+sum2 = fractTOT_4 + fractTOT_5 + fractTOT_6
+esum2 = fractERR_4 + fractERR_5 + fractERR_6
+
+N2A = int(np.mean(NumOgg4))
+N2B = int(np.mean(NumOgg5))
+N2C = int(np.mean(NumOgg6))
+eN2A = int(np.std(NumOgg4))
+eN2B = int(np.std(NumOgg5))
+eN2C = int(np.std(NumOgg6))
+
+
+# Stampa i risultati
+print("Ho ottenuto i seguenti risultati:\n")
+print("Identificazione con BPT-NII\n")
+print("AGN =", N1A, "+-", eN1A, "\n")
+print("AGN =", fractTOT_1, "+-", fractERR_1, "\n")
+print("COMPOSITE =", N1B, "+-", eN1B, "\n")
+print("COMPOSITE =", fractTOT_2, "+-", fractERR_2, "\n")
+print("SF Galaxies =", N1C, "+-", eN1C, "\n")
+print("SF Galaxies =", fractTOT_3, "+-", fractERR_3, "\n")
+print("Check Normalizzazione:", sum1,"+-" ,  esum1)
+
+
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_a, condition_b, condition_c])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered),"\n\n\n")
+
+
+
+print("Identificazione con BPT-SII\n")
+print("RADIATIVE =", N2A, "+-", eN2A, "\n")
+print("RADIATIVE =", fractTOT_4, "+-", fractERR_4, "\n")
+print("SHOCK =", N2B, "+-", eN2B, "\n")
+print("SHOCK =", fractTOT_5, "+-", fractERR_5, "\n")
+print("SF Galaxies =", N2C, "+-", eN2C, "\n")
+print("SF Galaxies =", fractTOT_6, "+-", fractERR_6, "\n\n")
+print("Check Normalizzazione:", sum2, "+-",esum2)
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_d, condition_e, condition_f])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered))
+
 
 
 

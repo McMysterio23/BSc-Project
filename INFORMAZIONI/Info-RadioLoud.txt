@@ -1,0 +1,10 @@
+Si sono Trovate rispettivamente 2145 galassie RadioLoud nel sample definito nelle vicinanze delle BCG.
+Di queste di sono trovate rispettivamente 1033, 579, 680 galassie le cui linee spettrali erano disponibili per la creazione dei BPT diagrams NII, SII ed OI
+
+Le fraction di AGN si sono dunque eseguite su un campione di 575 elementi in cui erano presenti entrambi i traccanti NII ed SII.
+
+
+Si sono trovate invece un numero di 49 BCG presenti anche nel nostro Sample ricavato da SDSSDR7 unito al database C4
+Di queste si sono trovate rispettivamente 40 17 20 galassie le cui linee spettrali erano disponibili per la creazione dei BPT diagrams NII, SII ed OI
+
+Le Fractions di AGN si sono dunque eseguite su un campione di 17 elementi in cui erano presenti entrambi i traccianti NII ed SII.
