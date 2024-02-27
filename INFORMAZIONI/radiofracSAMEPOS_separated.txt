@@ -1,0 +1,40 @@
+Ho ottenuto i seguenti risultati, Senza considerare l'insieme intersezione !!!':
+
+Identificazione con BPT-NII
+
+AGN = 692 +- 7 
+
+AGN = 0.6700404646660213 +- 0.0075661693254117125 
+
+COMPOSITE = 255 +- 8 
+
+COMPOSITE = 0.24729680542110355 +- 0.00835379756349548 
+
+SF Galaxies = 86 +- 5 
+
+SF Galaxies = 0.08418199419167473 +- 0.00525545566813988 
+
+Check Normalizzazione: 1.0015192642787996 +- 0.02117542255704707
+Numero di punti coperti: 1033
+Totale dei punti: 1033 
+
+
+
+Identificazione con BPT-SII
+
+RADIATIVE = 126 +- 4 
+
+RADIATIVE = 0.21908255613126076 +- 0.00830962354298151 
+
+SHOCK = 307 +- 6 
+
+SHOCK = 0.5311630397236615 +- 0.010996685119636744 
+
+SF Galaxies = 144 +- 5 
+
+SF Galaxies = 0.2497544041450777 +- 0.008755297798709602 
+
+
+Check Normalizzazione: 1.0 +- 0.028061606461327854
+Numero di punti coperti: 579
+Totale dei punti: 579

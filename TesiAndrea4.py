@@ -981,11 +981,22 @@ def PlotScat(x, y, ex=None, ey=None, xlim=None, ylim=None, colore="black", simbo
         plt.errorbar(x, y, xerr=ex, color=colore, linestyle='None')
     if (ex is None) == True and (ey is None) == False:
         plt.errorbar(x, y, yerr=ey, color=colore, linestyle='None')
+
     plt.xlabel(labels[0], fontsize=16)
     plt.ylabel(labels[1], fontsize=16)
     plt.tick_params(axis='both', labelsize=16)
     return len(x)
 
+"""
+def add_error_cross(x, y, ex, ey):
+    x_error_percentile = np.percentile(ex, 75)
+    y_error_percentile = np.percentile(ey, 75)
+
+    plt.errorbar(x, y, xerr=ex, yerr=ey, linestyle='None', marker='o', color='blue')
+    plt.errorbar(x_error_percentile, y_error_percentile, marker='x', color='red', markersize=10, label='75th Percentile Error')
+    plt.legend()
+    plt.show()
+"""
 
 def ErrLogRatio(num, den, err_num=None, err_den=None, Niter=1000):
     errors = np.zeros((len(num)))
@@ -1002,6 +1013,55 @@ def ErrLogRatio(num, den, err_num=None, err_den=None, Niter=1000):
     return errors
 
 
+
+def scatter_plot(x, y, xlim=None, ylim=None, color="black", marker="o", labels=["X", "Y"], overplot=False):
+    if xlim is not None:
+        x_mask = np.logical_and(x >= xlim[0], x <= xlim[1])
+        x = x[x_mask]
+        y = y[x_mask]
+
+    if ylim is not None:
+        y_mask = np.logical_and(y >= ylim[0], y <= ylim[1])
+        x = x[y_mask]
+        y = y[y_mask]
+
+    if not overplot:
+        fig, ax = plt.subplots()
+
+    plt.scatter(x, y,s= 5, color=color, marker=marker, label="Data",)
+
+    plt.xlabel(labels[0], fontsize=16)
+    plt.ylabel(labels[1], fontsize=16)
+    plt.tick_params(axis='both', labelsize=16)
+
+    return len(x)
+
+def add_error_cross(x, y, xerr, yerr, xpos = 1, ypos = -1):
+    """
+    Parameters
+    ----------
+    x : Array delle ascisse
+    y : Array delle ordinate
+    xerr : Array degli errori sulle x
+    yerr : Array degli errori sulle y
+    xpos : Ascissa del centro del mirino
+        DESCRIPTION. The default is 1.
+    ypos : Ordinata del centro del mirino
+        DESCRIPTION. The default is -1.
+
+    Returns
+    -------
+    None.
+
+    """
+    x_cross = np.median(xerr)  # 75 percentile per gli errori su x
+    y_cross = np.median(yerr)  # 75 percentile per gli errori su y
+    plt.errorbar(xpos, ypos, xerr=np.percentile(x_cross, 75), yerr=np.percentile(y_cross, 75),
+                 linestyle='None', marker='x', color='red', markersize=10, label='Incertezza al 75%')
+
+
+
+
 # %% BPT DIAGRAMS (R)
 
 Sampl = "no"
@@ -1011,7 +1071,7 @@ RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL,
 
 
 #SamePos = "yes"
-SamePos = "no"
+SamePos = "yes"
 
 """
 OIIIHb = 0.61 / (NIIHa - 0.05) + 1.3     #(Kauffmann+03 line)
@@ -1105,18 +1165,48 @@ def PBPT(n=1):
     return 0
 
 
+
+#DA fare girare uno per volta nella console una volta che la cella è stata fatta girare !!!
+"""
+#NII
+add_error_cross(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1)
+scatter_plot(logNIIHa1, logOIIIHb1, overplot=True, color = "blue", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=1)
+plt.show()
+
+#SII
+add_error_cross(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2)
+scatter_plot(logSIIHa2, logOIIIHb2, overplot=True, color = "blue", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=2)
+plt.show()
+
+#OI
+add_error_cross(logOIHa3, logOIIIHb3, elogOIHa3, elogOIIIHb3)
+scatter_plot(logOIHa3, logOIIIHb3, overplot=True, color = "blue", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=3)
+plt.show()
+"""
+
+
+"""
 PlotScat(logNIIHa1, logOIIIHb1, ex=elogNIIHa1, ey=elogOIIIHb1, xlim=None, ylim=None, colore="red",
          simbolo="o", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PBPT(n=1)
+
 
 PlotScat(logSIIHa2, logOIIIHb2, ex=elogSIIHa2, ey=elogOIIIHb2, xlim=None, ylim=None, colore="blue",
          simbolo="o", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PBPT(n=2)
 
+
+
 PlotScat(logOIHa3, logOIIIHb3, ex=elogOIHa3, ey=elogOIIIHb3, xlim=None, ylim=None, colore="green",
          simbolo="o", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PBPT(n=3)
 
+
+
+"""
 
 if Sampl == 'no':
     if SamePos == "yes":
@@ -2876,8 +2966,170 @@ all_points_covered = np.logical_or.reduce([condition_d, condition_e, condition_f
 print("Numero di punti coperti:", np.sum(all_points_covered))
 print("Totale dei punti:", len(all_points_covered))
 
+# %% SENZA INTERSEZIONE !!!
+
+# Lettura dei dati
+Sampl = 'no'
+SamePos = "yes"     # Far Girare SOLAMENTE CON SAMEPOS = yes (Manca l'implementazione corretta del percorso !!)
+
+# Leggo i file del Type1
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_RadioLoud_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII-RadioLoud.txt"
+    
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Leggo i file del type2
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_RadioLoud_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII-RadioLoud.txt"
+    
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
 
 
+print("Sull'NII abbiamo", len(i1), "Elementi, mantre nel SII abbiamo", len(i2), "Elementi")
+
+# Contributo dal type1
+fraction1 = np.zeros(5000)
+fraction2 = np.zeros(5000)
+fraction3 = np.zeros(5000)
+NumOgg1  = np.zeros(5000)
+NumOgg2 = np.zeros(5000)
+NumOgg3 = np.zeros(5000)
+
+for k in range(5000):
+    xVAR = np.random.normal(x1, ex1)
+    yVAR = np.random.normal(y1, ey1)
+    condition_a = (yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04)
+    condition_b = (yVAR < (0.61 / (xVAR - 0.47)) + 1.19) & (yVAR >= (0.61 / (xVAR - 0.05)) + 1.3)
+    condition_c = (yVAR < (0.61 / (xVAR - 0.05)) + 1.3) & (xVAR < 0.04)
+    fraction1[k] = len(np.where(condition_a)[0]) / len(i1)
+    fraction2[k] = len(np.where(condition_b)[0]) / len(i1)
+    fraction3[k] = len(np.where(condition_c)[0]) / len(i1)
+    NumOgg1[k] = len(np.where(condition_a)[0]) 
+    NumOgg2[k] = len(np.where(condition_b)[0])
+    NumOgg3[k] = len(np.where(condition_c)[0]) 
+    
+    
+
+fractTOT_1 = np.mean(fraction1)  #f_1a
+fractTOT_2 = np.mean(fraction2)  #f_1b
+fractTOT_3 = np.mean(fraction3)  #f_1c
+fractERR_1 = np.std(fraction1)
+fractERR_2 = np.std(fraction2)
+fractERR_3 = np.std(fraction3)
+sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
+esum1 = fractERR_1 + fractERR_2 + fractERR_3
+N1A = int(np.mean(NumOgg1))
+N1B = int(np.mean(NumOgg2))
+N1C = int(np.mean(NumOgg3))
+eN1A = int(np.std(NumOgg1))
+eN1B = int(np.std(NumOgg2))
+eN1C = int(np.std(NumOgg3))
+
+# Contributo dal type2
+fraction4 = np.zeros(5000)
+fraction5 = np.zeros(5000)
+fraction6 = np.zeros(5000)
+NumOgg4  = np.zeros(5000)
+NumOgg5 = np.zeros(5000)
+NumOgg6 = np.zeros(5000)
+for k in range(5000):
+    
+    #Creazione delle distribuzioni
+    xVAR = np.random.normal(x2, ex2)
+    yVAR = np.random.normal(y2, ey2)
+    
+    #Condizioni di collocamento dei punti
+    condition_d = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_d = condition_d & (yVAR >= 1.89 * xVAR + 0.76)
+    condition_e = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_e = condition_e & (yVAR < 1.89 * xVAR + 0.76)
+    condition_f = ~((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))
+
+    #Popolamento degli array di fraction
+    fraction4[k] = len(np.where(condition_d)[0]) / len(i2)
+    fraction5[k] = len(np.where(condition_e)[0]) / len(i2)
+    fraction6[k] = len(np.where(condition_f)[0]) / len(i2)
+    
+    #Popolamento degli array di conteggio
+    NumOgg4[k] = len(np.where(condition_d)[0]) 
+    NumOgg5[k] = len(np.where(condition_e)[0])
+    NumOgg6[k] = len(np.where(condition_f)[0]) 
+
+fractTOT_4 = np.mean(fraction4) #f_2a
+fractERR_4 = np.std(fraction4)
+
+fractTOT_5 = np.mean(fraction5) #f_2b
+fractERR_5 = np.std(fraction5)
+
+fractTOT_6 = np.mean(fraction6) #f_2c
+fractERR_6 = np.std(fraction6)
+
+sum2 = fractTOT_4 + fractTOT_5 + fractTOT_6
+esum2 = fractERR_4 + fractERR_5 + fractERR_6
+
+N2A = int(np.mean(NumOgg4))
+N2B = int(np.mean(NumOgg5))
+N2C = int(np.mean(NumOgg6))
+eN2A = int(np.std(NumOgg4))
+eN2B = int(np.std(NumOgg5))
+eN2C = int(np.std(NumOgg6))
+
+
+# Stampa i risultati
+print("Ho ottenuto i seguenti risultati, Senza considerare l'insieme intersezione !!!':\n")
+print("Identificazione con BPT-NII\n")
+print("AGN =", N1A, "+-", eN1A, "\n")
+print("AGN =", fractTOT_1, "+-", fractERR_1, "\n")
+print("COMPOSITE =", N1B, "+-", eN1B, "\n")
+print("COMPOSITE =", fractTOT_2, "+-", fractERR_2, "\n")
+print("SF Galaxies =", N1C, "+-", eN1C, "\n")
+print("SF Galaxies =", fractTOT_3, "+-", fractERR_3, "\n")
+print("Check Normalizzazione:", sum1,"+-" ,  esum1)
+
+
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_a, condition_b, condition_c])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered),"\n\n\n")
+
+
+
+print("Identificazione con BPT-SII\n")
+print("RADIATIVE =", N2A, "+-", eN2A, "\n")
+print("RADIATIVE =", fractTOT_4, "+-", fractERR_4, "\n")
+print("SHOCK =", N2B, "+-", eN2B, "\n")
+print("SHOCK =", fractTOT_5, "+-", fractERR_5, "\n")
+print("SF Galaxies =", N2C, "+-", eN2C, "\n")
+print("SF Galaxies =", fractTOT_6, "+-", fractERR_6, "\n\n")
+print("Check Normalizzazione:", sum2, "+-",esum2)
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_d, condition_e, condition_f])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered))
 
 # %% Dynamic galaxy versus mass per BPT subsamples
 

@@ -1,0 +1,41 @@
+Sull'NII abbiamo 40 Elementi, mantre nel SII abbiamo 17 Elementi
+Ho ottenuto i seguenti risultati, Senza considerare l'insieme intersezione !!!':
+
+Identificazione con BPT-NII
+
+AGN = 24 +- 1 
+
+AGN = 0.61998 +- 0.044150873151048785 
+
+COMPOSITE = 12 +- 2 
+
+COMPOSITE = 0.30487 +- 0.05201473925725284 
+
+SF Galaxies = 3 +- 1 
+
+SF Galaxies = 0.080695 +- 0.030869758259500512 
+
+Check Normalizzazione: 1.005545 +- 0.12703537066780213
+Numero di punti coperti: 40
+Totale dei punti: 40 
+
+
+
+Identificazione con BPT-SII
+
+RADIATIVE = 1 +- 0 
+
+RADIATIVE = 0.08077647058823531 +- 0.03281075863726624 
+
+SHOCK = 8 +- 1 
+
+SHOCK = 0.5022823529411765 +- 0.06267658956015983 
+
+SF Galaxies = 7 +- 1 
+
+SF Galaxies = 0.4169411764705882 +- 0.05957914685932007 
+
+
+Check Normalizzazione: 1.0 +- 0.15506649505674613
+Numero di punti coperti: 17
+Totale dei punti: 17

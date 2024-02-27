@@ -8,3 +8,13 @@ Si sono trovate invece un numero di 49 BCG presenti anche nel nostro Sample rica
 Di queste si sono trovate rispettivamente 40 17 20 galassie le cui linee spettrali erano disponibili per la creazione dei BPT diagrams NII, SII ed OI
 
 Le Fractions di AGN si sono dunque eseguite su un campione di 17 elementi in cui erano presenti entrambi i traccianti NII ed SII.
+
+
+
+FRAZIONI DI OGGETTI RADIOLOUD OTTENUTE NEI VARI SAMPLE STUDIATI :
+
+FRAZIONE 1 : (#BCG-RADIOLOUD) / (#BCG TOTALI ) = 49 / 484 = 0.101
+10.1 % DI RADIOLOUD NELLE BCG !
+
+FRAZIONE 2 : (#GALASSIE noBCG RADIOLOUD) / (#GALASSIE noBCG SamePos) = 2145 / 389454 = 0.00551
+circa 0.6 % di RadioLoud nell'insieme ritagliato !!!
