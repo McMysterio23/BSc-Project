@@ -1,0 +1,30 @@
+Brightest cluster galaxies (BCGs) are the most massive and luminous galaxies located near the center of relaxed, virialized, and undisturbed galaxy clusters in the local Universe (Sandage et al. 1976; Lin et al. 2010). 
+
+According with several observational studies (...Travascio et al. 2021) these objects experience special formation differing from galaxy evolution in general. Current theoretical models (e.g., De Lucia \& Blazoit 2007, Cooke et al. 2019) predict that the dry mergers are the dominant mechanisms responsible for their mass assembly.
+
+Often, these object are observed to host a supermassive black hole (SMBH) in their center (Rafferty et al. 2006).  
+The process of matter accretion into these SMBHs may release a large amount of energy, resulting in Active Galactic Nuclei (AGN).
+There are two main modes in which SMBH accretion can occur: the so called “radio mode” and the “quasars mode”. 
+The quasar mode consists in a high accretion rate of the SMBH via an optically-thick and geometrically-thin disk, and most of the energy is released in form of radiation. In a radio mode scenario, the SMBH accretion of hotter gas happens with a low rate in a optically-thin and geometrically-thick disk configuration, releasing energy in form of relativistic particles. The latter is typically observed in BCG. 
+
+
+The fraction of AGN activity in BCGs has been explore in previous papers (...). saying that...
+
+However, it is still not clear what is the role of the over-dense environment in which BCG live, in triggering the SMBH accretion ...
+
+Therefore, in this thesis I exploited the SDSS catalog combined with... the.... to estimate the fraction of optical AGN and radio AGN in our BCG sample. 
+Optical AGN are classified through the BPT diagram diagniostic....
+The information on radio activity is provided by ... in a overlapped area to the SDSS survey.
+
+I compared these ..fractions with those estimated... in a catalog containing galaxies non-BCG selected. 
+
+These analyses reveal that..
+
+These findings suggest(imply) that...
+
+
+
+
+################################
+
+In previous studies, it has been shown that a large fraction (about 30 per cent overall) of BCGs have signatures of AGN activity, including radio emission (Lin & Mohr 2007; von der Linden et al. 2007; Stott et al. 2012).
