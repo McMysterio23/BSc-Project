@@ -1035,8 +1035,33 @@ def scatter_plot(x, y, xlim=None, ylim=None, color="black", marker="o", labels=[
     plt.tick_params(axis='both', labelsize=16)
 
     return len(x)
-
+"""
 def add_error_cross(x, y, xerr, yerr, xpos = 1, ypos = -1):
+    
+    Parameters
+    ----------
+    x : Array delle ascisse
+    y : Array delle ordinate
+    xerr : Array degli errori sulle x
+    yerr : Array degli errori sulle y
+    xpos : Ascissa del centro del mirino
+        DESCRIPTION. The default is 1.
+    ypos : Ordinata del centro del mirino
+        DESCRIPTION. The default is -1.
+
+    Returns
+    -------
+    None.
+
+    
+    x_cross = np.median(xerr)  # 75 percentile per gli errori su x
+    y_cross = np.median(yerr)  # 75 percentile per gli errori su y
+    plt.errorbar(xpos, ypos, xerr=np.percentile(x_cross, 75), yerr=np.percentile(y_cross, 75),
+                 linestyle='None', marker='x', color='red', markersize=10, label='Incertezza al 75%')
+
+"""
+
+def add_error_cross(x, y, xerr, yerr, xpos=1, ypos=-1):
     """
     Parameters
     ----------
@@ -1056,9 +1081,51 @@ def add_error_cross(x, y, xerr, yerr, xpos = 1, ypos = -1):
     """
     x_cross = np.median(xerr)  # 75 percentile per gli errori su x
     y_cross = np.median(yerr)  # 75 percentile per gli errori su y
-    plt.errorbar(xpos, ypos, xerr=np.percentile(x_cross, 75), yerr=np.percentile(y_cross, 75),
-                 linestyle='None', marker='x', color='red', markersize=10, label='Incertezza al 75%')
 
+    #plt.errorbar(xpos, ypos, xerr=np.percentile(x_cross, 75), yerr=np.percentile(y_cross, 75),
+                 #linestyle='None', marker='x', color='red', markersize=10, label='Incertezza al 75%', capsize=0)
+                 
+    plt.errorbar(1, -1, xerr=np.percentile(x_cross, 75), yerr=np.percentile(y_cross, 75))
+
+import matplotlib.patches as patches
+
+def add_error_box(x, y, xerr, yerr, xpos=1, ypos=-1):
+    """
+    Parameters
+    ----------
+    x : Array delle ascisse
+    y : Array delle ordinate
+    xerr : Array degli errori sulle x
+    yerr : Array degli errori sulle y
+    xpos : Ascissa del centro del mirino
+        DESCRIPTION. The default is 1.
+    ypos : Ordinata del centro del mirino
+        DESCRIPTION. The default is -1.
+
+    Returns
+    -------
+    None.
+
+    """
+    x_cross = np.median(xerr)  # 75 percentile per gli errori su x
+    y_cross = np.median(yerr)  # 75 percentile per gli errori su y
+
+    # Creare una Rectangle con le dimensioni degli errori sulle x e y
+    error_box = patches.Rectangle((xpos - np.percentile(x_cross, 75), ypos - np.percentile(y_cross, 75)),
+                                  2 * np.percentile(x_cross, 75), 2 * np.percentile(y_cross, 75),
+                                  edgecolor='white', linewidth=2, facecolor='none', label='Incertezza al 75%')
+
+    # Aggiungere la Rectangle al grafico
+    plt.gca().add_patch(error_box)
+
+    # Aggiungere linee rosse passanti per i punti medi dei lati del rettangolo
+    x_left, y_mid = xpos - np.percentile(x_cross, 75), ypos
+    x_right, y_mid = xpos + np.percentile(x_cross, 75), ypos
+    plt.plot([x_left, x_right], [y_mid, y_mid], color='red', linestyle='--', linewidth=1.5)
+
+    x_mid, y_top = xpos, ypos + np.percentile(y_cross, 75)
+    x_mid, y_bottom = xpos, ypos - np.percentile(y_cross, 75)
+    plt.plot([x_mid, x_mid], [y_top, y_bottom], color='red', linestyle='--', linewidth=1.5)
 
 
 
@@ -1169,21 +1236,24 @@ def PBPT(n=1):
 #DA fare girare uno per volta nella console una volta che la cella è stata fatta girare !!!
 """
 #NII
-add_error_cross(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1)
+add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
 scatter_plot(logNIIHa1, logOIIIHb1, overplot=True, color = "blue", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
 PBPT(n=1)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
 plt.show()
 
 #SII
-add_error_cross(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2)
+add_error_box(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2)
 scatter_plot(logSIIHa2, logOIIIHb2, overplot=True, color = "blue", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
 PBPT(n=2)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
 plt.show()
 
 #OI
-add_error_cross(logOIHa3, logOIIIHb3, elogOIHa3, elogOIIIHb3)
+add_error_box(logOIHa3, logOIIIHb3, elogOIHa3, elogOIIIHb3)
 scatter_plot(logOIHa3, logOIIIHb3, overplot=True, color = "blue", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
 PBPT(n=3)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
 plt.show()
 """
 
