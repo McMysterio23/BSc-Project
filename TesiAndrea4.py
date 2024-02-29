@@ -1175,8 +1175,8 @@ i1 = indicitot[indexes1]   #Indici dell'array con tutte le galassie su cui è po
 logOIIIHb2 = np.log10(OIII_5007[indexes2]/H_BETA[indexes2])
 elogOIIIHb2 = ErrLogRatio(OIII_5007[indexes2], H_BETA[indexes2],
                           err_num=eOIII_5007[indexes2], err_den=eH_BETA[indexes2])
-SII = SII_6717[indexes2]+SII_6731[indexes2]
-eSII = eSII_6717[indexes2]+eSII_6731[indexes2]
+SII = SII_6731[indexes2]
+eSII = eSII_6731[indexes2]
 logSIIHa2 = np.log10((SII)/H_ALPHA[indexes2])
 elogSIIHa2 = ErrLogRatio(
     SII, H_ALPHA[indexes2], err_num=eSII, err_den=eH_ALPHA[indexes2])
@@ -1436,7 +1436,7 @@ PBPT(n=1)
 """
 Versione da mettere nella tesi : ( BPT-NII)
 add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
-scatter_plot(xAGN, yAGN, color = 'red', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+scatter_plot(xAGN, yAGN, color = 'red', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
 scatter_plot(xcomp, ycomp, color = 'blue', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
 scatter_plot(xhii1, yhii1, color = 'green', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
 PBPT(n = 1)
@@ -2199,7 +2199,7 @@ print("Identificazione con BPT-SII", fractTOT_4, fractERR_4, "\n")
 
 # Lettura dei dati
 Sampl = 'no'
-SamePos = "no"
+SamePos = "yes"
 
 # Leggo i file del Type1
 if Sampl == 'no':
@@ -2524,8 +2524,8 @@ i1 = indicitot[indexes1]   #Indici dell'array con tutte le galassie su cui è po
 logOIIIHb2 = np.log10(OIII_5007[indexes2]/H_BETA[indexes2])
 elogOIIIHb2 = ErrLogRatio(OIII_5007[indexes2], H_BETA[indexes2],
                           err_num=eOIII_5007[indexes2], err_den=eH_BETA[indexes2])
-SII = SII_6717[indexes2]+SII_6731[indexes2]
-eSII = eSII_6717[indexes2]+eSII_6731[indexes2]
+SII = SII_6731[indexes2]
+eSII = eSII_6731[indexes2]
 logSIIHa2 = np.log10((SII)/H_ALPHA[indexes2])
 elogSIIHa2 = ErrLogRatio(
     SII, H_ALPHA[indexes2], err_num=eSII, err_den=eH_ALPHA[indexes2])
@@ -2545,6 +2545,32 @@ i3 = indicitot[indexes3]   #Indici dell'array con tutte le galassie su cui è po
 
 
 
+"""
+#NII
+add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
+scatter_plot(logNIIHa1, logOIIIHb1, overplot=True, color = "blue", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=1)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.show()
+
+#SII
+add_error_box(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2)
+scatter_plot(logSIIHa2, logOIIIHb2, overplot=True, color = "blue", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=2)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.show()
+
+#OI
+add_error_box(logOIHa3, logOIIIHb3, elogOIHa3, elogOIIIHb3)
+scatter_plot(logOIHa3, logOIIIHb3, overplot=True, color = "blue", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+PBPT(n=3)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.show()
+"""
+
+
+
+"""
 PlotScat(logNIIHa1, logOIIIHb1, ex=elogNIIHa1, ey=elogOIIIHb1, xlim=None, ylim=None, colore="red",
          simbolo="o", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PBPT(n=1)
@@ -2556,7 +2582,7 @@ PBPT(n=2)
 PlotScat(logOIHa3, logOIIIHb3, ex=elogOIHa3, ey=elogOIIIHb3, xlim=None, ylim=None, colore="green",
          simbolo="o", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PBPT(n=3)
-
+"""
 
 if Sampl == 'no':
     if SamePos == "yes":
@@ -2602,13 +2628,32 @@ if os.path.exists(fileout) == False:
 
 #Sampl="no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
-Sampl = "yes"
+Sampl = "no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
 
 #SamePos = "yes"
 SamePos = "yes"
 
 def SaveType(i, fileout, arrays):
+    """
+    Versione Precedente che dava un messaggio di errore quando fatta girare
+    con Sampl = 'no'
+    
+    Parameters
+    ----------
+    i : TYPE
+        DESCRIPTION.
+    fileout : TYPE
+        DESCRIPTION.
+    arrays : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    fileout : TYPE
+        DESCRIPTION.
+
+    """
     val = np.zeros((len(i), len(arrays)))
     kk = 0
     for k in i:
@@ -2619,6 +2664,8 @@ def SaveType(i, fileout, arrays):
         np.savetxt(fileout, val, delimiter='\t', header='\t'.join(
             map(str, range(len(arrays)))), comments='')
     return fileout
+
+
 
 
 indicitot = np.arange(len(OIII_5007))
@@ -2864,10 +2911,10 @@ else:
     SaveType(ihii3, "/Users/andreamaccarinelli/Desktop/myOutputs3/Prop_HII3-RadioLoud.txt", arrays)
 
 
-# %% Determinazione delle Fraction RadioLoud
+# %% Determinazione delle Fraction RadioLoud ( SULL'INTERSEZIONE )
 
 # Lettura dei dati
-Sampl = 'yes'
+Sampl = 'no'
 SamePos = "yes"     # Far Girare SOLAMENTE CON SAMEPOS = yes (Manca l'implementazione corretta del percorso !!)
 
 # Leggo i file del Type1

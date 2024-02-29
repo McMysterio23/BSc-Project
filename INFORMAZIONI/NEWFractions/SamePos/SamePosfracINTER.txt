@@ -1,0 +1,41 @@
+L'intersezione è composta da un numero di 209305 Elementi
+Ho ottenuto i seguenti risultati:
+
+Identificazione con BPT-NII
+
+AGN = 33476 +- 59 
+
+AGN = 0.15994039033945678 +- 0.0002844760872629134 
+
+COMPOSITE = 44184 +- 86 
+
+COMPOSITE = 0.2111023320035355 +- 0.00041201903166359033 
+
+SF Galaxies = 131683 +- 64 
+
+SF Galaxies = 0.6291478407109242 +- 0.00030763394857717647 
+
+Check Normalizzazione: 1.0001905630539165 +- 0.0010041290675036803
+Numero di punti coperti: 209305
+Totale dei punti: 209305 
+
+
+
+Identificazione con BPT-SII
+
+RADIATIVE = 11744 +- 60 
+
+RADIATIVE = 0.056110392011657635 +- 0.0002883256510976611 
+
+SHOCK = 4209 +- 46 
+
+SHOCK = 0.020110209502878576 +- 0.0002202941602924286 
+
+SF Galaxies = 193351 +- 65 
+
+SF Galaxies = 0.9237793984854638 +- 0.00031084302334362547 
+
+
+Check Normalizzazione: 1.0 +- 0.0008194628347337153
+Numero di punti coperti: 209305
+Totale dei punti: 209305

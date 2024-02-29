@@ -1,0 +1,41 @@
+L'intersezione è composta da un numero di 139 Elementi
+Ho ottenuto i seguenti risultati:
+
+Identificazione con BPT-NII
+
+AGN = 85 +- 2 
+
+AGN = 0.6125179856115106 +- 0.016941796868529528 
+
+COMPOSITE = 41 +- 2 
+
+COMPOSITE = 0.3019079136690647 +- 0.02003049918172473 
+
+SF Galaxies = 12 +- 1 
+
+SF Galaxies = 0.08738129496402879 +- 0.010655946470221831 
+
+Check Normalizzazione: 1.001807194244604 +- 0.047628242520476094
+Numero di punti coperti: 139
+Totale dei punti: 139 
+
+
+
+Identificazione con BPT-SII
+
+RADIATIVE = 14 +- 2 
+
+RADIATIVE = 0.10576258992805757 +- 0.01529652563479827 
+
+SHOCK = 4 +- 1 
+
+SHOCK = 0.030972661870503602 +- 0.012622676749589244 
+
+SF Galaxies = 119 +- 2 
+
+SF Galaxies = 0.8632647482014388 +- 0.01700425049691866 
+
+
+Check Normalizzazione: 1.0 +- 0.04492345288130617
+Numero di punti coperti: 139
+Totale dei punti: 139
