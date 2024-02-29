@@ -1,0 +1,41 @@
+Sull'NII abbiamo 250430 Elementi, mantre nel SII abbiamo 210165 Elementi
+Ho ottenuto i seguenti risultati, Senza considerare l'insieme intersezione !!!':
+
+Identificazione con BPT-NII [ Insieme esteso, da usare nella tesi ]
+
+AGN = 52896 +- 84 
+
+AGN = 0.21122309387852892 +- 0.0003389308400211001 
+
+COMPOSITE = 55875 +- 110 
+
+COMPOSITE = 0.22311760491953836 +- 0.0004404641268742341 
+
+SF Galaxies = 141753 +- 80 
+
+SF Galaxies = 0.5660423878928244 +- 0.00032123646195869176 
+
+Check Normalizzazione: 1.0003830866908916 +- 0.001100631428854026
+Numero di punti coperti: 250430
+Totale dei punti: 250430 
+
+
+
+Identificazione con BPT-SII [SOLO 6731] non da usare nella tesi !!
+
+RADIATIVE = 11798 +- 59 
+
+RADIATIVE = 0.05614098922275355 +- 0.00028532879767499507 
+
+SHOCK = 4380 +- 46 
+
+SHOCK = 0.02084320414912093 +- 0.00022047024873829305 
+
+SF Galaxies = 193985 +- 65 
+
+SF Galaxies = 0.9230158066281255 +- 0.00031358847727644694 
+
+
+Check Normalizzazione: 1.0 +- 0.000819387523689735
+Numero di punti coperti: 210165
+Totale dei punti: 210165

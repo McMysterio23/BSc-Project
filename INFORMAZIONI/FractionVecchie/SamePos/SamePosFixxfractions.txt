@@ -18,7 +18,7 @@ Totale dei punti: 209305
 
 
 
-Identificazione con BPT-SII
+Identificazione con BPT-SII. USARE QUESTI 
 
 RADIATIVE = 13082 +- 64 
 RADIATIVE = 0.06250997157258546 +- 0.00031527371917323765 

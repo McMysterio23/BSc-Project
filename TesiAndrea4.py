@@ -2385,6 +2385,173 @@ print("Numero di punti coperti:", np.sum(all_points_covered))
 print("Totale dei punti:", len(all_points_covered))
 
 
+# %% SENZA INTERSEZIONE
+
+# Lettura dei dati
+Sampl = 'yes'
+SamePos = "yes"     # Far Girare SOLAMENTE CON SAMEPOS = yes (Manca l'implementazione corretta del percorso !!)
+
+# Leggo i file del Type1
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-NII.txt"
+    
+
+i1, x1, ex1, y1, ey1 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+# Leggo i file del type2
+if Sampl == 'no':
+    if SamePos == "yes":
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal_SamePos.txt"
+        
+    else:
+        f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII_gal.txt"
+        
+else:
+    f = "/Users/andreamaccarinelli/Desktop/myOutputs3/BPT-SII.txt"
+    
+
+i2, x2, ex2, y2, ey2 = np.loadtxt(
+    f, usecols=[0, 1, 2, 3, 4], unpack=True, dtype=float)
+
+
+print("Sull'NII abbiamo", len(i1), "Elementi, mantre nel SII abbiamo", len(i2), "Elementi")
+
+# Contributo dal type1
+fraction1 = np.zeros(5000)
+fraction2 = np.zeros(5000)
+fraction3 = np.zeros(5000)
+NumOgg1  = np.zeros(5000)
+NumOgg2 = np.zeros(5000)
+NumOgg3 = np.zeros(5000)
+
+for k in range(5000):
+    xVAR = np.random.normal(x1, ex1)
+    yVAR = np.random.normal(y1, ey1)
+    condition_a = (yVAR >= (0.61 / (xVAR - 0.47)) + 1.19) | (xVAR >= 0.04)
+    condition_b = (yVAR < (0.61 / (xVAR - 0.47)) + 1.19) & (yVAR >= (0.61 / (xVAR - 0.05)) + 1.3)
+    condition_c = (yVAR < (0.61 / (xVAR - 0.05)) + 1.3) & (xVAR < 0.04)
+    fraction1[k] = len(np.where(condition_a)[0]) / len(i1)
+    fraction2[k] = len(np.where(condition_b)[0]) / len(i1)
+    fraction3[k] = len(np.where(condition_c)[0]) / len(i1)
+    NumOgg1[k] = len(np.where(condition_a)[0]) 
+    NumOgg2[k] = len(np.where(condition_b)[0])
+    NumOgg3[k] = len(np.where(condition_c)[0]) 
+    
+    
+
+fractTOT_1 = np.mean(fraction1)  #f_1a
+fractTOT_2 = np.mean(fraction2)  #f_1b
+fractTOT_3 = np.mean(fraction3)  #f_1c
+fractERR_1 = np.std(fraction1)
+fractERR_2 = np.std(fraction2)
+fractERR_3 = np.std(fraction3)
+sum1 = fractTOT_1 + fractTOT_2 + fractTOT_3
+esum1 = fractERR_1 + fractERR_2 + fractERR_3
+N1A = int(np.mean(NumOgg1))
+N1B = int(np.mean(NumOgg2))
+N1C = int(np.mean(NumOgg3))
+eN1A = int(np.std(NumOgg1))
+eN1B = int(np.std(NumOgg2))
+eN1C = int(np.std(NumOgg3))
+
+# Contributo dal type2
+fraction4 = np.zeros(5000)
+fraction5 = np.zeros(5000)
+fraction6 = np.zeros(5000)
+NumOgg4  = np.zeros(5000)
+NumOgg5 = np.zeros(5000)
+NumOgg6 = np.zeros(5000)
+for k in range(5000):
+    
+    #Creazione delle distribuzioni
+    xVAR = np.random.normal(x2, ex2)
+    yVAR = np.random.normal(y2, ey2)
+    
+    #Condizioni di collocamento dei punti
+    condition_d = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_d = condition_d & (yVAR >= 1.89 * xVAR + 0.76)
+    condition_e = (yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29)
+    condition_e = condition_e & (yVAR < 1.89 * xVAR + 0.76)
+    condition_f = ~((yVAR >= (0.72 / (xVAR - 0.32)) + 1.30) | (xVAR > 0.29))
+
+    #Popolamento degli array di fraction
+    fraction4[k] = len(np.where(condition_d)[0]) / len(i2)
+    fraction5[k] = len(np.where(condition_e)[0]) / len(i2)
+    fraction6[k] = len(np.where(condition_f)[0]) / len(i2)
+    
+    #Popolamento degli array di conteggio
+    NumOgg4[k] = len(np.where(condition_d)[0]) 
+    NumOgg5[k] = len(np.where(condition_e)[0])
+    NumOgg6[k] = len(np.where(condition_f)[0]) 
+
+fractTOT_4 = np.mean(fraction4) #f_2a
+fractERR_4 = np.std(fraction4)
+
+fractTOT_5 = np.mean(fraction5) #f_2b
+fractERR_5 = np.std(fraction5)
+
+fractTOT_6 = np.mean(fraction6) #f_2c
+fractERR_6 = np.std(fraction6)
+
+sum2 = fractTOT_4 + fractTOT_5 + fractTOT_6
+esum2 = fractERR_4 + fractERR_5 + fractERR_6
+
+N2A = int(np.mean(NumOgg4))
+N2B = int(np.mean(NumOgg5))
+N2C = int(np.mean(NumOgg6))
+eN2A = int(np.std(NumOgg4))
+eN2B = int(np.std(NumOgg5))
+eN2C = int(np.std(NumOgg6))
+
+
+# Stampa i risultati
+print("Ho ottenuto i seguenti risultati, Senza considerare l'insieme intersezione !!!':\n")
+print("Identificazione con BPT-NII\n")
+print("AGN =", N1A, "+-", eN1A, "\n")
+print("AGN =", fractTOT_1, "+-", fractERR_1, "\n")
+print("COMPOSITE =", N1B, "+-", eN1B, "\n")
+print("COMPOSITE =", fractTOT_2, "+-", fractERR_2, "\n")
+print("SF Galaxies =", N1C, "+-", eN1C, "\n")
+print("SF Galaxies =", fractTOT_3, "+-", fractERR_3, "\n")
+print("Check Normalizzazione:", sum1,"+-" ,  esum1)
+
+
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_a, condition_b, condition_c])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered),"\n\n\n")
+
+
+
+print("Identificazione con BPT-SII\n")
+print("RADIATIVE =", N2A, "+-", eN2A, "\n")
+print("RADIATIVE =", fractTOT_4, "+-", fractERR_4, "\n")
+print("SHOCK =", N2B, "+-", eN2B, "\n")
+print("SHOCK =", fractTOT_5, "+-", fractERR_5, "\n")
+print("SF Galaxies =", N2C, "+-", eN2C, "\n")
+print("SF Galaxies =", fractTOT_6, "+-", fractERR_6, "\n\n")
+print("Check Normalizzazione:", sum2, "+-",esum2)
+
+# Verifica l'unione delle condizioni
+all_points_covered = np.logical_or.reduce([condition_d, condition_e, condition_f])
+
+# Stampa il numero di punti coperti e il totale dei punti
+print("Numero di punti coperti:", np.sum(all_points_covered))
+print("Totale dei punti:", len(all_points_covered))
+
+
+
 # %% Percentuale di RadioLoud maggiore o minore nelle BCG ?
 
 f1 = "/Users/andreamaccarinelli/Desktop/myOutputs3/infoRadioBCG.txt"

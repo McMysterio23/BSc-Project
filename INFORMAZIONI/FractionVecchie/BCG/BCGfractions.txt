@@ -18,7 +18,7 @@ Totale dei punti: 139
 
 
 
-Identificazione con BPT-SII
+Identificazione con BPT-SII USARE QUESTI PER LA TESI 
 
 RADIATIVE = 8 +- 2 
 RADIATIVE = 0.06474388489208632 +- 0.015903348612028873 
