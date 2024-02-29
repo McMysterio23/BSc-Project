@@ -1131,7 +1131,7 @@ def add_error_box(x, y, xerr, yerr, xpos=1, ypos=-1):
 
 # %% BPT DIAGRAMS (R)
 
-Sampl = "yes"
+Sampl = "no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl, SamePos)
 
 RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = calldata(Sampl, SamePos)
@@ -1327,7 +1327,7 @@ Sampl = "no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
 
 #SamePos = "yes"
-SamePos = "no"
+SamePos = "yes"
 
 def SaveType(i, fileout, arrays):
     val = np.zeros((len(i), len(arrays)))
@@ -1432,6 +1432,17 @@ PlotScat(xhii1, yhii1, ex=exhii1, ey=eyhii1, xlim=None, ylim=None, colore="green
          "$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=1)
 
+
+"""
+Versione da mettere nella tesi : ( BPT-NII)
+add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
+scatter_plot(xAGN, yAGN, color = 'red', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+scatter_plot(xcomp, ycomp, color = 'blue', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
+scatter_plot(xhii1, yhii1, color = 'green', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
+PBPT(n = 1)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.show()
+"""
 
 #BPT SII (Quelli che in altre parti di codice chiamo Type2)
 
