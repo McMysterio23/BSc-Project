@@ -3,7 +3,7 @@
 """
 Created on Mon Jan 15 17:42:46 2024
 
-@author: andreatravascio
+@author: andreamaccarinelli & andreatravascio
 """
 
 from matplotlib.gridspec import GridSpec
@@ -922,7 +922,7 @@ def Histograms(dati_x, dati_y, colori, labels, assi_labels, bins=None, Normalize
     plt.show()
 
 
-def PlotScat(x, y, ex=None, ey=None, xlim=None, ylim=None, colore="black", simbolo="o", labels=["X", "Y"], Positives=["yes", "yes"], overplot=False):
+def PlotScat(x, y, ex=None, ey=None, xlim=None, ylim=None, colore="black", simbolo="o", labels=["X", "Y"], Positives=["yes", "yes"], overplot=False, alpha=1.0):
     if (xlim is None) == True:
         pass
     else:
@@ -974,19 +974,18 @@ def PlotScat(x, y, ex=None, ey=None, xlim=None, ylim=None, colore="black", simbo
             ey = ey[indexes]
     if overplot == False:
         fig, ax = plt.subplots()
-    plt.scatter(x, y, color=colore, linestyle='None', marker=simbolo)
+    plt.scatter(x, y, color=colore, linestyle='None', marker=simbolo, alpha=alpha)
     if (ex is None) == False and (ey is None) == False:
-        plt.errorbar(x, y, xerr=ex, yerr=ey, color=colore, linestyle='None')
+        plt.errorbar(x, y, xerr=ex, yerr=ey, color=colore, linestyle='None', alpha=alpha)
     if (ex is None) == False and (ey is None) == True:
-        plt.errorbar(x, y, xerr=ex, color=colore, linestyle='None')
+        plt.errorbar(x, y, xerr=ex, color=colore, linestyle='None', alpha=alpha)
     if (ex is None) == True and (ey is None) == False:
-        plt.errorbar(x, y, yerr=ey, color=colore, linestyle='None')
+        plt.errorbar(x, y, yerr=ey, color=colore, linestyle='None', alpha=alpha)
 
     plt.xlabel(labels[0], fontsize=16)
     plt.ylabel(labels[1], fontsize=16)
     plt.tick_params(axis='both', labelsize=16)
     return len(x)
-
 """
 def add_error_cross(x, y, ex, ey):
     x_error_percentile = np.percentile(ex, 75)
@@ -2388,7 +2387,7 @@ print("Totale dei punti:", len(all_points_covered))
 # %% SENZA INTERSEZIONE
 
 # Lettura dei dati
-Sampl = 'yes'
+Sampl = 'no'
 SamePos = "yes"     # Far Girare SOLAMENTE CON SAMEPOS = yes (Manca l'implementazione corretta del percorso !!)
 
 # Leggo i file del Type1
