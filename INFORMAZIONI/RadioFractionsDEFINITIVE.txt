@@ -1,0 +1,7 @@
+Nei ritagli finali  BCG  ci sono  49 Radioloud
+Su un totale di  409  BCG
+Risultante in una fraction di RadioLoud corrispondente a  0.1198044009779951  corrispondente al  11.98044009779951 %
+
+Nei ritagli finali  galassie non BCG  ci sono  2111 Radioloud
+Su un totale di  365666  galassie non BCG
+Risultante in una fraction di RadioLoud corrispondente a  0.005773027845082671  corrispondente al  0.5773027845082671 %

@@ -1013,7 +1013,7 @@ def ErrLogRatio(num, den, err_num=None, err_den=None, Niter=1000):
 
 
 
-def scatter_plot(x, y, xlim=None, ylim=None, color="black", marker="o", labels=["X", "Y"], overplot=False):
+def scatter_plot(x, y, xlim=None, ylim=None, color="black", marker="o", labels=["X", "Y"], overplot=False, label = 'Data', s = 5):
     if xlim is not None:
         x_mask = np.logical_and(x >= xlim[0], x <= xlim[1])
         x = x[x_mask]
@@ -1027,7 +1027,7 @@ def scatter_plot(x, y, xlim=None, ylim=None, color="black", marker="o", labels=[
     if not overplot:
         fig, ax = plt.subplots()
 
-    plt.scatter(x, y,s= 5, color=color, marker=marker, label="Data",)
+    plt.scatter(x, y,s= s, color=color, marker=marker, label=label)
 
     plt.xlabel(labels[0], fontsize=16)
     plt.ylabel(labels[1], fontsize=16)
@@ -1112,7 +1112,7 @@ def add_error_box(x, y, xerr, yerr, xpos=1, ypos=-1):
     # Creare una Rectangle con le dimensioni degli errori sulle x e y
     error_box = patches.Rectangle((xpos - np.percentile(x_cross, 75), ypos - np.percentile(y_cross, 75)),
                                   2 * np.percentile(x_cross, 75), 2 * np.percentile(y_cross, 75),
-                                  edgecolor='white', linewidth=2, facecolor='none', label='Incertezza al 75%')
+                                  edgecolor='white', linewidth=2, facecolor='none')
 
     # Aggiungere la Rectangle al grafico
     plt.gca().add_patch(error_box)
@@ -1120,17 +1120,24 @@ def add_error_box(x, y, xerr, yerr, xpos=1, ypos=-1):
     # Aggiungere linee rosse passanti per i punti medi dei lati del rettangolo
     x_left, y_mid = xpos - np.percentile(x_cross, 75), ypos
     x_right, y_mid = xpos + np.percentile(x_cross, 75), ypos
-    plt.plot([x_left, x_right], [y_mid, y_mid], color='red', linestyle='--', linewidth=1.5)
+    plt.plot([x_left, x_right], [y_mid, y_mid], color='red', linestyle='-', linewidth=1.5)
+
+    # Aggiungi piccole barrette agli estremi dei tratti
+    plt.plot([x_left, x_left], [y_mid - 0.03, y_mid + 0.03], color='red', linestyle='-', linewidth=1)
+    plt.plot([x_right, x_right], [y_mid - 0.03, y_mid + 0.03], color='red', linestyle='-', linewidth=1)
 
     x_mid, y_top = xpos, ypos + np.percentile(y_cross, 75)
     x_mid, y_bottom = xpos, ypos - np.percentile(y_cross, 75)
-    plt.plot([x_mid, x_mid], [y_top, y_bottom], color='red', linestyle='--', linewidth=1.5)
+    plt.plot([x_mid, x_mid], [y_top, y_bottom], color='red', linestyle='-', linewidth=1.5)
 
+    # Aggiungi piccole barrette agli estremi dei tratti
+    plt.plot([x_mid - 0.03, x_mid + 0.03], [y_top, y_top], color='red', linestyle='-', linewidth=1)
+    plt.plot([x_mid - 0.03, x_mid + 0.03], [y_bottom, y_bottom], color='red', linestyle='-', linewidth=1)
 
 
 # %% BPT DIAGRAMS (R)
 
-Sampl = "no"
+Sampl = "yes"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl, SamePos)
 
 RA, DEC, Z, eZ, SIG, eSIG, EBV, Zsun, SIGCLUSTER, NUMGAL, SIGMA_BAL, eSIGMA_BAL, SIGMA_FORB, eSIGMA_FORB, VOFF_BAL, eVOFF_BAL, VOFF_FORB, eVOFF_FORB, OII_3726, eOII_3726, OII_3729, eOII_3729, NEIII_3869, eNEIII_3869, H_DELTA, eH_DELTA, H_GAMMA, eH_GAMMA, OIII_4363, eOIII_4363, OIII_4959, eOIII_4959, OIII_5007, eOIII_5007, HEI_5876, eHEI_5876, OI_6300, eOI_6300, H_BETA, eH_BETA, H_ALPHA, eH_ALPHA, NII_6584, eNII_6584, SII_6717, eSII_6717, SII_6731, eSII_6731, ARIII7135, eARIII7135, Mass, eMass1, eMass2, SFR, eSFR1, eSFR2, sSFR, esSFR1, esSFR2 = calldata(Sampl, SamePos)
@@ -1212,47 +1219,64 @@ def BPTd():
 def PBPT(n=1):
     xx1, xx2, xx3, yy1_1, yy1_2, yy2_1, yy2_2, yy3_1, yy3_2 = BPTd()
     if n == 1:
-        plt.plot(xx1[xx1 < 0.05], yy1_1, color='black')
-        plt.plot(xx1[xx1 < 0.47], yy1_2, color='black')
+        plt.plot(xx1[xx1 < 0.05], yy1_1, color='black', label = 'Kauffmann03 line', linestyle = '-.')
+        plt.plot(xx1[xx1 < 0.47], yy1_2, color='black', label = 'Kewley01 line', linestyle = '--')
         plt.xlim((-2, 3))
         plt.ylim((-2, 3))
     if n == 2:
-        plt.plot(xx2[xx2 < 0.32], yy2_1, color='black')
-        plt.plot(xx2[xx2 > -0.33], yy2_2, color='black')
+        plt.plot(xx2[xx2 < 0.32], yy2_1, color='black', label = 'Main AGN line', linestyle = '-.')
+        plt.plot(xx2[xx2 > -0.33], yy2_2, color='black', label = 'LINER/Sy2 line', linestyle = '--')
         plt.xlim((-2, 3))
         plt.ylim((-2, 3))
     if n == 3:
-        plt.plot(xx3[xx3 < -0.59], yy3_1, color='black')
-        plt.plot(xx3[xx3 > -1.1257], yy3_2, color='black')
+        plt.plot(xx3[xx3 < -0.59], yy3_1, color='black', label = 'Main AGN line', linestyle = '-.')
+        plt.plot(xx3[xx3 > -1.1257], yy3_2, color='black', label = 'LINER/Sy2 line', linestyle = '--')
         plt.xlim((-2, 3))
         plt.ylim((-2, 3))
     plt.subplots_adjust(top=0.8, bottom=0.2, left=0.2,
                         right=0.8, hspace=0.2, wspace=0.2)
     return 0
 
-
+if Sampl == 'yes':
+    testo = 'BCG'
+else:
+    testo = 'SDSS'
 
 #DA fare girare uno per volta nella console una volta che la cella è stata fatta girare !!!
 """
 #NII
 add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
-scatter_plot(logNIIHa1, logOIIIHb1, overplot=True, color = "blue", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+scatter_plot(logNIIHa1, logOIIIHb1, overplot=True, color = "orange", labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], label = testo)
 PBPT(n=1)
 plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.legend()
 plt.show()
 
 #SII
 add_error_box(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2)
-scatter_plot(logSIIHa2, logOIIIHb2, overplot=True, color = "blue", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+scatter_plot(logSIIHa2, logOIIIHb2, overplot=True, color = "orange", labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], label = testo)
 PBPT(n=2)
 plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.legend()
 plt.show()
+
+Se vuoi creare il bptSII con entrambe le linee SII 6717 e 6731 esegui prima qui sotto !
+
+PER LE BCG
+f = "/Users/andreamaccarinelli/Desktop/AlmostTrashed/BPT-SII.txt"
+
+PER le galassie SDSS SAMEPOS
+f = "/Users/andreamaccarinelli/Desktop/AlmostTrashed/BPT-SII_gal_SamePos.txt"
+
+logSIIHa2, elogSIIHa2, logOIIIHb2, elogOIIIHb2 = np.loadtxt(
+    f, usecols=[1, 2, 3, 4], unpack=True, dtype=float)
 
 #OI
 add_error_box(logOIHa3, logOIIIHb3, elogOIHa3, elogOIIIHb3)
-scatter_plot(logOIHa3, logOIIIHb3, overplot=True, color = "blue", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"])
+scatter_plot(logOIHa3, logOIIIHb3, overplot=True, color = "orange", labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], label = testo)
 PBPT(n=3)
 plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.legend()
 plt.show()
 """
 
@@ -1422,7 +1446,7 @@ fractTOT=np.mean(fract)
 fractERR=np.std(fract)
 """
 
-
+"""
 PlotScat(xAGN, yAGN, ex=exAGN, ey=eyAGN, xlim=None, ylim=None, colore="red", simbolo="o",
          labels=["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PlotScat(xcomp, ycomp, ex=excomp, ey=eycomp, xlim=None, ylim=None, colore="blue", simbolo="o", labels=[
@@ -1430,7 +1454,7 @@ PlotScat(xcomp, ycomp, ex=excomp, ey=eycomp, xlim=None, ylim=None, colore="blue"
 PlotScat(xhii1, yhii1, ex=exhii1, ey=eyhii1, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
          "$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=1)
-
+"""
 
 """
 Versione da mettere nella tesi : ( BPT-NII)
@@ -1440,6 +1464,7 @@ scatter_plot(xcomp, ycomp, color = 'blue', marker = 'o', labels = ["$log([NII]/H
 scatter_plot(xhii1, yhii1, color = 'green', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
 PBPT(n = 1)
 plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+plt.legend()
 plt.show()
 """
 
@@ -1481,6 +1506,7 @@ for k in range(len(i2)):
         exhii2.append(ex2[k])
         eyhii2.append(ey2[k])
 
+"""
 PlotScat(xrad, yrad, ex=exrad, ey=eyrad, xlim=None, ylim=None, colore="red", simbolo="o",
          labels=["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PlotScat(xshock, yshock, ex=exshock, ey=eyshock, xlim=None, ylim=None, colore="blue", simbolo="o", labels=[
@@ -1488,7 +1514,7 @@ PlotScat(xshock, yshock, ex=exshock, ey=eyshock, xlim=None, ylim=None, colore="b
 PlotScat(xhii2, yhii2, ex=exhii2, ey=eyhii2, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
          "$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=2)
-
+"""
 
 #BPT OI (Quelli che in altre parti di codice chiamo Type3)
 
@@ -1527,7 +1553,7 @@ for k in range(len(i3)):
         yhii3.append(y3[k])
         exhii3.append(ex3[k])
         eyhii3.append(ey3[k])
-
+"""
 PlotScat(xrad3, yrad3, ex=exrad3, ey=eyrad3, xlim=None, ylim=None, colore="red", simbolo="o",
          labels=["$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"])
 PlotScat(xshock3, yshock3, ex=exshock3, ey=eyshock3, xlim=None, ylim=None, colore="blue", simbolo="o",
@@ -1535,7 +1561,7 @@ PlotScat(xshock3, yshock3, ex=exshock3, ey=eyshock3, xlim=None, ylim=None, color
 PlotScat(xhii3, yhii3, ex=exhii3, ey=eyhii3, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
          "$log([OI]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=3)
-
+"""
 
 # Save subsample properties
 

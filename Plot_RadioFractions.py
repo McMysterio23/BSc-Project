@@ -166,7 +166,7 @@ plt.show()
 
 #Step Zero: Lettura dei dati "Non includo nella trattazione il caso ( SamePos = "no" )
 
-Sampl = "yes"
+Sampl = "no"
 #Sampl = "no"
 SamePos= "yes"
 
@@ -179,7 +179,8 @@ else :
     ra, dec, status = np.loadtxt(f, usecols=[0,1,11], unpack=True, dtype=float)
     
 
-
+"""
+Coordinate dei risultati presentati nell'abstract
 region_conditions = [
     ((ra > -2) & (ra < 53) & (dec > -12) & (dec < 4)),
     ((ra > 310) & (ra < 360) & (dec > -12) & (dec < 4)),
@@ -190,6 +191,19 @@ region_conditions = [
     ((ra > 222) & (ra < 260) & (dec > 40) & (dec < 48)),
     ((ra > 252) & (ra < 267) & (dec > 25.5) & (dec < 40))
 ]
+"""
+region_conditions = [
+    ((ra > -2)  & (ra < 53) & (dec > -12) & (dec < 4)),
+    ((ra > 310) & (ra < 360) & (dec > -12) & (dec < 4)),
+    ((ra > 120) & (ra < 250) & (dec > -5) & (dec < 6)),
+    ((ra > 138) & (ra < 267) & (dec > 48) & (dec < 65)),
+    ((ra > 130) & (ra < 138) & (dec > 48) & (dec < 60)),
+    ((ra > 111) & (ra < 150) & (dec > 40) & (dec < 48)),
+    ((ra > 112) & (ra < 136) & (dec > 27) & (dec < 40)),
+    ((ra > 222) & (ra < 260) & (dec > 40) & (dec < 48)),
+    ((ra > 252) & (ra < 267) & (dec > 25.5) & (dec < 40))
+]
+
 
 # Combina le condizioni utilizzando l'operatore logico OR
 combined_condition = np.any(region_conditions, axis=0)
