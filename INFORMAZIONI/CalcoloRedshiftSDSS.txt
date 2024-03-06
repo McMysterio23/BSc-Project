@@ -1,0 +1,28 @@
+Il calcolo del redshift nel contesto della pipeline spectro1d avviene attraverso una serie di passaggi distinti. Ecco un riassunto del processo:
+
+1. **Classificazione e Redshift Iniziale:**
+   - La pipeline spectro1d analizza gli spettri combinati prodotti dalla pipeline spectro2d, determinando le classificazioni degli oggetti (galassie, quasar, stelle o sconosciuti) e i redshift. Questa analisi fornisce anche misurazioni di linee spettrali e indicatori di avvertimento.
+   - I redshift di emissione e assorbimento vengono misurati indipendentemente per ogni oggetto. Per evitare eventuali bias, i codici di assorbimento ed emissione operano in modo indipendente e non dipendono dalle informazioni sulla selezione degli obiettivi.
+
+2. **Riduzione Continuo:**
+   - Viene eseguita una sottrazione del continuo con un polinomio di quinto ordine, con eliminazione iterativa degli outlier (ad esempio, linee spettrali forti). Questo continuo adattato viene sottratto dallo spettro.
+
+3. **Redshift di Linee di Emissione:**
+   - Vengono individuate le linee di emissione tramite una trasformata wavelet del continuum-sottratto dallo spettro. Viene creata una lista di posizioni di linee di emissione candidate.
+   - La lista di linee viene confrontata con una lista di linee di emissione comuni a galassie e quasar. Ogni picco significativo viene identificato come una linea di prova con un redshift associato. Viene eseguito un fit gaussiano per determinare il centro, la larghezza e l'altezza della linea.
+   - Viene calcolato un livello di confidenza (CL) sommando i pesi delle linee trovate e dividendo per la somma dei pesi delle linee attese. Il redshift di emissione finale è scelto come quello con il CL più alto.
+
+4. **Redshift di Correlazione Incrociata:**
+   - Gli spettri vengono correlati con template stellari, di galassie a linee di emissione e quasar per ottenere un redshift di correlazione incrociata e l'errore associato.
+   - Il redshift di correlazione incrociata viene scelto come quello con il livello di confidenza (CL) più alto tra tutti i template.
+
+5. **Redshift Finale e Classificazione:**
+   - Il redshift finale per ciascun oggetto viene scelto tra il redshift di emissione e il redshift di correlazione incrociata, basato sul CL più alto.
+   - Vengono assegnati bit di stato e avviso per il redshift.
+   - Gli oggetti vengono classificati come quasar, quasar ad alto redshift, galassie, stelle, stelle di tipo tardo o sconosciuti in base al redshift e ad altre caratteristiche.
+
+6. **Controllo e Avviso:**
+   - Viene utilizzato un bit di avviso (zWarning) per registrare eventuali problemi riscontrati nella pipeline, come parti mancanti dello spettro, basso rapporto segnale-rumore o bassa fiducia nella determinazione del redshift.
+   - Le classificazioni provvisorie e i redshift possono essere effettuati per oggetti compositi o problematici. La presenza di più di un redshift rilevato può attivare il bit di avviso.
+
+In sintesi, la pipeline esegue una serie di passaggi complessi per determinare il redshift di un oggetto celeste, combinando misure di emissione e correlazione incrociata per ottenere un risultato affidabile. Gli avvisi e i controlli vengono inclusi per segnalare potenziali problemi o incertezze nei risultati ottenuti.
