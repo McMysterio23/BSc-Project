@@ -26,3 +26,28 @@ Il calcolo del redshift nel contesto della pipeline spectro1d avviene attraverso
    - Le classificazioni provvisorie e i redshift possono essere effettuati per oggetti compositi o problematici. La presenza di più di un redshift rilevato può attivare il bit di avviso.
 
 In sintesi, la pipeline esegue una serie di passaggi complessi per determinare il redshift di un oggetto celeste, combinando misure di emissione e correlazione incrociata per ottenere un risultato affidabile. Gli avvisi e i controlli vengono inclusi per segnalare potenziali problemi o incertezze nei risultati ottenuti.
+
+
+
+################################################################################################
+
+
+The integrated fluxes of absorption lines are determined through a Gaussian fitting procedure applied to continuum-subtracted data. This fitting is conducted simultaneously for all lines, allowing for an automatic de-blending process. In the context of SDSS DR7, the line-fitting process is divided into three main stages during the spectro1D pipeline.
+
+The first stage involves fitting to only emission lines, referred to as "foundLines," and is performed during the determination of emission line redshifts. In this phase, wavelet filters are utilized to locate strong emission features in the spectrum. The identified lines, stored as "foundLines," lack specific identifications.
+
+The second stage, termed "measuredLines," represents the final fitting of all lines, including both emission and absorption lines. This stage occurs after the object has been classified, and the redshift has been determined. The final fitting allows for a better estimation of the continuum, thereby improving line fits. Line parameters, including central wavelength, height, dispersion, and integrated equivalent width, are measured comprehensively and returned as a result of the Gaussian fitting.
+
+It is important to note that each line is individually fitted as a single Gaussian on the continuum-subtracted spectrum. Lines deemed close enough are fitted simultaneously as a blend. The basic line fitting utilizes the SLATEC common mathematical library routine based on the Levenberg-Marquardt method. Constraints are applied to ensure result consistency, such as the positive line width (sigma) falling between 0.5 and 100 Angstrom and a maximum drift of the central wavelength by 450 km/s for stars and galaxies or 1500 km/s for quasars, with specific exceptions for certain lines. Lines with parameters close to these constraints should be interpreted with caution.
+
+
+###########
+de-blending process what does it mean ?
+###########
+
+The term "de-blending process" in the context of spectroscopy refers to the procedure of separating or disentangling overlapping spectral features, particularly lines, in a spectrum. When multiple lines overlap in a spectrum, they can create a complex and blended profile, making it challenging to accurately identify and measure the properties of individual lines.
+
+The de-blending process aims to untangle these overlapping features, allowing for the proper identification and characterization of each distinct line. This separation is crucial for accurately determining the properties of individual spectral lines, such as their central wavelength, intensity, width, and other parameters. In the context of SDSS DR7 and similar spectroscopic analyses, the de-blending process is often automated, utilizing sophisticated algorithms and fitting procedures to disentangle the contributions of different lines in the spectrum.
+
+By successfully de-blending overlapping lines, researchers can obtain more accurate measurements and interpretations of the spectral features, contributing to a better understanding of the physical properties and conditions of the astronomical objects under study.
+

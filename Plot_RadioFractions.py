@@ -96,7 +96,7 @@ PlotScat(RAc4, DECc4, xlim = [0, 360], ylim = [-30, +90], colore = 'red', labels
 
 
 # Creazione del plot di dispersione
-plt.scatter(raR, decR, color='orange', marker='o', label='RadioEmitters', s = 0.1)
+#plt.scatter(raR, decR, color='orange', marker='o', label='RadioEmitters', s = 0.1)
 
 
 
@@ -105,8 +105,8 @@ plt.scatter(raR, decR, color='orange', marker='o', label='RadioEmitters', s = 0.
 # Supponiamo che tu abbia già un grafico creato e che le regioni siano definite.
 # Assicurati di avere le variabili raR e decR definite in precedenza.
 
-# Lista delle condizioni delle regioni
-
+# Lista delle condizioni delle regioni della selection dei Radio Loud !!!
+"""
 region_conditions = [
     ((raR > -2) & (raR < 53) & (decR > -12) & (decR < 4)),
     ((raR > 310) & (raR < 360) & (decR > -12) & (decR < 4)),
@@ -118,6 +118,31 @@ region_conditions = [
     ((raR > 222) & (raR < 260) & (decR > 40) & (decR < 48)),
     ((raR > 252) & (raR < 267) & (decR > 25.5) & (decR < 40))
 ]
+"""
+
+
+
+#Condizioni per la creazione della zona con il crossmatch solo C4 + SDSSDR7
+
+condition_1 = ((RAdr7 > -2) & (RAdr7 < 53) & (DECdr7 > -10) & (DECdr7 < 4))
+condition_2 = ((RAdr7 > 310) & (RAdr7 < 360) & (DECdr7 > -10) & (DECdr7 < 4))
+condition_3 = ((RAdr7 > 120) & (RAdr7 < 250) & (DECdr7 > -5) & (DECdr7 < 6))
+condition_4 = ((RAdr7 > 111) & (RAdr7 < 267) & (DECdr7 > 48) & (DECdr7 < 65))
+condition_5 = ((RAdr7 > 111) & (RAdr7 < 150) & (DECdr7 > 27) & (DECdr7 < 48))
+condition_6 = ((RAdr7 > 222) & (RAdr7 < 260) & (DECdr7 > 40) & (DECdr7 < 48))
+condition_7 = ((RAdr7 > 252) & (RAdr7 < 267) & (DECdr7 > 25.5) & (DECdr7 < 40))
+
+# Crea l'array booleano
+region_conditions = np.array([
+    condition_1,
+    condition_2,
+    condition_3,
+    condition_4,
+    condition_5,
+    condition_6,
+    condition_7
+])
+
 
 
 
@@ -128,8 +153,8 @@ edge_linestyle = 'dashed'
 
 # Itera attraverso le condizioni delle regioni e colora solo i bordi
 for region_condition in region_conditions:
-    ra_region = raR[region_condition]
-    dec_region = decR[region_condition]
+    ra_region = RAdr7[region_condition]
+    dec_region = DECdr7[region_condition]
 
     # Trova i valori limite della regione
     ra_min, ra_max = ra_region.min(), ra_region.max()
@@ -147,8 +172,8 @@ plt.ylim((-12, +72))
 #plt.title('Bordi delle Regioni')
 # Legenda personalizzata
 legend_elements = [
-    Line2D([0], [0], marker='o', color='w', markerfacecolor='orange', markersize=5, label='RadioEmitters'),
-    Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=5, label='BCG'),
+    #Line2D([0], [0], marker='o', color='w', markerfacecolor='orange', markersize=5, label='RadioEmitters'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=3, label='BCG'),
     Line2D([0], [0], marker='o', color='w', markerfacecolor='grey', markersize=2, label='SDSS/DR7'),
     
 ]
@@ -227,4 +252,43 @@ print("Nei ritagli finali",testo," ci sono ", len(indexRLFIXX), "Radioloud")
 print("Su un totale di ", len(indexFIXX), testo)
 print("Risultante in una fraction di RadioLoud corrispondente a ", frac, " corrispondente al ", percent, "%")
 
+# %% Contegio del numero di galassie noBCG nell'insieme SamePos 
 
+
+f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoNoBCG_SamePos.txt"
+ra, dec, status = np.loadtxt(f, usecols=[0,1,9], unpack=True, dtype=float)
+
+#f = "/Users/andreamaccarinelli/Desktop/myOutputs3/InfoBCG.txt"
+#ra, dec, status = np.loadtxt(f, usecols=[0,1,11], unpack=True, dtype=float)
+
+#Condizioni per la creazione della zona con il crossmatch solo C4 + SDSSDR7
+
+condition_1 = ((ra > -2) & (ra < 53) & (dec > -10) & (dec < 4))
+condition_2 = ((ra > 310) & (ra < 360) & (dec > -10) & (dec < 4))
+condition_3 = ((ra > 120) & (ra < 250) & (dec > -5) & (dec < 6))
+condition_4 = ((ra > 111) & (ra < 267) & (dec > 48) & (dec < 65))
+condition_5 = ((ra > 111) & (ra < 150) & (dec > 27) & (dec < 48))
+condition_6 = ((ra > 222) & (ra < 260) & (dec > 40) & (dec < 48))
+condition_7 = ((ra > 252) & (ra < 267) & (dec > 25.5) & (dec < 40))
+
+# Crea l'array booleano
+region_conditions = np.array([
+    condition_1,
+    condition_2,
+    condition_3,
+    condition_4,
+    condition_5,
+    condition_6,
+    condition_7
+])
+
+# Combina le condizioni utilizzando l'operatore logico OR
+combined_condition = np.any(region_conditions, axis=0)
+
+# Ricerca degli indici in cui compaiono solo RadioLoud
+indexRLFIXX = np.where((status != 0) & combined_condition)[0]
+
+# Ricerca di tutti gli oggetti nel ritaglio finale
+indexFIXX = np.where(combined_condition)[0]
+
+print(len(indexFIXX))

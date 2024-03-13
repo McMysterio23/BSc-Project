@@ -1219,13 +1219,13 @@ def BPTd():
 def PBPT(n=1):
     xx1, xx2, xx3, yy1_1, yy1_2, yy2_1, yy2_2, yy3_1, yy3_2 = BPTd()
     if n == 1:
-        plt.plot(xx1[xx1 < 0.05], yy1_1, color='black', label = 'Kauffmann03 line', linestyle = '-.')
-        plt.plot(xx1[xx1 < 0.47], yy1_2, color='black', label = 'Kewley01 line', linestyle = '--')
+        plt.plot(xx1[xx1 < 0.05], yy1_1, color='#00FF00', label = 'Kauffmann03 line', linestyle = '-.', linewidth = 2)
+        plt.plot(xx1[xx1 < 0.47], yy1_2, color='#FFA500', label = 'Kewley01 line', linestyle = '--', linewidth = 2)
         plt.xlim((-2, 3))
         plt.ylim((-2, 3))
     if n == 2:
-        plt.plot(xx2[xx2 < 0.32], yy2_1, color='black', label = 'Main AGN line', linestyle = '-.')
-        plt.plot(xx2[xx2 > -0.33], yy2_2, color='black', label = 'LINER/Sy2 line', linestyle = '--')
+        plt.plot(xx2[xx2 < 0.32], yy2_1, color='#00FF00', label = 'Main AGN line', linestyle = '-.')
+        plt.plot(xx2[xx2 > -0.33], yy2_2, color='#FFA500', label = 'LINER/Sy2 line', linestyle = '--')
         plt.xlim((-2, 3))
         plt.ylim((-2, 3))
     if n == 3:
@@ -1346,7 +1346,7 @@ if os.path.exists(fileout) == False:
 
 #Sampl="no"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
-Sampl = "no"
+Sampl = "yes"
 #RA,DEC,Z,eZ,SIG,eSIG,EBV,Zsun,SIGMA_BAL,eSIGMA_BAL,SIGMA_FORB,eSIGMA_FORB,VOFF_BAL,eVOFF_BAL,VOFF_FORB,eVOFF_FORB,OII_3726,eOII_3726,OII_3729,eOII_3729,NEIII_3869,eNEIII_3869,H_DELTA,eH_DELTA,H_GAMMA,eH_GAMMA,OIII_4363,eOIII_4363,OIII_4959,eOIII_4959,OIII_5007,eOIII_5007,HEI_5876,eHEI_5876,OI_6300,eOI_6300,H_BETA,eH_BETA,H_ALPHA,eH_ALPHA,NII_6584,eNII_6584,SII_6717,eSII_6717,SII_6731,eSII_6731,ARIII7135,eARIII7135,Mass,eMass1,eMass2,SFR,eSFR1,eSFR2,sSFR,esSFR1,esSFR2= calldata(Sampl)
 
 #SamePos = "yes"
@@ -1459,12 +1459,25 @@ PBPT(n=1)
 """
 Versione da mettere nella tesi : ( BPT-NII)
 add_error_box(logNIIHa1, logOIIIHb1, elogNIIHa1, elogOIIIHb1, 1, -1)
-scatter_plot(xAGN, yAGN, color = 'red', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
-scatter_plot(xcomp, ycomp, color = 'blue', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
-scatter_plot(xhii1, yhii1, color = 'green', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True)
+scatter_plot(xAGN, yAGN, color = 'red', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "AGN", s = 0.5)
+scatter_plot(xcomp, ycomp, color = 'blue', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "Composite", s = 0.5)
+scatter_plot(xhii1, yhii1, color = 'green', marker = 'o', labels = ["$log([NII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "Star Forming", s = 0.5)
 PBPT(n = 1)
 plt.text(1, -0.7, 'Error at 75%', ha = 'center')
-plt.legend()
+#plt.legend()
+legend_elements = [
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=2, label='Composite'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=2, label='AGN'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=2, label='Star Forming'),
+    Line2D([0], [0], color='#FFA500', linestyle='-.', linewidth=3, label='Kewley01'),
+    Line2D([0], [0], color='#00FF00', linestyle='--', linewidth=3, label='Kauffmann03'),
+
+]
+
+# Aggiungi la legenda personalizzata al plot
+legend = plt.legend(handles=legend_elements, loc='lower left', markerscale=3)
+plt.gca().add_artist(legend)
+
 plt.show()
 """
 
@@ -1514,6 +1527,30 @@ PlotScat(xshock, yshock, ex=exshock, ey=eyshock, xlim=None, ylim=None, colore="b
 PlotScat(xhii2, yhii2, ex=exhii2, ey=eyhii2, xlim=None, ylim=None, colore="green", simbolo="o", labels=[
          "$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], Positives=["no", "no"], overplot=True)
 PBPT(n=2)
+
+
+Versione per la presentazione : 
+add_error_box(logSIIHa2, logOIIIHb2, elogSIIHa2, elogOIIIHb2, 1, -1)
+scatter_plot(xrad, yrad, color = 'red', marker = 'o', labels = ["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "Seyfert", s = 0.5)
+scatter_plot(xshock, yshock, color = 'blue', marker = 'o', labels = ["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "LINER", s = 0.5)
+scatter_plot(xhii2, yhii2, color = 'green', marker = 'o', labels = ["$log([SII]/H \\alpha])$", "$log([OIII]/H \\beta])$"], overplot = True, label = "Star Forming", s = 0.5)
+PBPT(n = 2)
+plt.text(1, -0.7, 'Error at 75%', ha = 'center')
+#plt.legend()
+legend_elements = [
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=2, label='LINER'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=2, label='Seyfert'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=2, label='Star Forming'),
+    Line2D([0], [0], color='#FFA500', linestyle='-.', linewidth=3, label='LINER/Sy2'),
+    Line2D([0], [0], color='#00FF00', linestyle='--', linewidth=3, label='Main AGN'),
+
+]
+
+# Aggiungi la legenda personalizzata al plot
+legend = plt.legend(handles=legend_elements, loc='lower left', markerscale=3)
+plt.gca().add_artist(legend)
+
+plt.show()
 """
 
 #BPT OI (Quelli che in altre parti di codice chiamo Type3)
